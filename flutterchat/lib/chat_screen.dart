@@ -33,6 +33,13 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Chat"),
+      ),
+      body: Center(
+        child: Text(loggedUser!.email!),
+      ),
+    );
   }
 }
