@@ -34,9 +34,14 @@ class _LoginPage extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Login()
+    return Scaffold(
+      body: GestureDetector(
+        onTap: (){
+          FocusScope.of(context).unfocus();
+        },
+        child: const Center(
+          child: Login()
+        ),
       ),
     );
   }
