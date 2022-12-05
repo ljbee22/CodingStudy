@@ -88,9 +88,6 @@ class _LoginState extends State<Login> {
                         GestureDetector(
                           onTap: () {
                             setState(() {
-                              showSpinner = true;
-                            });
-                            setState(() {
                               isSignUp = true;
                             });
                           },
@@ -226,6 +223,9 @@ class _LoginState extends State<Login> {
                       ),
                       GestureDetector(
                         onTap: () async{
+                          setState(() {
+                            showSpinner = true;
+                          });
                           _tryValidation();
 
                           try {
