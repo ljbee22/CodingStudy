@@ -241,10 +241,10 @@ class _LoginState extends State<Login> {
                                     return ChatScreen();
                                   })
                               );
-                              setState(() {
-                                showSpinner = false;
-                              });
                             }
+                            setState(() {
+                              showSpinner = false;
+                            });
                           }catch(e) {
                             print(e);
                           }
@@ -443,10 +443,10 @@ class _LoginState extends State<Login> {
                                   return ChatScreen();
                                 })
                               );
-                              setState(() {
-                                showSpinner = false;
-                              });
                             }
+                            setState(() {
+                              showSpinner = false;
+                            });
                           }catch(e){
                             print('@@@@@@@@@@@@@@@@');
                             print(e);
