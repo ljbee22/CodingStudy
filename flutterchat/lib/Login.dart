@@ -241,11 +241,15 @@ class _LoginState extends State<Login> {
                                     return ChatScreen();
                                   })
                               );
+                              setState(() {
+                                showSpinner = false;
+                              });
                             }
+
+                          }catch(e) {
                             setState(() {
                               showSpinner = false;
                             });
-                          }catch(e) {
                             print(e);
                           }
                         },
@@ -443,11 +447,14 @@ class _LoginState extends State<Login> {
                                   return ChatScreen();
                                 })
                               );
+                              setState(() {
+                                showSpinner = false;
+                              });
                             }
+                          }catch(e){
                             setState(() {
                               showSpinner = false;
                             });
-                          }catch(e){
                             print('@@@@@@@@@@@@@@@@');
                             print(e);
                             ScaffoldMessenger.of(context).showSnackBar(
