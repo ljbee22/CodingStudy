@@ -17,3 +17,6 @@ with 현태 재범
 - 로그인 버튼 -> 로그인 과정 구현
 - 대기 시간동안 showspinner 추가
 
+## 12.06
+- navigator 제거 -> streambuilder로 화면 전환
+- 채팅 화면 추가 
