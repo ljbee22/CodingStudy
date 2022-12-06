@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutterchat/chat_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -235,12 +236,6 @@ class _LoginState extends State<Login> {
                                 password: passwd
                             );
                             if (newUser.user != null) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) {
-                                    return ChatScreen();
-                                  })
-                              );
                               setState(() {
                                 showSpinner = false;
                               });
@@ -440,13 +435,13 @@ class _LoginState extends State<Login> {
                               password: passwd,
                             );
 
+                            await FirebaseFirestore.instance.collection('user')
+                                .doc(newUser.user!.uid).set({
+                              'userName' : userID,
+                              'email' : regKey
+                            });
+
                             if(newUser.user != null){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context){
-                                  return ChatScreen();
-                                })
-                              );
                               setState(() {
                                 showSpinner = false;
                               });
