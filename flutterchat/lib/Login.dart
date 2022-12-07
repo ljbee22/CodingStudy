@@ -129,9 +129,6 @@ class _LoginState extends State<Login> {
                               onSaved: (value){
                                 regKey = value!;
                               },
-                              onChanged: (value){
-                                regKey = value!;
-                              },
                               validator: (value){
                                 if(value!.isEmpty || value!.length < 6){ //null 이면 안돼서 null check
                                   return "Please enter at least 6 characters";
@@ -176,9 +173,6 @@ class _LoginState extends State<Login> {
                               obscureText: true,
                               key: const ValueKey(2),
                               onSaved: (value){
-                                passwd = value!;
-                              },
-                              onChanged: (value){
                                 passwd = value!;
                               },
                               validator: (value){
@@ -283,9 +277,6 @@ class _LoginState extends State<Login> {
                                 onSaved: (value){
                                   regKey = value!;
                                 },
-                                onChanged: (value){
-                                  regKey = value;
-                                },
                                 validator: (value){
                                   if(value!.isEmpty || value!.length < 6){ //null 이면 안돼서 null check
                                     return "Please check you registration key";
@@ -329,9 +320,6 @@ class _LoginState extends State<Login> {
                               TextFormField(
                                 key: const ValueKey(4),
                                 onSaved: (value){
-                                  userID = value!;
-                                },
-                                onChanged: (value){
                                   userID = value!;
                                 },
                                 validator: (value){
@@ -379,9 +367,6 @@ class _LoginState extends State<Login> {
                                 key: const ValueKey(5),
                                 onSaved: (value){
                                   passwd = value!;
-                                },
-                                onChanged: (value){
-                                  passwd = value;
                                 },
                                 validator: (value){
                                   if(value!.isEmpty || value!.length < 6){ //null 이면 안돼서 null check

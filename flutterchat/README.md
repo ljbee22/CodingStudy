@@ -20,3 +20,8 @@ with 현태 재범
 ## 12.06
 - navigator 제거 -> streambuilder로 화면 전환
 - 채팅 화면 추가 
+
+## 12.07
+- chat bubble 추가
+- chat bubble 위에 Hello 텍스트 추가
+- validation 고침
