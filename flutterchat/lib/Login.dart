@@ -23,6 +23,9 @@ class _LoginState extends State<Login> {
 
   void _tryValidation(){
     final isValid = _formKey.currentState!.validate();
+    if(isValid){
+      _formKey.currentState!.save();
+    }
   }
 
   @override
