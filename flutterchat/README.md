@@ -25,3 +25,7 @@ with 현태 재범
 - chat bubble 추가
 - chat bubble 위에 Hello 텍스트 추가
 - validation 고침
+
+## 12.08
+- chat bubble 개선(라이브러리로 대체)
+- 유저 이미지 추가(이미지 업로드 기능 추가)
