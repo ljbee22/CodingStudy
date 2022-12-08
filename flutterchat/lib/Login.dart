@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutterchat/chat_screen.dart';
+import 'package:flutterchat/add_image/add_image.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -26,6 +26,18 @@ class _LoginState extends State<Login> {
     if(isValid){
       _formKey.currentState!.save();
     }
+  }
+
+  void showAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const Dialog(
+            backgroundColor: Colors.white,
+            child: AddImage(),
+          );
+        },
+    );
   }
 
   @override
@@ -97,17 +109,33 @@ class _LoginState extends State<Login> {
                           },
                           child: Column(
                             children: [
-                              Text(
-                                "SIGN UP",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: !isSignUp ? Colors.black26 : Colors.black54,
-                                ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "SIGN UP",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: !isSignUp ? Colors.black26 : Colors.black54,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 15,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      showAlert(context);
+                                    },
+                                    child: Icon(
+                                      Icons.image,
+                                      color: isSignUp ? Colors.cyan : Colors.grey[300],
+                                    ),
+                                  )
+                                ],
                               ),
                               if (isSignUp)
                                 Container(
-                                  margin: const EdgeInsets.only(top: 3),
+                                  margin: const EdgeInsets.fromLTRB(0, 3, 35, 0),
                                   height: 2,
                                   width: 75,
                                   color: Colors.redAccent,
