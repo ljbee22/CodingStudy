@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutterchat/add_image/add_image.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -20,6 +21,11 @@ class _LoginState extends State<Login> {
   String userID = '';
   String passwd = '';
   bool showSpinner = false;
+  File? userPickedImage;
+
+  void pickedImage(File image) {
+    userPickedImage = image;
+  }
 
   void _tryValidation(){
     final isValid = _formKey.currentState!.validate();
@@ -32,9 +38,9 @@ class _LoginState extends State<Login> {
     showDialog(
         context: context,
         builder: (context) {
-          return const Dialog(
+          return Dialog(
             backgroundColor: Colors.white,
-            child: AddImage(),
+            child: AddImage(pickedImage),
           );
         },
     );
@@ -119,9 +125,10 @@ class _LoginState extends State<Login> {
                                       color: !isSignUp ? Colors.black26 : Colors.black54,
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 15,
                                   ),
+                                  if(isSignUp)
                                   GestureDetector(
                                     onTap: () {
                                       showAlert(context);
@@ -158,7 +165,7 @@ class _LoginState extends State<Login> {
                                 regKey = value!;
                               },
                               validator: (value){
-                                if(value!.isEmpty || value!.length < 6){ //null 이면 안돼서 null check
+                                if(value!.isEmpty || value.length < 6){ //null 이면 안돼서 null check
                                   return "Please enter at least 6 characters";
                                 }
                                 return null;
@@ -204,7 +211,7 @@ class _LoginState extends State<Login> {
                                 passwd = value!;
                               },
                               validator: (value){
-                                if(value!.isEmpty || value!.length < 6){ //null 이면 안돼서 null check
+                                if(value!.isEmpty || value.length < 6){ //null 이면 안돼서 null check
                                   return "Password must be at least 7 characters long";
                                 }
                                 return null;
@@ -255,17 +262,11 @@ class _LoginState extends State<Login> {
                           _tryValidation();
 
                           try {
-                            final newUser = await _authentication.
+                            await _authentication.
                             signInWithEmailAndPassword(
                                 email: regKey,
                                 password: passwd
                             );
-                            if (newUser.user != null) {
-                              setState(() {
-                                showSpinner = false;
-                              });
-                            }
-
                           }catch(e) {
                             setState(() {
                               showSpinner = false;
@@ -306,7 +307,7 @@ class _LoginState extends State<Login> {
                                   regKey = value!;
                                 },
                                 validator: (value){
-                                  if(value!.isEmpty || value!.length < 6){ //null 이면 안돼서 null check
+                                  if(value!.isEmpty || value.length < 6){ //null 이면 안돼서 null check
                                     return "Please check you registration key";
                                   }
                                   return null;
@@ -351,7 +352,7 @@ class _LoginState extends State<Login> {
                                   userID = value!;
                                 },
                                 validator: (value){
-                                  if(value!.isEmpty || value!.length < 6){ //null 이면 안돼서 null check
+                                  if(value!.isEmpty || value.length < 6){ //null 이면 안돼서 null check
                                     return "Please enter at least 6 characters";
                                   }
                                   return null;
@@ -397,7 +398,7 @@ class _LoginState extends State<Login> {
                                   passwd = value!;
                                 },
                                 validator: (value){
-                                  if(value!.isEmpty || value!.length < 6){ //null 이면 안돼서 null check
+                                  if(value!.isEmpty || value.length < 6){ //null 이면 안돼서 null check
                                     return "Password must be at least 7 characters long";
                                   }
                                   return null;
@@ -442,6 +443,18 @@ class _LoginState extends State<Login> {
                           setState(() {
                             showSpinner = true;
                           });
+                          if(userPickedImage == null) {
+                            setState(() {
+                              showSpinner = false;
+                            });
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Please pick your image"),
+                                  backgroundColor: Colors.grey,
+                                ),
+                            ) ;
+                            return;
+                          }
                           _tryValidation();
 
                           try {
@@ -456,24 +469,21 @@ class _LoginState extends State<Login> {
                               'userName' : userID,
                               'email' : regKey
                             });
-
-                            if(newUser.user != null){
+                          }catch(e){
+                            print('@@@@@@@@@@@@@@@@');
+                            print(e);
+                            if(mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                        "Please check your email and password"),
+                                    backgroundColor: Colors.grey,
+                                  )
+                              );
                               setState(() {
                                 showSpinner = false;
                               });
                             }
-                          }catch(e){
-                            setState(() {
-                              showSpinner = false;
-                            });
-                            print('@@@@@@@@@@@@@@@@');
-                            print(e);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text("Please check your email and password"),
-                                  backgroundColor: Colors.grey,
-                              )
-                            );
                           }
                         },
                         child: Container(
