@@ -1,6 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
+import 'package:mysql_test/api/api.dart';
+import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
+
+import '../model/user.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -15,6 +22,61 @@ class _SignupPageState extends State<SignupPage> {
   var userNameController = TextEditingController();
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
+
+  checkUserEmail() async {
+    try {
+      var response = await http.post(
+          Uri.parse(API.validateEmail),
+          body: {
+            'user_email' : emailController.text.trim()
+          }
+      );
+      if(response.statusCode == 200) {
+        var responseBody = jsonDecode(response.body);
+        if(responseBody['existEmail'] == true) {
+          Fluttertoast.showToast(
+            msg: "Email is already in use. Please try another email"
+          );
+        } else {
+          saveInfo();
+        }
+      }
+    } catch(e) {
+      print(e.toString());
+      Fluttertoast.showToast(msg: e.toString());
+    }
+  }
+
+  saveInfo() async {
+    User userModel = User(
+      1,
+      userNameController.text.trim(),
+      emailController.text.trim(),
+      passwordController.text.trim()
+    );
+    try {
+      var res = await http.post(Uri.parse(
+          API.signup),
+        body: userModel.toJson()
+      );
+      if(res.statusCode == 200) {
+        var resSignup = jsonDecode(res.body);
+        if(resSignup['success'] == true) {
+          Fluttertoast.showToast(msg: 'Signup successfully');
+          setState(() {
+            userNameController.clear();
+            emailController.clear();
+            passwordController.clear();
+          });
+        } else {
+          Fluttertoast.showToast(msg: 'Error occurred. Please try again');
+        }
+      }
+    } catch(e) {
+      print(e.toString());
+      Fluttertoast.showToast(msg: e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +187,9 @@ class _SignupPageState extends State<SignupPage> {
                 ),
                 GestureDetector(
                   onTap: () {
-
+                    if(formKey.currentState!.validate()) {
+                      checkUserEmail();
+                    }
                   },
                   child: Container(
                     child: Padding(

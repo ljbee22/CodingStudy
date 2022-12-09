@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mysql_git/authentication/signup.dart';
+import 'package:mysql_test/authentication/signup.dart';
+import 'package:mysql_test/authentication/signup.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
