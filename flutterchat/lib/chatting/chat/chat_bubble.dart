@@ -20,7 +20,7 @@ class ChatBubbles extends StatelessWidget {
         children: [
           if(isMe)
             Padding(
-              padding: const EdgeInsets.fromLTRB(0,0,5,0),
+              padding: const EdgeInsets.fromLTRB(0,10,45,0),
               child: ChatBubble(
                 clipper: ChatBubbleClipper8(type: BubbleType.sendBubble),
                 alignment: Alignment.topRight,
@@ -50,7 +50,7 @@ class ChatBubbles extends StatelessWidget {
             )
           else if(!isMe)
             Padding(
-              padding: const EdgeInsets.fromLTRB(5,0,0,0),
+              padding: const EdgeInsets.fromLTRB(45,10,0,0),
               child: ChatBubble(
                 clipper: ChatBubbleClipper8(type: BubbleType.receiverBubble),
                 backGroundColor: const Color(0xffE7E7ED),
@@ -79,6 +79,14 @@ class ChatBubbles extends StatelessWidget {
             )
         ]
       ),
+        Positioned(
+          top: 0,
+          right: isMe ? 5: null,
+          left: isMe ? null : 5,
+          child: CircleAvatar(
+            backgroundImage: NetworkImage(userImage),
+          )
+        )
     ]
     );
   }
