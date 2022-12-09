@@ -4,6 +4,7 @@ import 'package:flutterchat/add_image/add_image.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -463,6 +464,25 @@ class _LoginState extends State<Login> {
                               email: regKey,
                               password: passwd,
                             );
+
+
+                            final refImage = FirebaseStorage.instance.ref()
+                                .child('picked_image')
+                                .child('${newUser.user!.uid}.png');
+
+                            await refImage.putFile(userPickedImage!);
+                            final url = await refImage.getDownloadURL();
+
+                            await FirebaseFirestore.instance
+                                .collection("user")
+                                .doc(newUser.user!.uid)
+                                .set(
+                                  {
+                                    'username':userID,
+                                    'email':regKey,
+                                    "picked_image" : url,
+                                  }
+                                );
 
                             await FirebaseFirestore.instance.collection('user')
                                 .doc(newUser.user!.uid).set({
