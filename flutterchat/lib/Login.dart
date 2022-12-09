@@ -483,12 +483,7 @@ class _LoginState extends State<Login> {
                                     "picked_image" : url,
                                   }
                                 );
-
-                            await FirebaseFirestore.instance.collection('user')
-                                .doc(newUser.user!.uid).set({
-                              'userName' : userID,
-                              'email' : regKey
-                            });
+                            
                           }catch(e){
                             print('@@@@@@@@@@@@@@@@');
                             print(e);
