@@ -1,16 +1,11 @@
 # my_calender
 
-A new Flutter project.
+MY Calender Project
 
-## Getting Started
+## 12.17
+참여자 - 재범, 현태
 
-This project is a starting point for a Flutter application.
+1. 달력 구성 논의(구체적인 container 배치 등)
+2. 기본 화면 구성 시작(ing)
+3. N주차 표시 알고리즘 도입(?)
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
