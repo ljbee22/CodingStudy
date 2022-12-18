@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'text.dart';
+import 'daylist.dart';
 
 /*특정 요일을 대입 -> 그 요일이 속한 달의 첫번째 요일을 숫자로 리턴*/
 int dayCal(int year, int month, int day){
@@ -12,6 +13,7 @@ int dayCal(int year, int month, int day){
 var now = DateTime.now();
 var nowMonth = now.month;
 var today = dayCal(now.year, now.month, now.day);
+List<DateTime> daylist = GenerateDay().daylist(DateTime.now());
 
 
 class WeekCal extends StatefulWidget {
@@ -46,234 +48,68 @@ class _WeekCalState extends State<WeekCal> {
               Expanded(child: MyText("일", 15)),
             ],
           ), //요일 표시 -> 항상 고정
-          const Divider(
-            height: 0,
-          ),
+          const Divider(height: 0),
           Row(
             children: [
+              for(int i = 0; i<7; i++)
+                Expanded(child: Container(
+                  height: 40,
+                  child: MyText(daylist[i].day.toString(), 15),
+                )),
+            ],
+          ),
+          const Divider(height: 0),
+          Row(
+            children: [
+              for(int i = 7; i<14; i++)
               Expanded(child: Container(
                 height: 40,
-                child: MyText("1", 15),
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
+                child: MyText(daylist[i].day.toString(), 15),
               )),
             ],
           ),
+          const Divider(height: 0),
           Row(
             children: [
+              for(int i = 14; i<21; i++)
               Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
+                height: 40,
+                child: MyText(daylist[i].day.toString(), 15),
               )),
             ],
           ),
+          const Divider(height: 0),
           Row(
             children: [
-              Expanded(child: Container(
+              for(int i = 21; i<28; i++)
+                Expanded(child: Container(
                   height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
+                  child: MyText(daylist[i].day.toString(), 15),
+                )),
             ],
           ),
+          const Divider(height: 0),
           Row(
             children: [
-              Expanded(child: Container(
+              for(int i = 28; i<35; i++)
+                Expanded(child: Container(
                   height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
+                  child: MyText(daylist[i].day.toString(), 15),
+                )),
             ],
           ),
-          Row(
-            children: [
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-            ],
-          ),
+          const Divider(height: 0),
           // if(week > 5)
           Row(
             children: [
-              Expanded(child: Container(
+              for(int i = 35; i<42; i++)
+                Expanded(child: Container(
                   height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
+                  child: MyText(daylist[i].day.toString(), 15),
+                )),
             ],
           ),
-          Row(
-            children: [
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-              Expanded(child: Container(
-                  height: 40,
-                  child: MyText("1", 15)
-              )),
-            ],
-          ),
+          const Divider(height: 0),
         ],
       ),
     );
