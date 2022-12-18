@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'text.dart';
 
 /*특정 요일을 대입 -> 그 요일이 속한 달의 첫번째 요일을 숫자로 리턴*/
 int dayCal(int year, int month, int day){
@@ -25,42 +26,254 @@ class _WeekCalState extends State<WeekCal> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF26C6C),
-        title: Text(
-          "$nowMonth월 $today주차"
-        ),
+        backgroundColor: const Color(0xFFFAE3D9),
+        elevation: 0,
+        title: MyText(
+            "$nowMonth월 $today주차", 22
+        )
       ),
       body: Column(
         children: [
           Row(
-            children: const [
-              Expanded(child: Text("월", textAlign: TextAlign.center,)),
-              Expanded(child: Text("화", textAlign: TextAlign.center,)),
-              Expanded(child: Text("수", textAlign: TextAlign.center,)),
-              Expanded(child: Text("목", textAlign: TextAlign.center,)),
-              Expanded(child: Text("금", textAlign: TextAlign.center,)),
-              Expanded(child: Text("토", textAlign: TextAlign.center,)),
-              Expanded(child: Text("일", textAlign: TextAlign.center,)),
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(child: MyText("월", 15)),
+              Expanded(child: MyText("화", 15)),
+              Expanded(child: MyText("수", 15)),
+              Expanded(child: MyText("목", 15)),
+              Expanded(child: MyText("금", 15)),
+              Expanded(child: MyText("토", 15)),
+              Expanded(child: MyText("일", 15)),
             ],
           ), //요일 표시 -> 항상 고정
+          const Divider(
+            height: 0,
+          ),
           Row(
             children: [
               Expanded(child: Container(
-                // height: 30,
-                child: Text("1",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 21,
-                ),),
+                height: 40,
+                child: MyText("1", 15),
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
               )),
             ],
           ),
-          Row(),
-          Row(),
-          Row(),
-          Row(),
+          Row(
+            children: [
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+            ],
+          ),
           // if(week > 5)
-          Row(),
+          Row(
+            children: [
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+              Expanded(child: Container(
+                  height: 40,
+                  child: MyText("1", 15)
+              )),
+            ],
+          ),
         ],
       ),
     );
