@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_calender/week_cal.dart';
+import 'package:my_calender/month_cal.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+void main() async{
+  await Hive.initFlutter(); // hive database 초기화
   runApp(const MyApp());
 }
 
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: WeekCal(),
+      home: MonthCal(),
     );
   }
 }

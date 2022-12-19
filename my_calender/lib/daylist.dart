@@ -12,3 +12,11 @@ class GenerateDay{
     return dlist;
   }
 }
+
+/*특정 요일을 대입 -> 그 요일이 속한 달의 첫번째 요일을 숫자로 리턴*/
+int dayCal(int year, int month, int day){
+  final firstDay = DateTime(year, month, 1);
+  var firstDayVal = firstDay.weekday;
+  int nthWeek = ((day+firstDayVal-2) ~/ 7) + 1;
+  return nthWeek;
+}
