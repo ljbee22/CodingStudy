@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'text.dart';
-import 'daylist.dart';
-import 'calender_element.dart';
+import 'cursor.dart';
+import 'customclass/calender_element.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 // var now = DateTime.now();
-var now = DateTime(2021, 2, 1);
-var nowMonth = now.month;
-var today = dayCal(now.year, now.month, now.day);
-List<DateTime> daylist = GenerateDay().daylist(now);
+Cursor cursor = Cursor(selected: DateTime.now());
+List<DateTime> daylist = cursor.daylist();
 
 class MonthCal extends StatefulWidget {
   const MonthCal({Key? key}) : super(key: key);
@@ -25,7 +22,7 @@ class _MonthCalState extends State<MonthCal> {
         backgroundColor: const Color(0xFFFAE3D9),
         elevation: 0,
         title: MyText(
-            "$nowMonth월 $today주차", 22
+            "${cursor.selected.month}월 ${cursor.dayofweek()}주차", 22
         )
       ),
       body: Column(
@@ -37,7 +34,7 @@ class _MonthCalState extends State<MonthCal> {
               for(int i = 0; i<7; i++)
                 Expanded(child: Container(
                   height: 40,
-                  child: daylist[i].day > 7 ? null : MyText(daylist[i].day.toString(), 15),
+                  child: daylist[i].month != cursor.selected.month ? null : MyText(daylist[i].day.toString(), 15),
                 )),
             ],
           ),
@@ -80,7 +77,7 @@ class _MonthCalState extends State<MonthCal> {
                   for(int i = 28; i<35; i++)
                     Expanded(child: Container(
                       height: 40,
-                      child: daylist[i].day < 15 ? null : MyText(daylist[i].day.toString(), 15),
+                      child: daylist[i].month != cursor.selected.month  ? null : MyText(daylist[i].day.toString(), 15),
                     )),
                 ],
               ),
@@ -95,7 +92,7 @@ class _MonthCalState extends State<MonthCal> {
                   for(int i = 35; i<42; i++)
                     Expanded(child: Container(
                       height: 40,
-                      child: daylist[i].day < 15 ? null : MyText(daylist[i].day.toString(), 15),
+                      child: daylist[i].month != cursor.selected.month ? null : MyText(daylist[i].day.toString(), 15),
                     )),
                 ],
               ),
@@ -103,13 +100,15 @@ class _MonthCalState extends State<MonthCal> {
             ],
           ),
 
-          //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-          // FloatingActionButton(onPressed: ()async{
-          //   var libBox = await Hive.openBox("lib");
-          //   libBox.put('now', now.month);
-          //   var a = libBox.get('now');
-          //   print(a);
-          // })
+          FloatingActionButton(onPressed: () {
+            setState(() {
+              cursor.selected = DateTime(2021,2,1);
+            });
+            // var libBox = await Hive.openBox("lib");
+            // // libBox.put('now', cursor.month);
+            // var a = libBox.get('now');
+            // print(a);
+          })
         ],
       ),
     );
