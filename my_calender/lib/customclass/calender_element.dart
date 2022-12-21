@@ -7,14 +7,21 @@ class DayofWeek extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(child: MyText("월", 15)),
-        Expanded(child: MyText("화", 15)),
-        Expanded(child: MyText("수", 15)),
-        Expanded(child: MyText("목", 15)),
-        Expanded(child: MyText("금", 15)),
-        Expanded(child: MyText("토", 15)),
-        Expanded(child: MyText("일", 15)),
+      children: const [
+        SizedBox(width: 2),
+        Expanded(child:Text("월", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Color(0xff202020), fontWeight: FontWeight.w100),)),
+        SizedBox(width: 2),
+        Expanded(child:Text("화", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Color(0xff202020)),)),
+        SizedBox(width: 2),
+        Expanded(child:Text("수", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Color(0xff202020)),)),
+        SizedBox(width: 2),
+        Expanded(child:Text("목", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Color(0xff202020)),)),
+        SizedBox(width: 2),
+        Expanded(child:Text("금", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Color(0xff202020)),)),
+        SizedBox(width: 2),
+        Expanded(child:Text("토", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Color(0xff202020)),)),
+        SizedBox(width: 2),
+        Expanded(child:Text("일", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Color(0xffE84A5F)),)),
       ],
     ); //요일 표시 -> 항상 고정
   }
@@ -46,7 +53,7 @@ class MyText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       t,
-      textAlign: TextAlign.start,
+      textAlign: TextAlign.center,
       style: TextStyle(
           fontSize: fsize,
           color: const Color(0xff202020)

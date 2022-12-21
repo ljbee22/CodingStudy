@@ -23,14 +23,26 @@ class _EveryDayState extends State<EveryDay> {
         });
       },
       child: Container(
-        padding: const EdgeInsets.fromLTRB(0, 8, 0, 10),
+        padding: const EdgeInsets.fromLTRB(0, 4, 0, 10),
         height: 50,
         child: widget.oneDay.month != widget.cursor.selected.month ? null : Stack(
           children: [
             Positioned(
-              child: Container(
-                child: MyText(widget.oneDay.day.toString(), 15),
-              ),
+                // left: 0.95,
+                child: Container(
+                    height: 20,
+                    width: 20,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFBBDED6),
+                      shape: BoxShape.circle,
+                    )
+                )
+            ),
+            Positioned(
+              top: 1,
+              height: 15,
+              width: 20,
+              child: MyText(widget.oneDay.day.toString(), 15),
             ),
             Positioned(
                 top: 5,
@@ -43,7 +55,10 @@ class _EveryDayState extends State<EveryDay> {
                     shape: BoxShape.circle,
                   )
                 )
-            )
+            ),
+            // Positioned(
+            //     child: Icon,
+            // )
           ],
         )
       ),
