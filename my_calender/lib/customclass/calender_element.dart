@@ -6,7 +6,7 @@ class DayofWeek extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(child: MyText("월", 15)),
         Expanded(child: MyText("화", 15)),
@@ -32,9 +32,6 @@ class DivBox extends StatelessWidget {
           endIndent: 5.0,
           height: 0,
         ),
-        SizedBox(
-          height: 8.0,
-        ),
       ],
     );
   }
@@ -49,7 +46,7 @@ class MyText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       t,
-      textAlign: TextAlign.center,
+      textAlign: TextAlign.start,
       style: TextStyle(
           fontSize: fsize,
           color: const Color(0xff202020)

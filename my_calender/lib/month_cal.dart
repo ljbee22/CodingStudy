@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'cursor.dart';
 import 'customclass/calender_element.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'customclass/customContainer.dart';
 
 // var now = DateTime.now();
 Cursor cursor = Cursor(selected: DateTime.now());
@@ -25,91 +26,66 @@ class _MonthCalState extends State<MonthCal> {
             "${cursor.selected.month}월 ${cursor.dayofweek()}주차", 22
         )
       ),
-      body: Column(
-        children: [
-          const DayofWeek(),
-          const DivBox(),
-          Row(
-            children: [
-              for(int i = 0; i<7; i++)
-                Expanded(child: Container(
-                  height: 40,
-                  child: daylist[i].month != cursor.selected.month ? null : MyText(daylist[i].day.toString(), 15),
-                )),
-            ],
-          ),
-          const DivBox(),
-          Row(
-            children: [
-              for(int i = 7; i<14; i++)
-              Expanded(child: Container(
-                height: 40,
-                child: MyText(daylist[i].day.toString(), 15),
-              )),
-            ],
-          ),
-          const DivBox(),
-          Row(
-            children: [
-              for(int i = 14; i<21; i++)
-              Expanded(child: Container(
-                height: 40,
-                child: MyText(daylist[i].day.toString(), 15),
-              )),
-            ],
-          ),
-          const DivBox(),
-          Row(
-            children: [
-              for(int i = 21; i<28; i++)
-                Expanded(child: Container(
-                  height: 40,
-                  child: MyText(daylist[i].day.toString(), 15),
-                )),
-            ],
-          ),
-          const DivBox(),
-          if(daylist[28].day > 8)
-          Column(
-            children: [
-              Row(
-                children: [
-                  for(int i = 28; i<35; i++)
-                    Expanded(child: Container(
-                      height: 40,
-                      child: daylist[i].month != cursor.selected.month  ? null : MyText(daylist[i].day.toString(), 15),
-                    )),
-                ],
-              ),
-              const DivBox(),
-            ],
-          ),
-          if(daylist[35].day > 8)
-          Column(
-            children: [
-              Row(
-                children: [
-                  for(int i = 35; i<42; i++)
-                    Expanded(child: Container(
-                      height: 40,
-                      child: daylist[i].month != cursor.selected.month ? null : MyText(daylist[i].day.toString(), 15),
-                    )),
-                ],
-              ),
-              const Divider(height: 0),
-            ],
-          ),
-
-          FloatingActionButton(onPressed: () {
-            setState(() {
-              cursor.selected = DateTime(2021,2,1);
-            });
-            // var libBox = await Hive.openBox("lib");
-            // // libBox.put('now', cursor.month);
-            // var a = libBox.get('now');
-            // print(a);
-          })
-        ],
+      body: Container(
+        padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+        child: Column(
+          children: [
+            const DayofWeek(),
+            const DivBox(),
+            Row(
+              children: [
+                for(int i = 0; i<7; i++)
+                  EveryDay(cursor, daylist[i]),
+              ],
+            ),
+            const DivBox(),
+            Row(
+              children: [
+                for(int i = 7; i<14; i++)
+                  EveryDay(cursor, daylist[i]),
+              ],
+            ),
+            const DivBox(),
+            Row(
+              children: [
+                for(int i = 14; i<21; i++)
+                  EveryDay(cursor, daylist[i]),
+              ],
+            ),
+            const DivBox(),
+            Row(
+              children: [
+                for(int i = 21; i<28; i++)
+                  EveryDay(cursor, daylist[i]),
+              ],
+            ),
+            const DivBox(),
+            if(daylist[28].day > 8)
+            Column(
+              children: [
+                Row(
+                  children: [
+                    for(int i = 28; i<35; i++)
+                      EveryDay(cursor, daylist[i]),
+                  ],
+                ),
+                const DivBox(),
+              ],
+            ),
+            if(daylist[35].day > 8)
+            Column(
+              children: [
+                Row(
+                  children: [
+                    for(int i = 35; i<42; i++)
+                      EveryDay(cursor, daylist[i]),
+                  ],
+                ),
+                const Divider(height: 0),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
