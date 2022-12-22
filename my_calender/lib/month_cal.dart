@@ -16,6 +16,8 @@ class MonthCal extends StatefulWidget {
 }
 
 class _MonthCalState extends State<MonthCal> {
+
+  DateTime isCursor = cursor.selected;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,28 +37,28 @@ class _MonthCalState extends State<MonthCal> {
             Row(
               children: [
                 for(int i = 0; i<7; i++)
-                  EveryDay(cursor, daylist[i]),
+                  EveryDay(cursor, daylist[i], isCursor),
               ],
             ),
             const DivBox(),
             Row(
               children: [
                 for(int i = 7; i<14; i++)
-                  EveryDay(cursor, daylist[i]),
+                  EveryDay(cursor, daylist[i], isCursor),
               ],
             ),
             const DivBox(),
             Row(
               children: [
                 for(int i = 14; i<21; i++)
-                  EveryDay(cursor, daylist[i]),
+                  EveryDay(cursor, daylist[i], isCursor),
               ],
             ),
             const DivBox(),
             Row(
               children: [
                 for(int i = 21; i<28; i++)
-                  EveryDay(cursor, daylist[i]),
+                  EveryDay(cursor, daylist[i], isCursor),
               ],
             ),
             const DivBox(),
@@ -66,7 +68,7 @@ class _MonthCalState extends State<MonthCal> {
                 Row(
                   children: [
                     for(int i = 28; i<35; i++)
-                      EveryDay(cursor, daylist[i]),
+                      EveryDay(cursor, daylist[i], isCursor),
                   ],
                 ),
                 const DivBox(),
@@ -78,7 +80,7 @@ class _MonthCalState extends State<MonthCal> {
                 Row(
                   children: [
                     for(int i = 35; i<42; i++)
-                      EveryDay(cursor, daylist[i]),
+                      EveryDay(cursor, daylist[i], isCursor),
                   ],
                 ),
                 const Divider(height: 0),
@@ -87,6 +89,14 @@ class _MonthCalState extends State<MonthCal> {
           ],
         ),
       ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     setState(() {
+      //       cursor.selected = DateTime(2022,5,2);
+      //       daylist = cursor.daylist();
+      //     });
+      //   },
+      // ),
     );
   }
 }

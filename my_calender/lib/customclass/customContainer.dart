@@ -6,7 +6,7 @@ class EveryDay extends StatefulWidget {
   final Cursor cursor;
   final DateTime oneDay;
   final bool isSchedule = false; //일정 존재여부 관련 변수
-  const EveryDay(this.cursor, this.oneDay, {Key? key}) : super(key: key);
+  EveryDay(this.cursor, this.oneDay, {Key? key}) : super(key: key);
 
   @override
   State<EveryDay> createState() => _EveryDayState();
@@ -17,6 +17,7 @@ class _EveryDayState extends State<EveryDay> {
   @override
   Widget build(BuildContext context) {
     return Expanded(child: GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: (){
         setState(() {
           widget.cursor.selected = widget.oneDay;
@@ -32,10 +33,10 @@ class _EveryDayState extends State<EveryDay> {
                 child: Container(
                     height: 20,
                     width: 20,
-                    decoration: const BoxDecoration(
+                    decoration: widget.cursor.selected == widget.oneDay ?  const BoxDecoration(
                       color: Color(0xFFBBDED6),
                       shape: BoxShape.circle,
-                    )
+                    ) : null
                 )
             ),
             Positioned(
