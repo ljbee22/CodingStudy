@@ -52,3 +52,29 @@ MY Calender Project
 4. 컨테이너 내에서 gestureDetector 써서 ontap method로 클릭하면 setstate 시키기 cursor에 datetime 대입해서 if 문으로 검사
 5. hive 사용
 6. 할일 추가버튼 옆에 이모티콘 추가 버튼 배치
+
+
+## 12.22
+
+1. cursor가 위치한 날짜에만 원 띄우기 구현 완료
+2. 각 날짜 container 클릭하면 해당 날짜로 cursor가 이동
+3. 앱 전체에 provider 적용
+4. 현재 위치로 이동하는 버튼 구현
+
+내일 계획
+1. hive 사용!! -> 할 일 목록 모음집 만들기
+2. 각 일자 아래에 할일 목록 보여주기
+3. 할일 추가 화면 구현
+4. 이모티콘 추가 function 구현
+5. appbar 버튼들 재정렬
+
+
+---
+# 추후 수정해야할 요소들
+
+## 12.21
+1. 일정이 존재하는지 표시해주는 element가 정중앙에 위치해서 일정이 있는게 앞날인지 뒷날인지 구분히 모호할 수 있음
+2. 나중에 특정 일정 구현하면 저 핑크 동그라미 잊지말고 customcontain-boxdecoration 부분에 조건문을 달 것 (isSchedule)
+3. 글씨 폰트 수정하고, 두께 줄
+
+## 12.22
