@@ -1,4 +1,6 @@
-class Cursor{
+import 'package:flutter/cupertino.dart';
+
+class Cursor with ChangeNotifier{
   late DateTime selected;
 
   Cursor({
@@ -22,5 +24,10 @@ class Cursor{
       i++;
     }
     return dlist;
+  }
+
+  void changeCursor(DateTime newCursor) {
+    selected = newCursor;
+    notifyListeners();
   }
 }

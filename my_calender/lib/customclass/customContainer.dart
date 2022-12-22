@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:my_calender/cursor.dart';
 import 'calender_element.dart';
+import 'package:provider/provider.dart';
 
 class EveryDay extends StatefulWidget {
-  final Cursor cursor;
   final DateTime oneDay;
   final bool isSchedule = false; //일정 존재여부 관련 변수
-  EveryDay(this.cursor, this.oneDay, {Key? key}) : super(key: key);
+  const EveryDay(this.oneDay, {Key? key}) : super(key: key);
 
   @override
   State<EveryDay> createState() => _EveryDayState();
@@ -17,23 +17,21 @@ class _EveryDayState extends State<EveryDay> {
   @override
   Widget build(BuildContext context) {
     return Expanded(child: GestureDetector(
-      behavior: HitTestBehavior.translucent,
+      behavior: widget.oneDay.month != Provider.of<Cursor>(context).selected.month ? null : HitTestBehavior.translucent,
       onTap: (){
-        setState(() {
-          widget.cursor.selected = widget.oneDay;
-        });
+        Provider.of<Cursor>(context, listen: false).changeCursor(widget.oneDay);
       },
       child: Container(
         padding: const EdgeInsets.fromLTRB(0, 4, 0, 10),
         height: 50,
-        child: widget.oneDay.month != widget.cursor.selected.month ? null : Stack(
+        child: widget.oneDay.month != Provider.of<Cursor>(context).selected.month ? null : Stack(
           children: [
             Positioned(
                 // left: 0.95,
                 child: Container(
                     height: 20,
                     width: 20,
-                    decoration: widget.cursor.selected == widget.oneDay ?  const BoxDecoration(
+                    decoration: Provider.of<Cursor>(context).selected == widget.oneDay ?  const BoxDecoration(
                       color: Color(0xFFBBDED6),
                       shape: BoxShape.circle,
                     ) : null
