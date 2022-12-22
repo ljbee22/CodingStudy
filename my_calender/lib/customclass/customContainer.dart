@@ -31,7 +31,7 @@ class _EveryDayState extends State<EveryDay> {
                 child: Container(
                     height: 20,
                     width: 20,
-                    decoration: Provider.of<Cursor>(context).selected == widget.oneDay ?  const BoxDecoration(
+                    decoration: Provider.of<Cursor>(context).selected.day == widget.oneDay.day ?  const BoxDecoration(
                       color: Color(0xFFBBDED6),
                       shape: BoxShape.circle,
                     ) : null

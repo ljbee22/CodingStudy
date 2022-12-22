@@ -30,4 +30,15 @@ class Cursor with ChangeNotifier{
     selected = newCursor;
     notifyListeners();
   }
+
+  void plusMonth(bool plus) {
+    if (plus) {
+      selected = DateTime(selected.year, selected.month + 1, 1);
+      notifyListeners();
+    }
+    else {
+      selected = DateTime(selected.year, selected.month - 1, 1);
+      notifyListeners();
+    }
+  }
 }

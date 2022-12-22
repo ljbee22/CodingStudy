@@ -27,23 +27,6 @@ class DayofWeek extends StatelessWidget {
   }
 }
 
-class DivBox extends StatelessWidget {
-  const DivBox({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: const [
-        Divider(
-          indent: 5.0,
-          endIndent: 5.0,
-          height: 0,
-        ),
-      ],
-    );
-  }
-}
-
 class MyText extends StatelessWidget {
   String t;
   double fsize;
@@ -56,7 +39,8 @@ class MyText extends StatelessWidget {
       textAlign: TextAlign.center,
       style: TextStyle(
           fontSize: fsize,
-          color: const Color(0xff202020)
+          color: const Color(0xff202020),
+        fontWeight: FontWeight.w300
       ),
     );
   }
