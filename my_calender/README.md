@@ -77,4 +77,5 @@ MY Calender Project
 2. 나중에 특정 일정 구현하면 저 핑크 동그라미 잊지말고 customcontain-boxdecoration 부분에 조건문을 달 것 (isSchedule)
 3. 글씨 폰트 수정하고, 두께 줄
 
-## 12.22
+## 12.23
+1. 주간 보기 화면에서 아래에 아주 넓은 빈칸을 어떡해야하는지 결정....

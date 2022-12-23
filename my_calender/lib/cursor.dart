@@ -41,4 +41,30 @@ class Cursor with ChangeNotifier{
       notifyListeners();
     }
   }
+
+  void plusWeek(bool plus) {
+    if (plus) {
+      selected = DateTime(selected.year, selected.month , selected.day + 7);
+      notifyListeners();
+    }
+    else {
+      selected = DateTime(selected.year, selected.month , selected.day - 7);
+      notifyListeners();
+    }
+  }
+
+}
+
+class IsMonth with ChangeNotifier{
+  late bool isMonth;
+
+  IsMonth({
+    required this.isMonth
+  });
+
+  void changeIsMonth(){ //month <-> week 간 바꿔주는 함수
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    isMonth = !isMonth;
+    notifyListeners();
+  }
 }
