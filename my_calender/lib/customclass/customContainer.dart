@@ -81,6 +81,7 @@ class _WeekDaysState extends State<WeekDays> {
   @override
   Widget build(BuildContext context) {
     return Expanded(child: GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: (){
         Provider.of<Cursor>(context, listen: false).changeCursor(widget.oneDay);
       },
