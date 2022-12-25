@@ -98,7 +98,7 @@ class _MonthCalState extends State<MonthCal> {
                 child: Text('할 일'),
               ),
               Container(
-                child: Text(box.get('일정 1')),
+                // child: Text(box.get('일정 1')),
               )
             ],
           )

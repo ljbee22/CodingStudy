@@ -63,7 +63,6 @@ class IsMonth with ChangeNotifier{
   });
 
   void changeIsMonth(){ //month <-> week 간 바꿔주는 함수
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     isMonth = !isMonth;
     notifyListeners();
   }
