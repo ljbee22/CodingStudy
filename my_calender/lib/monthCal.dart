@@ -19,8 +19,8 @@ class _MonthCalState extends State<MonthCal> {
     return Scaffold(
       appBar: MonthAppbar(appbar: AppBar()), //custom appbar
       body: ValueListenableBuilder(
-        valueListenable: Hive.box<ScheduleClass>('lib').listenable(),
-        builder: (context, Box<ScheduleClass> box, child) {
+        valueListenable: Hive.box<List<ScheduleClass>>('lib').listenable(),
+        builder: (context, Box<List<ScheduleClass>> box, child) {
           return Column(
             children: [
               Padding(
@@ -90,8 +90,23 @@ class _MonthCalState extends State<MonthCal> {
                   ),
                 ),
               ),
+              FloatingActionButton(
+                onPressed: () async{
+                  box.clear();
+                  int i = 0;
+                  if(!box.containsKey('2022.12.25')) {
+                    box.put("2022.12.25", []);
+                    box.get("2022.12.25")!.add(ScheduleClass(name: "t$i", date: DateTime.now()));
+                  }
+                  else
+                    box.get("2022.12.25")!.add(ScheduleClass(name: "t$i", date: DateTime.now()));
+                  i++;
+                  print(box.get("2022.12.25"));
+                  // for(int i = 0; i<box.length ; i++)
+                  //   print(box.get(i)!.name);
+                },
+              ),
               Column(
-
                 children: [
                   Container(
                     color: Color(0xFFFFB6B9),
@@ -105,13 +120,6 @@ class _MonthCalState extends State<MonthCal> {
             ],
           );
         }
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async{
-          // await box.then((value) {
-          //   value.put('일정 1', '밥먹기');
-          // });
-        },
       ),
     );
   }
