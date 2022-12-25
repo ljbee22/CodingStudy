@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:my_calender/scheduleClass.dart';
 import 'package:provider/provider.dart';
+import 'package:hive/hive.dart';
 
 import 'package:my_calender/monthCal.dart';
 import 'cursor.dart';
@@ -9,7 +11,8 @@ import 'weekCal.dart';
 
 void main() async{
   await Hive.initFlutter(); // hive database 초기화
-  await Hive.openBox('lib');
+  Hive.registerAdapter(ScheduleClassAdapter());
+  await Hive.openBox<ScheduleClass>('lib');
   runApp(const MyApp());
 }
 
