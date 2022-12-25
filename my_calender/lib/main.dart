@@ -12,7 +12,7 @@ import 'weekCal.dart';
 void main() async{
   await Hive.initFlutter(); // hive database 초기화
   Hive.registerAdapter(ScheduleClassAdapter());
-  await Hive.openBox<ScheduleClass>('lib');
+  await Hive.openBox<List<ScheduleClass>>('lib');
   runApp(const MyApp());
 }
 
