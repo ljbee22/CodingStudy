@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'customclass/customContainer.dart';
 import 'package:provider/provider.dart';
 import 'scheduleClass.dart';
+import 'package:my_calender/customclass/palette.dart';
 
 class MonthCal extends StatefulWidget {
   const MonthCal({Key? key}) : super(key: key);
@@ -86,9 +87,23 @@ class _MonthCalState extends State<MonthCal> {
                           const Divider(height: 0),
                         ],
                       ),
+                      AppBar(
+                        elevation: 0,
+                        backgroundColor: Pastel.orange,
+                        title: MyText("To-do", 15, Pastel.black),
+                        centerTitle: true,
+                        toolbarHeight: 25,
+                      ),
                     ],
                   ),
                 ),
+              ),
+              Column(
+                children: [
+                  Container(
+                    // child: Text(box.get('일정 1')),
+                  )
+                ],
               ),
               FloatingActionButton(
                 onPressed: () async{
@@ -98,25 +113,15 @@ class _MonthCalState extends State<MonthCal> {
                     box.put("2022.12.25", []);
                     box.get("2022.12.25")!.add(ScheduleClass(name: "t$i", date: DateTime.now()));
                   }
-                  else
+                  else {
                     box.get("2022.12.25")!.add(ScheduleClass(name: "t$i", date: DateTime.now()));
+                  }
                   i++;
                   print(box.get("2022.12.25"));
                   // for(int i = 0; i<box.length ; i++)
                   //   print(box.get(i)!.name);
                 },
               ),
-              Column(
-                children: [
-                  Container(
-                    color: Color(0xFFFFB6B9),
-                    child: Text('할 일'),
-                  ),
-                  Container(
-                    // child: Text(box.get('일정 1')),
-                  )
-                ],
-              )
             ],
           );
         }

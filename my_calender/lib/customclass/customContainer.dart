@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_calender/cursor.dart';
 import 'calenderElement.dart';
 import 'package:provider/provider.dart';
+import 'package:my_calender/customclass/palette.dart';
 
 class MonthDays extends StatefulWidget {
   final DateTime oneDay; //자기 자신
@@ -32,7 +33,7 @@ class _MonthDaysState extends State<MonthDays> {
                     height: 20,
                     width: 20,
                     decoration: Provider.of<Cursor>(context).selected.day == widget.oneDay.day ?  const BoxDecoration(
-                      color: Color(0xFFBBDED6),
+                      color: Pastel.green,
                       shape: BoxShape.circle,
                     ) : null
                 )
@@ -41,7 +42,7 @@ class _MonthDaysState extends State<MonthDays> {
               top: 1,
               height: 15,
               width: 20,
-              child: MyText(widget.oneDay.day.toString(), 15),
+              child: MyText(widget.oneDay.day.toString(), 15, widget.oneDay.weekday == 7 ? Pastel.redaccent : Pastel.black),
             ),
             Positioned(
                 top: 5,
@@ -50,7 +51,7 @@ class _MonthDaysState extends State<MonthDays> {
                   height: 7,
                   width: 7,
                   decoration: const BoxDecoration(
-                    color: Color(0xFFFFB6B9),
+                    color: Pastel.red,
                     shape: BoxShape.circle,
                   )
                 )
@@ -96,7 +97,7 @@ class _WeekDaysState extends State<WeekDays> {
                       height: 20,
                       width: 20,
                       decoration: Provider.of<Cursor>(context).selected.day == widget.oneDay.day ?  const BoxDecoration(
-                        color: Color(0xFFBBDED6),
+                        color: Pastel.green,
                         shape: BoxShape.circle,
                       ) : null
                   )
@@ -105,7 +106,7 @@ class _WeekDaysState extends State<WeekDays> {
                 top: 1,
                 height: 15,
                 width: 20,
-                child: MyText(widget.oneDay.day.toString(), 15),
+                child: MyText(widget.oneDay.day.toString(), 15, widget.oneDay.weekday == 7 ? Pastel.redaccent : Pastel.black),
               ),
               Positioned(
                   top: 5,
@@ -114,7 +115,7 @@ class _WeekDaysState extends State<WeekDays> {
                       height: 7,
                       width: 7,
                       decoration: const BoxDecoration(
-                        color: Color(0xFFFFB6B9),
+                        color: Pastel.red,
                         shape: BoxShape.circle,
                       )
                   )
