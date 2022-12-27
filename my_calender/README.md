@@ -106,6 +106,10 @@ MY Calender Project
 2. 일요일 날짜들 빨강으로 변경
 3. To-do 바 대충 만듬
 
+## 12.27
+1. ListView 구현
+2. ListView에 Hive 적용
+3. type 문제 해결(dynamic 사용)
 
 ---
 # 추후 수정해야할 요소들
@@ -141,3 +145,4 @@ MY Calender Project
 ## 12.27
 
 1. appbar를 좀 개선해서 하단 화면을 좀 채울 수 있게... ex 검색창 등
+2. 어제, 오늘, 내일을 화면 상에 중점적으로 표시한다.
