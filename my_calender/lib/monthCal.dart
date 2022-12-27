@@ -87,34 +87,44 @@ class _MonthCalState extends State<MonthCal> {
                           const Divider(height: 0),
                         ],
                       ),
-                      AppBar(
-                        elevation: 0,
-                        backgroundColor: Pastel.orange,
-                        title: MyText("To-do", 15, Pastel.black),
-                        centerTitle: true,
-                        toolbarHeight: 25,
-                      ),
                     ],
                   ),
                 ),
               ),
               Column(
                 children: [
-                  Container(
-                    // child: Text(box.get('일정 1')),
+                  AppBar(
+                    elevation: 0,
+                    backgroundColor: Pastel.orange,
+                    title: MyText("To-do", 15, Pastel.black),
+                    centerTitle: true,
+                    toolbarHeight: 25,
+                  ),
+                  ListView.builder(
+                      // scrollDirection: Axis.vertical,
+                      itemCount: 1, //나중에 hivebox의 list element개수로 바꾸기
+                      itemBuilder: (BuildContext context, int idx){
+                        return Container(
+                          height: 25,
+                          color: Pastel.green,
+                          child: Text("test $idx"), // hive로 box.get(일자)[idx]
+                        );
+                      }
                   )
                 ],
               ),
               FloatingActionButton(
                 onPressed: () async{
-                  box.clear();
                   int i = 0;
-                  if(!box.containsKey('2022.12.25')) {
-                    box.put("2022.12.25", []);
-                    box.get("2022.12.25")!.add(ScheduleClass(name: "t$i", date: DateTime.now()));
+                  if(box.containsKey('2022.12.25')) {
+                    print("@@@@@@@@@@@@@@@@@");
+                    List<ScheduleClass> tmp = box.get("2022.12.25")!;
+                    tmp.add(ScheduleClass(name: "t$i", date: DateTime.now()));
+                    box.put("2022.12.25", tmp);
                   }
                   else {
-                    box.get("2022.12.25")!.add(ScheduleClass(name: "t$i", date: DateTime.now()));
+                    List<ScheduleClass> tmp = [ScheduleClass(name: "t$i", date: DateTime.now())];
+                    box.put("2022.12.25", tmp);
                   }
                   i++;
                   print(box.get("2022.12.25"));
@@ -122,6 +132,7 @@ class _MonthCalState extends State<MonthCal> {
                   //   print(box.get(i)!.name);
                 },
               ),
+              FloatingActionButton(onPressed: ()async{await box.clear();})
             ],
           );
         }
