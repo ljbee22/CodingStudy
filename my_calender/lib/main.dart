@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:my_calender/scheduleClass.dart';
 import 'package:provider/provider.dart';
-import 'package:hive/hive.dart';
 
 import 'package:my_calender/monthCal.dart';
 import 'cursor.dart';
@@ -12,7 +11,7 @@ import 'weekCal.dart';
 void main() async{
   await Hive.initFlutter(); // hive database 초기화
   Hive.registerAdapter(ScheduleClassAdapter());
-  await Hive.openBox<List<ScheduleClass>>('lib');
+  await Hive.openBox<List>('lib');
   runApp(const MyApp());
 }
 
@@ -31,7 +30,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'My_Calender',
             theme: ThemeData(primarySwatch: Colors.blue,),
-            home: Provider.of<IsMonth>(context).isMonth ? MonthCal() : WeekCal()
+            home: Provider.of<IsMonth>(context).isMonth ? const MonthCal() : const WeekCal()
         );
       }
     );

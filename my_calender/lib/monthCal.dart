@@ -20,13 +20,13 @@ class _MonthCalState extends State<MonthCal> {
     return Scaffold(
       appBar: MonthAppbar(appbar: AppBar()), //custom appbar
       body: ValueListenableBuilder(
-        valueListenable: Hive.box<List<ScheduleClass>>('lib').listenable(),
-        builder: (context, Box<List<ScheduleClass>> box, child) {
-          return Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                child: GestureDetector(
+        valueListenable: Hive.box<List>('lib').listenable(),
+        builder: (context, Box<List> box, child) {
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: Column(
+              children: [
+                GestureDetector(
                   onVerticalDragUpdate: (val) {
                     if (val.delta.dy > 10) {Provider.of<Cursor>(context, listen: false).plusMonth(true);}
                     if (val.delta.dy < -10) {Provider.of<Cursor>(context, listen: false).plusMonth(false);}
@@ -90,50 +90,50 @@ class _MonthCalState extends State<MonthCal> {
                     ],
                   ),
                 ),
-              ),
-              Column(
-                children: [
-                  AppBar(
-                    elevation: 0,
-                    backgroundColor: Pastel.orange,
-                    title: MyText("To-do", 15, Pastel.black),
-                    centerTitle: true,
-                    toolbarHeight: 25,
+                AppBar(
+                  elevation: 0,
+                  backgroundColor: Pastel.orange,
+                  title: const MyText("To-do", 15, Pastel.black),
+                  centerTitle: true,
+                  toolbarHeight: 25,
+                ),
+                Expanded(
+                  child: ListView.separated(
+                    padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
+                    itemCount: box.get("2022.12.25") == null ? 0 : box.get("2022.12.25")!.length, //나중에 hivebox의 list element개수로 바꾸기
+                    separatorBuilder: (BuildContext context, int idx) => const Divider(height: 10,),
+                    itemBuilder: (BuildContext context, int idx){
+                      return Container(
+                        height: 25,
+                        color: Pastel.green,
+                        child: Text("test ${box.get("2022.12.25")![idx]}"), // hive로 box.get(일자)[idx]
+                      );
+                    }
                   ),
-                  ListView.builder(
-                      // scrollDirection: Axis.vertical,
-                      itemCount: 1, //나중에 hivebox의 list element개수로 바꾸기
-                      itemBuilder: (BuildContext context, int idx){
-                        return Container(
-                          height: 25,
-                          color: Pastel.green,
-                          child: Text("test $idx"), // hive로 box.get(일자)[idx]
-                        );
-                      }
-                  )
-                ],
-              ),
-              FloatingActionButton(
-                onPressed: () async{
-                  int i = 0;
-                  if(box.containsKey('2022.12.25')) {
-                    print("@@@@@@@@@@@@@@@@@");
-                    List<ScheduleClass> tmp = box.get("2022.12.25")!;
-                    tmp.add(ScheduleClass(name: "t$i", date: DateTime.now()));
-                    box.put("2022.12.25", tmp);
-                  }
-                  else {
-                    List<ScheduleClass> tmp = [ScheduleClass(name: "t$i", date: DateTime.now())];
-                    box.put("2022.12.25", tmp);
-                  }
-                  i++;
-                  print(box.get("2022.12.25"));
-                  // for(int i = 0; i<box.length ; i++)
-                  //   print(box.get(i)!.name);
-                },
-              ),
-              FloatingActionButton(onPressed: ()async{await box.clear();})
-            ],
+                ),
+                FloatingActionButton(
+                  onPressed: () async{
+                    int i = 0;
+                    if(box.containsKey('2022.12.25')) {
+                      print("@@@@@@@@@@@@@@@@@");
+                      List tmp = box.get("2022.12.25")!;
+                      tmp.add(ScheduleClass(name: "t$i", date: DateTime.now()));
+                      box.put("2022.12.25", tmp);
+                    }
+                    else {
+                      List tmp = [ScheduleClass(name: "t$i", date: DateTime.now())];
+                      box.put("2022.12.25", tmp);
+                    }
+                    i++;
+                    print("will be print get");
+                    print(box.get("2022.12.25"));
+                    // for(int i = 0; i<box.length ; i++)
+                    //   print(box.get(i)!.name);
+                  },
+                ),
+                FloatingActionButton(onPressed: ()async{await box.clear();})
+              ],
+            ),
           );
         }
       ),
