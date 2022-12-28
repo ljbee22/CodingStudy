@@ -116,6 +116,11 @@ MY Calender Project
 2. Custom ScrollView 를 만들어 TextForm Field 넣음
 3. 일정 존재하는 날에만 빨간 원 보이게 함
 
+다음 계획
+1. 일정 추가 화면 만들기
+2. TextForm Field 개선
+3. 반복문으로 월간 화면 단순화
+
 ---
 # 추후 수정해야할 요소들
 
