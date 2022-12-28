@@ -97,41 +97,54 @@ class _MonthCalState extends State<MonthCal> {
                   centerTitle: true,
                   toolbarHeight: 25,
                 ),
+
+                Row(
+                  children: [
+                    FloatingActionButton(
+                      onPressed: () async{
+                        int i = 0;
+                        if(box.containsKey('2022.12.25')) {
+                          print("@@@@@@@@@@@@@@@@@");
+                          List tmp = box.get("2022.12.25")!;
+                          tmp.add(ScheduleClass(name: "t$i", date: DateTime.now()));
+                          box.put("2022.12.25", tmp);
+                        }
+                        else {
+                          List tmp = [ScheduleClass(name: "t$i", date: DateTime.now())];
+                          box.put("2022.12.25", tmp);
+                        }
+                        i++;
+                        print("will be print get");
+                        print(box.get("2022.12.25"));
+                        // for(int i = 0; i<box.length ; i++)
+                        //   print(box.get(i)!.name);
+                      },
+                    ),
+                    FloatingActionButton(onPressed: ()async{await box.clear();})
+                  ],
+                ),
+
                 Expanded(
-                  child: ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
-                    itemCount: box.get("2022.12.25") == null ? 0 : box.get("2022.12.25")!.length, //나중에 hivebox의 list element개수로 바꾸기
-                    separatorBuilder: (BuildContext context, int idx) => const Divider(height: 10,),
-                    itemBuilder: (BuildContext context, int idx){
-                      return Container(
-                        height: 25,
-                        color: Pastel.green,
-                        child: Text("test ${box.get("2022.12.25")![idx]}"), // hive로 box.get(일자)[idx]
-                      );
-                    }
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverFixedExtentList(
+                        itemExtent: 30,
+                        delegate: SliverChildBuilderDelegate((BuildContext context, int idx){
+                          return Container(
+                            height: 25,
+                            color: Pastel.green,
+                            child: Text("test ${box.get("2022.12.25")![idx]}"), // hive로 box.get(일자)[idx]
+                          );
+                        },
+                          childCount: box.get("2022.12.25") == null ? 0 : box.get("2022.12.25")!.length,
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: TextFormField(cursorHeight: 10,),
+                      ),
+                    ],
                   ),
                 ),
-                FloatingActionButton(
-                  onPressed: () async{
-                    int i = 0;
-                    if(box.containsKey('2022.12.25')) {
-                      print("@@@@@@@@@@@@@@@@@");
-                      List tmp = box.get("2022.12.25")!;
-                      tmp.add(ScheduleClass(name: "t$i", date: DateTime.now()));
-                      box.put("2022.12.25", tmp);
-                    }
-                    else {
-                      List tmp = [ScheduleClass(name: "t$i", date: DateTime.now())];
-                      box.put("2022.12.25", tmp);
-                    }
-                    i++;
-                    print("will be print get");
-                    print(box.get("2022.12.25"));
-                    // for(int i = 0; i<box.length ; i++)
-                    //   print(box.get(i)!.name);
-                  },
-                ),
-                FloatingActionButton(onPressed: ()async{await box.clear();})
               ],
             ),
           );
