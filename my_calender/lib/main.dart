@@ -29,7 +29,10 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'My_Calender',
-            theme: ThemeData(primarySwatch: Colors.blue,),
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+              fontFamily: 'Myfont'
+            ),
             home: Provider.of<IsMonth>(context).isMonth ? const MonthCal() : const WeekCal()
         );
       }

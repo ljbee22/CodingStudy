@@ -33,7 +33,9 @@ class _MonthCalState extends State<MonthCal> {
                   },
                   child: Column(
                     children: [
+                      const SizedBox(height: 5,),
                       const DayofWeek(),
+                      const SizedBox(height: 5,),
                       const Divider(height: 0),
                       Row(
                         children: [
@@ -147,7 +149,6 @@ class _MonthCalState extends State<MonthCal> {
                             }
                             return null;
                           },
-
                           onSaved: (text){
                             String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
 
@@ -162,7 +163,6 @@ class _MonthCalState extends State<MonthCal> {
                               box.put(scheduleDate, tmp);
                               print("first time @@@@@@@@@@@@@@@@@@@@@");
                             }
-
                           },
                         ),
                       ),
