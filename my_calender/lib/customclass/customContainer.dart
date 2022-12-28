@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:my_calender/cursor.dart';
 import 'calenderElement.dart';
 import 'package:provider/provider.dart';
@@ -6,8 +8,9 @@ import 'package:my_calender/customclass/palette.dart';
 
 class MonthDays extends StatefulWidget {
   final DateTime oneDay; //자기 자신
+  final Box box;
   final bool isSchedule = false; //일정 존재여부 관련 변수
-  const MonthDays(this.oneDay, {Key? key}) : super(key: key);
+  const MonthDays(this.oneDay, this.box, {Key? key}) : super(key: key);
 
   @override
   State<MonthDays> createState() => _MonthDaysState();
@@ -44,28 +47,25 @@ class _MonthDaysState extends State<MonthDays> {
               width: 20,
               child: MyText(widget.oneDay.day.toString(), 15, widget.oneDay.weekday == 7 ? Pastel.redaccent : Pastel.black),
             ),
-            Positioned(
-                top: 5,
-                left: 25,
-                child: Container(
-                  height: 7,
-                  width: 7,
-                  decoration: const BoxDecoration(
-                    color: Pastel.red,
-                    shape: BoxShape.circle,
+            if(widget.box.containsKey(DateFormat('yyyy.MM.dd').format(widget.oneDay)))
+              Positioned(
+                  top: 5,
+                  left: 25,
+                  child: Container(
+                    height: 7,
+                    width: 7,
+                    decoration: const BoxDecoration(
+                      color: Pastel.red,
+                      shape: BoxShape.circle,
+                    )
                   )
-                )
-            ),
-            // Positioned(
-            //     child: Icon,
-            // )
+              ),
           ],
         )
       ),
     ));
   }
 }
-
 
 
 

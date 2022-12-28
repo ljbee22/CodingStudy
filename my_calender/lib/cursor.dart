@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 
 class Cursor with ChangeNotifier{
   late DateTime selected;
@@ -53,6 +54,9 @@ class Cursor with ChangeNotifier{
     }
   }
 
+  String returnAsString(){
+    return DateFormat('yyyy.MM.dd').format(selected);
+  }
 }
 
 class IsMonth with ChangeNotifier{
@@ -66,4 +70,5 @@ class IsMonth with ChangeNotifier{
     isMonth = !isMonth;
     notifyListeners();
   }
+
 }
