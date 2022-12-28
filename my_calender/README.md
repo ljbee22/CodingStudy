@@ -111,6 +111,11 @@ MY Calender Project
 2. ListView에 Hive 적용
 3. type 문제 해결(dynamic 사용)
 
+## 12.28
+1. Hive 일정 추가 및 디스플레이 구현
+2. Custom ScrollView 를 만들어 TextForm Field 넣음
+3. 일정 존재하는 날에만 빨간 원 보이게 함
+
 ---
 # 추후 수정해야할 요소들
 
