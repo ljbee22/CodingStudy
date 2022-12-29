@@ -40,6 +40,7 @@ class _WeekCalState extends State<WeekCal> {
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Column(
                 children: [
+                  CalenderBanner(),
                   const DayofWeek(),
                   const Divider(height: 0),
                   Row(
@@ -50,12 +51,15 @@ class _WeekCalState extends State<WeekCal> {
                     ],
                   ),
                   const SizedBox(height: 5),
-                  AppBar(
-                    elevation: 0,
-                    backgroundColor: Pastel.orange,
-                    title: MyText("To-do", 15, Pastel.black),
-                    centerTitle: true,
-                    toolbarHeight: 25,
+                  Container(
+                    height: 20,
+                    color: Pastel.orange,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("할 일"),
+                      ],
+                    ),
                   ),
                   Expanded(
                     child: CustomScrollView(
@@ -63,10 +67,22 @@ class _WeekCalState extends State<WeekCal> {
                         SliverFixedExtentList(
                           itemExtent: 30,
                           delegate: SliverChildBuilderDelegate((BuildContext context, int idx){
-                            return Container(
-                              height: 25,
-                              color: Pastel.green,
-                              child: Text("test ${box.get(Provider.of<Cursor>(context, listen: false).returnAsString())![idx].name}"), // hive로 box.get(일자)[idx]
+                            return Padding(
+                              padding: EdgeInsets.only(top: 3),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 10),
+                                        child: Icon(Icons.radio_button_unchecked_outlined, size: 20, color: Pastel.black,),
+                                      ),
+                                      MyText("test ${box.get(Provider.of<Cursor>(context, listen: false).returnAsString())![idx].name}", 15, Pastel.black),
+                                    ],
+                                  ),
+                                  Divider(height: 5, color: Pastel.blacksoft,),
+                                ],
+                              ),
                             );
                           },
                             childCount: box.get(Provider.of<Cursor>(context, listen: false).returnAsString()) == null ?

@@ -10,8 +10,10 @@ class CustomAppbar extends StatelessWidget implements PreferredSize{
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
+    return AppBar(
+      elevation: 0,
+      backgroundColor: Colors.white,
+      title: Column(
         children: [
           Stack(
             children: [
@@ -46,31 +48,13 @@ class CustomAppbar extends StatelessWidget implements PreferredSize{
               ),
             ],
           ),
-          Container(
-            color: Pastel.pink,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(onPressed: () {
-                  Provider.of<Cursor>(context, listen: false).plusMonth(false);
-                }, icon: Icon(Icons.arrow_back_rounded, size: 16,), color: Pastel.blacksoft,),
-                Provider.of<Cursor>(context, listen: false).isMonth
-                ? MyText("${Provider.of<Cursor>(context).selected.year}년 ${Provider.of<Cursor>(context).selected.month}월", 17, Pastel.black)
-                : MyText("${Provider.of<Cursor>(context).selected.year}년 ${Provider.of<Cursor>(context).selected.month}월 "
-                    "${Provider.of<Cursor>(context).dayofweek()}주차", 17, Pastel.black),
-                IconButton(onPressed: () {
-                  Provider.of<Cursor>(context, listen: false).plusMonth(true);
-                }, icon: Icon(Icons.arrow_forward_rounded, size: 16,), color: Pastel.blacksoft,),
-              ],
-            ),
-          ),
         ],
       ),
     );
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(100);
+  Size get preferredSize => const Size.fromHeight(40);
 
   @override
   // TODO: implement child : 몰라서 임시로 Container() 넣음

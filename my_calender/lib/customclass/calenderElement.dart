@@ -33,6 +33,41 @@ class DayofWeek extends StatelessWidget {
   }
 }
 
+class CalenderBanner extends StatelessWidget {
+  const CalenderBanner({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Pastel.pink,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(onPressed: () {
+            Provider.of<Cursor>(context, listen: false).isMonth
+                ? Provider.of<Cursor>(context, listen: false).plusMonth(false)
+                : Provider.of<Cursor>(context, listen: false).plusWeek(false);
+          },
+            icon: Icon(Icons.arrow_back_rounded, size: 16,), color: Pastel.blacksoft,
+          ),
+          Provider.of<Cursor>(context, listen: false).isMonth
+              ? MyText("${Provider.of<Cursor>(context).selected.year}년 ${Provider.of<Cursor>(context).selected.month}월", 17, Pastel.black)
+              : MyText("${Provider.of<Cursor>(context).selected.year}년 ${Provider.of<Cursor>(context).selected.month}월 "
+              "${Provider.of<Cursor>(context).dayofweek()}주차", 17, Pastel.black),
+          IconButton(onPressed: () {
+            Provider.of<Cursor>(context, listen: false).isMonth
+                ? Provider.of<Cursor>(context, listen: false).plusMonth(true)
+                : Provider.of<Cursor>(context, listen: false).plusWeek(true);
+          },
+            icon: Icon(Icons.arrow_forward_rounded, size: 16,), color: Pastel.blacksoft,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
 class MyText extends StatelessWidget {
   final String t;
   final double fsize;

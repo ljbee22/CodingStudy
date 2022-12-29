@@ -137,8 +137,10 @@ MY Calender Project
 2. DayofWeek(월화수목금토일 있는 Row)를 Padding에 씌워 반환하도록 변경. 위아래로 있던 SizedBox 삭제
 3. CustomAppbar.dart 신설하여 Appbar 개발 중...
 4. Cursor 클래스에 isMonth 추가하고 기존 isMonth 삭제
-5. Appbar의 날짜 표기는 구분했으나 아직 달/주 이동 버튼은 구현 안됨
+5. Appbar의 날짜 표기는 구분했고 아직 달/주 이동 버튼은 구현함
 6. 나중에 월간 화면과 주간 화면을 애니메이션으로 전환할 생각임
+7. CalenderBanner 클래스를 calenderElement.dart 에 추가함
+8. 할 일 리스트 UI 개선중
 
 ---
 # 추후 수정해야할 요소들

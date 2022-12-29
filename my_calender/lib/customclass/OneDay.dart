@@ -40,7 +40,8 @@ class _OneDayState extends State<OneDay> {
               padding: const EdgeInsets.fromLTRB(0, 4, 0, 10),
               height: 80,
               child:
-              widget.oneDay.month != Provider.of<Cursor>(context).selected.month
+              (widget.oneDay.month != Provider.of<Cursor>(context).selected.month) &&
+                  (Provider.of<Cursor>(context, listen: false).isMonth)
                   ? null
                   : Stack(
                 children: [

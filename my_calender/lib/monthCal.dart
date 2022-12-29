@@ -45,6 +45,7 @@ class _MonthCalState extends State<MonthCal> {
                       },
                       child: Column(
                         children: [
+                          CalenderBanner(),
                           const DayofWeek(),
                           const Divider(height: 0),
                           Row(
