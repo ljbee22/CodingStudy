@@ -99,7 +99,7 @@ class _WeekDaysState extends State<WeekDays> {
               border: Border.all(color: Pastel.grey, width: 0)
           ) : null,
           padding: const EdgeInsets.fromLTRB(0, 4, 0, 10),
-          height: 50,
+          height: 80,
           child: Stack(
             children: [
               // Positioned(
