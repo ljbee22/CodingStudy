@@ -23,7 +23,6 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => Cursor(selected: DateTime.now())),
-        ChangeNotifierProvider(create: (context) => IsMonth(isMonth: true)),
       ],
       builder: (context, child){
         return MaterialApp(
@@ -33,7 +32,7 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.blue,
               fontFamily: 'Myfont'
             ),
-            home: Provider.of<IsMonth>(context).isMonth ? const MonthCal() : const WeekCal()
+            home: Provider.of<Cursor>(context).isMonth ? const MonthCal() : const WeekCal()
         );
       }
     );

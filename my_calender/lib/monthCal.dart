@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'cursor.dart';
 import 'customclass/calenderElement.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'customclass/customContainer.dart';
 import 'package:provider/provider.dart';
 import 'scheduleClass.dart';
 import 'package:my_calender/customclass/palette.dart';
+import 'customclass/OneDay.dart';
+import 'package:my_calender/customclass/CustomAppbar.dart';
 
 class MonthCal extends StatefulWidget {
   const MonthCal({Key? key}) : super(key: key);
@@ -15,12 +16,15 @@ class MonthCal extends StatefulWidget {
 }
 
 class _MonthCalState extends State<MonthCal> {
+  static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        appBar: MonthAppbar(appbar: AppBar()), //custom appbar
+        key: scaffoldKey,
+        appBar: CustomAppbar(scaffoldKey: scaffoldKey,), //custom appbar
+        drawer: CustomDrawer(),
         body: ValueListenableBuilder(
             valueListenable: Hive.box<List>('lib').listenable(),
             builder: (context, Box<List> box, child) {
@@ -41,18 +45,12 @@ class _MonthCalState extends State<MonthCal> {
                       },
                       child: Column(
                         children: [
-                          const SizedBox(
-                            height: 4,
-                          ),
                           const DayofWeek(),
-                          const SizedBox(
-                            height: 4,
-                          ),
                           const Divider(height: 0),
                           Row(
                             children: [
                               for (int i = 0; i < 7; i++)
-                                MonthDays(
+                                OneDay(
                                     Provider.of<Cursor>(context).daylist()[i],
                                     box),
                             ],
@@ -61,7 +59,7 @@ class _MonthCalState extends State<MonthCal> {
                           Row(
                             children: [
                               for (int i = 7; i < 14; i++)
-                                MonthDays(
+                                OneDay(
                                     Provider.of<Cursor>(context).daylist()[i],
                                     box),
                             ],
@@ -70,7 +68,7 @@ class _MonthCalState extends State<MonthCal> {
                           Row(
                             children: [
                               for (int i = 14; i < 21; i++)
-                                MonthDays(
+                                OneDay(
                                     Provider.of<Cursor>(context).daylist()[i],
                                     box),
                             ],
@@ -79,7 +77,7 @@ class _MonthCalState extends State<MonthCal> {
                           Row(
                             children: [
                               for (int i = 21; i < 28; i++)
-                                MonthDays(
+                                OneDay(
                                     Provider.of<Cursor>(context).daylist()[i],
                                     box),
                             ],
@@ -91,7 +89,7 @@ class _MonthCalState extends State<MonthCal> {
                                 Row(
                                   children: [
                                     for (int i = 28; i < 35; i++)
-                                      MonthDays(
+                                      OneDay(
                                           Provider.of<Cursor>(context)
                                               .daylist()[i],
                                           box),
@@ -106,7 +104,7 @@ class _MonthCalState extends State<MonthCal> {
                                 Row(
                                   children: [
                                     for (int i = 35; i < 42; i++)
-                                      MonthDays(
+                                      OneDay(
                                           Provider.of<Cursor>(context)
                                               .daylist()[i],
                                           box),
@@ -119,52 +117,62 @@ class _MonthCalState extends State<MonthCal> {
                       ),
                     ),
                     const SizedBox(height: 5),
-                    AppBar(
-                      elevation: 0,
-                      backgroundColor: Pastel.orange,
-                      title: const MyText("To-do", 15, Pastel.black),
-                      centerTitle: true,
-                      toolbarHeight: 25,
+                    // AppBar(
+                    //   elevation: 0,
+                    //   backgroundColor: Pastel.orange,
+                    //   title: const MyText("To-do", 15, Pastel.black),
+                    //   centerTitle: true,
+                    //   toolbarHeight: 25,
+                    // ),
+                    Container(
+                      height: 20,
+                      color: Pastel.orange,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("할 일"),
+                        ],
+                      ),
                     ),
-                    Row(
-                      children: [
-                        FloatingActionButton(
-                          onPressed: () async {
-                            int i = 0;
-                            if (box.containsKey(
-                                Provider.of<Cursor>(context, listen: false)
-                                    .returnAsString())) {
-                              print("@@@@@@@@@@@@@@@@@");
-                              // box.get("2022.12.25")!.add(ScheduleClass(name: "t$i", date: DateTime.now()));
-                              var tmp = box.get(
-                                  Provider.of<Cursor>(context, listen: false)
-                                      .returnAsString())!;
-                              tmp.add(ScheduleClass(
-                                  name: "t$i", date: DateTime.now()));
-                              box.put(
-                                  Provider.of<Cursor>(context, listen: false)
-                                      .returnAsString(),
-                                  tmp);
-                            } else {
-                              box.put(
-                                  Provider.of<Cursor>(context, listen: false)
-                                      .returnAsString(),
-                                  [
-                                    ScheduleClass(
-                                        name: "t$i", date: DateTime.now())
-                                  ]);
-                            }
-                            i++;
-                            print("will be print get");
-                            // for(int i = 0; i<box.length ; i++)
-                            //   print(box.get(i)!.name);
-                          },
-                        ),
-                        FloatingActionButton(onPressed: () async {
-                          await box.clear();
-                        })
-                      ],
-                    ),
+                    // Row(
+                    //   children: [
+                    //     FloatingActionButton(
+                    //       onPressed: () async {
+                    //         int i = 0;
+                    //         if (box.containsKey(
+                    //             Provider.of<Cursor>(context, listen: false)
+                    //                 .returnAsString())) {
+                    //           print("@@@@@@@@@@@@@@@@@");
+                    //           // box.get("2022.12.25")!.add(ScheduleClass(name: "t$i", date: DateTime.now()));
+                    //           var tmp = box.get(
+                    //               Provider.of<Cursor>(context, listen: false)
+                    //                   .returnAsString())!;
+                    //           tmp.add(ScheduleClass(
+                    //               name: "t$i", date: DateTime.now()));
+                    //           box.put(
+                    //               Provider.of<Cursor>(context, listen: false)
+                    //                   .returnAsString(),
+                    //               tmp);
+                    //         } else {
+                    //           box.put(
+                    //               Provider.of<Cursor>(context, listen: false)
+                    //                   .returnAsString(),
+                    //               [
+                    //                 ScheduleClass(
+                    //                     name: "t$i", date: DateTime.now())
+                    //               ]);
+                    //         }
+                    //         i++;
+                    //         print("will be print get");
+                    //         // for(int i = 0; i<box.length ; i++)
+                    //         //   print(box.get(i)!.name);
+                    //       },
+                    //     ),
+                    //     FloatingActionButton(onPressed: () async {
+                    //       await box.clear();
+                    //     })
+                    //   ],
+                    // ),
                     Expanded(
                       child: CustomScrollView(
                         slivers: [
@@ -209,14 +217,12 @@ class _MonthCalState extends State<MonthCal> {
                                   tmp.add(ScheduleClass(
                                       name: text!, date: DateTime.now()));
                                   box.put(scheduleDate, tmp);
-                                  print("more than second @@@@@@@@@@@@@@@@@@@@@");
                                 } else {
                                   List tmp = [
                                     ScheduleClass(
                                         name: text!, date: DateTime.now())
                                   ];
                                   box.put(scheduleDate, tmp);
-                                  print("first time @@@@@@@@@@@@@@@@@@@@@");
                                 }
                               },
                             ),

@@ -4,8 +4,9 @@ import 'package:my_calender/scheduleClass.dart';
 import 'package:provider/provider.dart';
 import 'package:my_calender/customclass/palette.dart';
 import 'cursor.dart';
+import 'customclass/CustomAppbar.dart';
+import 'customclass/OneDay.dart';
 import 'customclass/calenderElement.dart';
-import 'customclass/customContainer.dart';
 
 class WeekCal extends StatefulWidget {
   const WeekCal({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class WeekCal extends StatefulWidget {
 
 class _WeekCalState extends State<WeekCal> {
   final key = GlobalKey<FormState>();
+  static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,9 @@ class _WeekCalState extends State<WeekCal> {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Scaffold(
-        appBar: WeekAppbar(appbar: AppBar()), //custom appbar
+        appBar: CustomAppbar(scaffoldKey: scaffoldKey,), //custom appbar
+        drawer: CustomDrawer(),
+        key: scaffoldKey,
         body: ValueListenableBuilder(
             valueListenable: Hive.box<List>('lib').listenable(),
           builder: (context, Box<List> box, child) {
@@ -36,15 +40,13 @@ class _WeekCalState extends State<WeekCal> {
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Column(
                 children: [
-                  const SizedBox(height: 4,),
                   const DayofWeek(),
-                  const SizedBox(height: 4,),
                   const Divider(height: 0),
                   Row(
                     children: [
                       for(int i = (Provider.of<Cursor>(context).dayofweek()-1) * 7 ;
                       i < Provider.of<Cursor>(context).dayofweek() * 7; i++)
-                        WeekDays(Provider.of<Cursor>(context).daylist()[i], box),
+                        OneDay(Provider.of<Cursor>(context).daylist()[i], box),
                     ],
                   ),
                   const SizedBox(height: 5),
@@ -107,7 +109,7 @@ class _WeekCalState extends State<WeekCal> {
                               return null;
                             },
                             onFieldSubmitted: (text) {
-                              if(text!.isEmpty) {
+                              if(text.isEmpty) {
                                 FocusManager.instance.primaryFocus?.unfocus();
                                 return;
                               }
@@ -115,11 +117,11 @@ class _WeekCalState extends State<WeekCal> {
 
                               if(box.containsKey(scheduleDate)) {
                                 List tmp = box.get(scheduleDate)!;
-                                tmp.add(ScheduleClass(name: text!, date: DateTime.now()));
+                                tmp.add(ScheduleClass(name: text, date: DateTime.now()));
                                 box.put(scheduleDate, tmp);
                               }
                               else {
-                                List tmp = [ScheduleClass(name: text!, date: DateTime.now())];
+                                List tmp = [ScheduleClass(name: text, date: DateTime.now())];
                                 box.put(scheduleDate, tmp);
                               }
                             },
@@ -133,11 +135,11 @@ class _WeekCalState extends State<WeekCal> {
 
                               if(box.containsKey(scheduleDate)) {
                                 List tmp = box.get(scheduleDate)!;
-                                tmp.add(ScheduleClass(name: text!, date: DateTime.now()));
+                                tmp.add(ScheduleClass(name: text, date: DateTime.now()));
                                 box.put(scheduleDate, tmp);
                               }
                               else {
-                                List tmp = [ScheduleClass(name: text!, date: DateTime.now())];
+                                List tmp = [ScheduleClass(name: text, date: DateTime.now())];
                                 box.put(scheduleDate, tmp);
                               }
                             },

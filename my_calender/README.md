@@ -132,6 +132,14 @@ MY Calender Project
 3. 1 이후 -> extformfield의 오른쪽 부분에 수정버튼 추가해서, 처음 추가 시부터 일정 수정 화면에 접근할 수 있게
 4. 코드 반복되는거 좀 깔끔하게...
 
+나혼자 코딩 - 재범
+1. WeekDays와 MonthDays 위젯의 내용이 완전히 동일하여 OneDay라는 위젯 하나로 만듦.
+2. DayofWeek(월화수목금토일 있는 Row)를 Padding에 씌워 반환하도록 변경. 위아래로 있던 SizedBox 삭제
+3. CustomAppbar.dart 신설하여 Appbar 개발 중...
+4. Cursor 클래스에 isMonth 추가하고 기존 isMonth 삭제
+5. Appbar의 날짜 표기는 구분했으나 아직 달/주 이동 버튼은 구현 안됨
+6. 나중에 월간 화면과 주간 화면을 애니메이션으로 전환할 생각임
+
 ---
 # 추후 수정해야할 요소들
 

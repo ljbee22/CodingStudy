@@ -8,24 +8,27 @@ class DayofWeek extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
-        SizedBox(width: 5),
-        Expanded(child:Text("월", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.black, fontWeight: FontWeight.w100),)),
-        SizedBox(width: 5),
-        Expanded(child:Text("화", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.black),)),
-        SizedBox(width: 5),
-        Expanded(child:Text("수", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.black),)),
-        SizedBox(width: 5),
-        Expanded(child:Text("목", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.black),)),
-        SizedBox(width: 5),
-        Expanded(child:Text("금", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.black),)),
-        SizedBox(width: 5),
-        Expanded(child:Text("토", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.black),)),
-        SizedBox(width: 5),
-        Expanded(child:Text("일", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.redaccent),)),
-      ],
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          SizedBox(width: 5),
+          Expanded(child:Text("월", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.black, fontWeight: FontWeight.w100),)),
+          SizedBox(width: 5),
+          Expanded(child:Text("화", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.black),)),
+          SizedBox(width: 5),
+          Expanded(child:Text("수", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.black),)),
+          SizedBox(width: 5),
+          Expanded(child:Text("목", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.black),)),
+          SizedBox(width: 5),
+          Expanded(child:Text("금", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.black),)),
+          SizedBox(width: 5),
+          Expanded(child:Text("토", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.black),)),
+          SizedBox(width: 5),
+          Expanded(child:Text("일", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.redaccent),)),
+        ],
+      ),
     ); //요일 표시 -> 항상 고정
   }
 }
@@ -80,7 +83,7 @@ class MonthAppbar extends StatelessWidget implements PreferredSizeWidget{
           IconButton(
             visualDensity: const VisualDensity(horizontal: -4.0),
             onPressed: () {
-              Provider.of<IsMonth>(context, listen: false).changeIsMonth();
+              Provider.of<Cursor>(context, listen: false).changeIsMonth();
             }, icon: const Icon(Icons.change_circle_rounded), color: Pastel.blacksoft),
           IconButton(
             visualDensity: const VisualDensity(horizontal: -4.0),
@@ -129,7 +132,7 @@ class WeekAppbar extends StatelessWidget implements PreferredSizeWidget{
           IconButton(
             visualDensity: const VisualDensity(horizontal: -4.0),
             onPressed: () {
-              Provider.of<IsMonth>(context, listen: false).changeIsMonth();
+              Provider.of<Cursor>(context, listen: false).changeIsMonth();
             }, icon: const Icon(Icons.change_circle_rounded), color: Pastel.blacksoft,),
           IconButton(
             visualDensity: const VisualDensity(horizontal: -4.0),
