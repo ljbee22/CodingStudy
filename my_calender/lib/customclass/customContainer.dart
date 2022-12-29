@@ -31,7 +31,7 @@ class _MonthDaysState extends State<MonthDays> {
           border: Border.all(color: Pastel.grey, width: 0)
         ) : null,
         padding: const EdgeInsets.fromLTRB(0, 4, 0, 10),
-        height: 50,
+        height: 80,
         child: widget.oneDay.month != Provider.of<Cursor>(context).selected.month ? null : Stack(
           children: [
             // Positioned(
@@ -49,7 +49,7 @@ class _MonthDaysState extends State<MonthDays> {
               top: 1,
               height: 20,
               width: 20,
-              left: 4,
+              left: 3,
               child: MyText(widget.oneDay.day.toString(), 15, widget.oneDay.weekday == 7 ? Pastel.redaccent : Pastel.black),
             ),
             if(widget.box.containsKey(DateFormat('yyyy.MM.dd').format(widget.oneDay)))
@@ -117,7 +117,7 @@ class _WeekDaysState extends State<WeekDays> {
                 top: 1,
                 height: 20,
                 width: 20,
-                left: 4,
+                left: 3,
                 child: MyText(widget.oneDay.day.toString(), 15, widget.oneDay.weekday == 7 ? Pastel.redaccent : Pastel.black),
               ),
               if(widget.box.containsKey(DateFormat('yyyy.MM.dd').format(widget.oneDay)))

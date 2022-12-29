@@ -33,9 +33,9 @@ class _MonthCalState extends State<MonthCal> {
                   },
                   child: Column(
                     children: [
-                      const SizedBox(height: 5,),
+                      const SizedBox(height: 4,),
                       const DayofWeek(),
-                      const SizedBox(height: 5,),
+                      const SizedBox(height: 4,),
                       const Divider(height: 0),
                       Row(
                         children: [

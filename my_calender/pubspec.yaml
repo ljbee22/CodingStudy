@@ -84,7 +84,7 @@ flutter:
   fonts:
     - family: Myfont
       fonts:
-        - asset: lib/assets/font/MaruBuri-Light.otf
+        - asset: assets/font/MaruBuri-Light.otf
 #        - asset: lib/assets/font/GangwonEdu-Light.otf
   #       - asset: fonts/Schyler-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf

@@ -26,9 +26,9 @@ class _WeekCalState extends State<WeekCal> {
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
             child: Column(
               children: [
-                const SizedBox(height: 5,),
+                const SizedBox(height: 4,),
                 const DayofWeek(),
-                const SizedBox(height: 5,),
+                const SizedBox(height: 4,),
                 const Divider(height: 0),
                 Row(
                   children: [
