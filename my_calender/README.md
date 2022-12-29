@@ -121,6 +121,17 @@ MY Calender Project
 2. TextForm Field 개선
 3. 반복문으로 월간 화면 단순화
 
+## 12.29
+1. textformfield 구현 
+- 입력하고 submit하면 hive에 저장됨
+- 다른 곳 누르면 out focus(상위 계층에 gesturedetecture)
+
+다음 계획
+1. 일정 수정 기능 **
+2. submit 했을 때 focus 안풀리도록
+3. 1 이후 -> extformfield의 오른쪽 부분에 수정버튼 추가해서, 처음 추가 시부터 일정 수정 화면에 접근할 수 있게
+4. 코드 반복되는거 좀 깔끔하게...
+
 ---
 # 추후 수정해야할 요소들
 
