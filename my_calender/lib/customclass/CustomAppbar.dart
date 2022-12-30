@@ -17,15 +17,15 @@ class CustomAppbar extends StatelessWidget implements PreferredSize{
         children: [
           Stack(
             children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: IconButton(onPressed: () {
-                    print('@@@@@@@@@@@');
-                    scaffoldKey.currentState?.openDrawer();
-                  },
-                    icon: Icon(Icons.linear_scale, color: Pastel.blacksoft),
-                ),
-              ),
+              // Align(
+              //   alignment: Alignment.centerLeft,
+              //   child: IconButton(onPressed: () {
+              //       print('@@@@@@@@@@@');
+              //       scaffoldKey.currentState?.openDrawer();
+              //     },
+              //       icon: Icon(Icons.linear_scale, color: Pastel.blacksoft),
+              //   ),
+              // ),
               Positioned(
                 right: 30,
                 child: IconButton(
