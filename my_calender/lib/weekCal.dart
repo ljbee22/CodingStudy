@@ -104,6 +104,7 @@ class _WeekCalState extends State<WeekCal> {
                         ),
                         SliverToBoxAdapter(
                           child: TextFormField(
+                            //TODO: 여기에 info 버튼을 추가하고, box.get(Provider.of<Cursor>(context, listen: false).returnAsString())!.length를 idx로 전달
                             // autofocus: true,
                             key: key,
                             // autovalidateMode: AutovalidateMode.always,
