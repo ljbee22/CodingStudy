@@ -40,7 +40,13 @@ class CalenderBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 35,
-      color: Pastel.pink,
+      decoration: BoxDecoration(
+        color: Pastel.pink,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+        ),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

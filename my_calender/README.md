@@ -157,6 +157,9 @@ MY Calender Project
 3. MaterialApp 아래에 splashColor 와 highlightColor 를 투명하게 설정하여 버튼 누를 시 효과 투명하게 변경
 4. drawer 의 Icon 커스텀하여 넣음 drawer 에 무엇을 넣을지는 회의 필요
 5. TodoBanner 를 calenderElement 에 추가함 아직 미완성
+6. 구분감을 높이기위해 선택한 컨테이너 색 변경함
+7. 아이콘 일단 한번 추가해봄
+8. 스페이스바 눌렀을 때에도 값이 들어가는 문제 수정해야함
 
 ---
 # 추후 수정해야할 요소들

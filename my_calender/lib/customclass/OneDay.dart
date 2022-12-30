@@ -35,7 +35,9 @@ class _OneDayState extends State<OneDay> {
                       widget.oneDay.month)
                   ? BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: Pastel.grey, width: 0))
+                  border: Border.all(color: Pastel.grey, width: 0),
+                color: Pastel.white,
+              )
                   : null,
               padding: const EdgeInsets.fromLTRB(0, 4, 0, 10),
               height: 80,

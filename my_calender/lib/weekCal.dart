@@ -95,7 +95,7 @@ class _WeekCalState extends State<WeekCal> {
                                           onTap: (){
                                             print("icons tapped@@@@@@@@@@@@@@@");
                                           },
-                                          child: Icon(Icons.radio_button_unchecked_outlined, size: 20, color: Pastel.black,),
+                                          child: ImageIcon(AssetImage("assets/icon/check_unchecked.png"), size: 20, color: Pastel.black,),
                                         ),
                                         ),
                                       MyText("${box.get(Provider.of<Cursor>(context, listen: false).returnAsString())![idx].name}", 15, Pastel.black),
@@ -129,7 +129,7 @@ class _WeekCalState extends State<WeekCal> {
                                   children: [
                                     Padding(
                                       padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
-                                      child: Icon(Icons.radio_button_unchecked_outlined, size: 20, color: Pastel.grey,),
+                                      child: ImageIcon(AssetImage("assets/icon/check_notwork.png"), size: 20, color: Pastel.grey,),
                                     ),
                                     Expanded(
                                       child: TextFormField(
