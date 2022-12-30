@@ -144,9 +144,12 @@ MY Calender Project
 
 
 ## 12.30
+1. TextFrom Field 에 Info 버튼 추가하기
+2. BottomSheet 도입
+3. Card 형태로 Todo 넣음
 
-
-
+다음 계획
+1. BottomSheet 완성
 
 ---
 # 추후 수정해야할 요소들
