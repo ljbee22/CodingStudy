@@ -151,6 +151,13 @@ MY Calender Project
 다음 계획
 1. BottomSheet 완성
 
+혼자 코딩 - 재범
+1. TextFormField 를 Card 로 만듦
+2. Card 보다 테두리 있는 Container 가 더 나아 보여서 변경
+3. MaterialApp 아래에 splashColor 와 highlightColor 를 투명하게 설정하여 버튼 누를 시 효과 투명하게 변경
+4. drawer 의 Icon 커스텀하여 넣음 drawer 에 무엇을 넣을지는 회의 필요
+5. TodoBanner 를 calenderElement 에 추가함 아직 미완성
+
 ---
 # 추후 수정해야할 요소들
 

@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 
 class Cursor with ChangeNotifier{
   late DateTime selected;
-  bool isMonth = true;
+  bool isMonth = false;
 
   Cursor({
     required this.selected

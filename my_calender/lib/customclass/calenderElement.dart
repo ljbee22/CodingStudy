@@ -185,4 +185,22 @@ class WeekAppbar extends StatelessWidget implements PreferredSizeWidget{
   Size get preferredSize => Size.fromHeight(appbar.preferredSize.height);
 }
 
+class TodoBanner extends StatelessWidget {
+  const TodoBanner({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        // borderRadius: BorderRadius.only(topRight: Radius.circular(5), topLeft: Radius.circular(5)),
+        border: Border(
+            left: BorderSide(width: 1, style: BorderStyle.solid, color: Pastel.black),
+            top: BorderSide(width: 1, style: BorderStyle.solid, color: Pastel.black),
+            right: BorderSide(width: 1, style: BorderStyle.solid, color: Pastel.black),
+        ),
+      ),
+      child: Text("할 일"),
+    );
+  }
+}
 

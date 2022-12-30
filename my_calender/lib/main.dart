@@ -30,7 +30,9 @@ class MyApp extends StatelessWidget {
             title: 'My_Calender',
             theme: ThemeData(
               primarySwatch: Colors.blue,
-              fontFamily: 'Myfont'
+              fontFamily: 'Myfont',
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
             ),
             home: Provider.of<Cursor>(context).isMonth ? const MonthCal() : const WeekCal()
         );

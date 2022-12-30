@@ -13,17 +13,14 @@ class CustomAppbar extends StatelessWidget implements PreferredSize{
     return AppBar(
       elevation: 0,
       backgroundColor: Colors.white,
+      leading: IconButton(onPressed: () {
+        print('@@@@@@@@@@@');
+        scaffoldKey.currentState?.openDrawer();
+      },
+        icon: Icon(Icons.linear_scale, color: Pastel.blacksoft),
+      ),
       title: Stack(
         children: [
-          // Align(
-          //   alignment: Alignment.centerLeft,
-          //   child: IconButton(onPressed: () {
-          //       print('@@@@@@@@@@@');
-          //       scaffoldKey.currentState?.openDrawer();
-          //     },
-          //       icon: Icon(Icons.linear_scale, color: Pastel.blacksoft),
-          //   ),
-          // ),
           Positioned(
             right: 30,
             child: IconButton(

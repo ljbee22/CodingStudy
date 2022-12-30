@@ -32,7 +32,7 @@ class _WeekCalState extends State<WeekCal> {
       },
       child: Scaffold(
         appBar: CustomAppbar(scaffoldKey: scaffoldKey,), //custom appbar
-        drawer: CustomDrawer(),
+        // drawer: CustomDrawer(),
         key: scaffoldKey,
         body: ValueListenableBuilder(
             valueListenable: Hive.box<List>('lib').listenable(),
@@ -52,50 +52,62 @@ class _WeekCalState extends State<WeekCal> {
                     ],
                   ),
                   const SizedBox(height: 5),
-                  Container(
-                    height: 20,
-                    color: Pastel.orange,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("할 일"),
-                      ],
-                    ),
-                  ),
+                  // Container(
+                  //   height: 20,
+                  //   color: Pastel.orange,
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: [
+                  //       Text("할 일"),
+                  //     ],
+                  //   ),
+                  // ),
+                  TodoBanner(),
                   Expanded(
                     child: CustomScrollView(
                       slivers: [
                         SliverFixedExtentList(
-                          itemExtent: 40,
+                          itemExtent: 35,
                           delegate: SliverChildBuilderDelegate((BuildContext context, int idx){
-                            return Card(
-                              child: GestureDetector(
-                                behavior: HitTestBehavior.translucent,
-                                onTap: (){
-                                  showModalBottomSheet<void>(
-                                      context: context,
-                                      builder: (BuildContext context){
-                                        return ScheduleEdit(box, idx);
-                                      }
-                                  );
-                                },
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 10),
-                                      child: GestureDetector(
-                                        onTap: (){
-                                          print("icons tapped@@@@@@@@@@@@@@@");
-                                        },
-                                        child: Icon(Icons.radio_button_unchecked_outlined, size: 20, color: Pastel.black,),
-                                      ),
-                                      ),
-                                    MyText("test ${box.get(Provider.of<Cursor>(context, listen: false).returnAsString())![idx].name}", 15, Pastel.black),
-                                    const Spacer(),
-                                    const Icon(Icons.info_outline, size: 20),
-                                  ],
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 5),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(color: Pastel.grey, width: 0),
+                                  color: Pastel.white,
                                 ),
-                              )
+                                child: GestureDetector(
+                                  behavior: HitTestBehavior.translucent,
+                                  onTap: (){
+                                    showModalBottomSheet<void>(
+                                        context: context,
+                                        builder: (BuildContext context){
+                                          return ScheduleEdit(box, idx);
+                                        }
+                                    );
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
+                                        child: GestureDetector(
+                                          onTap: (){
+                                            print("icons tapped@@@@@@@@@@@@@@@");
+                                          },
+                                          child: Icon(Icons.radio_button_unchecked_outlined, size: 20, color: Pastel.black,),
+                                        ),
+                                        ),
+                                      MyText("${box.get(Provider.of<Cursor>(context, listen: false).returnAsString())![idx].name}", 15, Pastel.black),
+                                      const Spacer(),
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 5),
+                                        child: const Icon(Icons.info_outline, size: 20, color: Pastel.black,),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ),
                             );
                           },
                             childCount: box.get(Provider.of<Cursor>(context, listen: false).returnAsString()) == null ?
@@ -103,76 +115,102 @@ class _WeekCalState extends State<WeekCal> {
                           ),
                         ),
                         SliverToBoxAdapter(
-                          child: TextFormField(
-                            //TODO: 여기에 info 버튼을 추가하고, box.get(Provider.of<Cursor>(context, listen: false).returnAsString())!.length를 idx로 전달
-                            // autofocus: true,
-                            key: key,
-                            // autovalidateMode: AutovalidateMode.always,
-                            controller: TextEditingController(),
-                            // cursorHeight: 20,
-                            // textAlignVertical: TextAlignVertical.center,
-                            cursorColor: Pastel.grey,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(top: 10),
-                              border: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.white
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 5),
+                            child: Container(
+                              height: 30,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(color: Pastel.grey, width: 0),
+                                color: Pastel.white,
+                              ),
+                              child: Container(
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
+                                      child: Icon(Icons.radio_button_unchecked_outlined, size: 20, color: Pastel.grey,),
+                                    ),
+                                    Expanded(
+                                      child: TextFormField(
+                                        //TODO: 여기에 info 버튼을 추가하고, box.get(Provider.of<Cursor>(context, listen: false).returnAsString())!.length를 idx로 전달
+                                        // autofocus: true,
+                                        key: key,
+                                        // autovalidateMode: AutovalidateMode.always,
+                                        controller: TextEditingController(),
+                                        // cursorHeight: 20,
+                                        // textAlignVertical: TextAlignVertical.center,
+                                        cursorColor: Pastel.grey,
+                                        decoration: InputDecoration(
+                                          hintText: "새 일정",
+                                          border: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.transparent
+                                            ),
+                                          ),
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.transparent
+                                            ),
+                                          ),
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.transparent
+                                            ),
+                                          ),
+                                          isCollapsed: true
+                                        ),
+                                        validator: (text) {
+                                          if(text!.isEmpty) {
+                                            return "null";
+                                          }
+                                          return null;
+                                        },
+                                        onFieldSubmitted: (text) {
+                                          if(text.isEmpty) {
+                                            FocusManager.instance.primaryFocus?.unfocus();
+                                            return;
+                                          }
+                                          String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
+
+                                          if(box.containsKey(scheduleDate)) {
+                                            List tmp = box.get(scheduleDate)!;
+                                            tmp.add(ScheduleClass(name: text, date: Provider.of<Cursor>(context, listen: false).selected));
+                                            box.put(scheduleDate, tmp);
+                                          }
+                                          else {
+                                            List tmp = [ScheduleClass(name: text, date: Provider.of<Cursor>(context, listen: false).selected)];
+                                            box.put(scheduleDate, tmp);
+                                          }
+                                        },
+                                        onSaved: (text){
+                                          print("@@@@@@@@@@@@@22222222222222");
+                                          if(text!.isEmpty) {
+                                            FocusManager.instance.primaryFocus?.unfocus();
+                                            return;
+                                          }
+                                          String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
+
+                                          if(box.containsKey(scheduleDate)) {
+                                            List tmp = box.get(scheduleDate)!;
+                                            tmp.add(ScheduleClass(name: text, date: DateTime.now()));
+                                            box.put(scheduleDate, tmp);
+                                          }
+                                          else {
+                                            List tmp = [ScheduleClass(name: text, date: DateTime.now())];
+                                            box.put(scheduleDate, tmp);
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 5),
+                                      child: const Icon(Icons.info_outline, size: 20, color: Pastel.grey,),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.white
-                                ),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.white
-                                ),
-                              ),
-                              icon: Icon(Icons.circle_outlined, color: Pastel.grey,),
-                              isCollapsed: true
                             ),
-                            validator: (text) {
-                              if(text!.isEmpty) {
-                                return "null";
-                              }
-                              return null;
-                            },
-                            onFieldSubmitted: (text) {
-                              if(text.isEmpty) {
-                                FocusManager.instance.primaryFocus?.unfocus();
-                                return;
-                              }
-                              String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
-
-                              if(box.containsKey(scheduleDate)) {
-                                List tmp = box.get(scheduleDate)!;
-                                tmp.add(ScheduleClass(name: text, date: Provider.of<Cursor>(context, listen: false).selected));
-                                box.put(scheduleDate, tmp);
-                              }
-                              else {
-                                List tmp = [ScheduleClass(name: text, date: Provider.of<Cursor>(context, listen: false).selected)];
-                                box.put(scheduleDate, tmp);
-                              }
-                            },
-                            onSaved: (text){
-                              print("@@@@@@@@@@@@@22222222222222");
-                              if(text!.isEmpty) {
-                                FocusManager.instance.primaryFocus?.unfocus();
-                                return;
-                              }
-                              String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
-
-                              if(box.containsKey(scheduleDate)) {
-                                List tmp = box.get(scheduleDate)!;
-                                tmp.add(ScheduleClass(name: text, date: DateTime.now()));
-                                box.put(scheduleDate, tmp);
-                              }
-                              else {
-                                List tmp = [ScheduleClass(name: text, date: DateTime.now())];
-                                box.put(scheduleDate, tmp);
-                              }
-                            },
                           ),
                         ),
                       ],
