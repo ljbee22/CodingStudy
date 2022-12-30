@@ -39,6 +39,7 @@ class CalenderBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 35,
       color: Pastel.pink,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

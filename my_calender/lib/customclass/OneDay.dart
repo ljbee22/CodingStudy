@@ -22,9 +22,9 @@ class _OneDayState extends State<OneDay> {
     return Expanded(
         child: GestureDetector(
           behavior:
-          widget.oneDay.month != Provider.of<Cursor>(context).selected.month
-              ? null
-              : HitTestBehavior.translucent,
+          (widget.oneDay.month == Provider.of<Cursor>(context).selected.month) || !(Provider.of<Cursor>(context).isMonth)
+              ? HitTestBehavior.translucent
+              : null,
           onTap: () {
             Provider.of<Cursor>(context, listen: false).changeCursor(widget.oneDay);
           },

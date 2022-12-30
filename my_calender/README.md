@@ -142,6 +142,12 @@ MY Calender Project
 7. CalenderBanner 클래스를 calenderElement.dart 에 추가함
 8. 할 일 리스트 UI 개선중
 
+
+## 12.30
+
+
+
+
 ---
 # 추후 수정해야할 요소들
 
@@ -180,3 +186,8 @@ MY Calender Project
 
 ## 12.29
 1. 월요일이나 일요일 중 시작하는 날짜 정하는 기능 구현할지 정하기
+
+## 12.30
+
+bottomModalSheet에서 날짜를 수정하면, 그 ScheduleClass 자체의 날짜가 아니라, 
+hiveBox에 등록된 날짜를 바꾸도록 해야지 일정이 실제로 이동한다. 나중에 추가할때 염두해야함

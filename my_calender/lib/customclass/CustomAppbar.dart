@@ -13,40 +13,37 @@ class CustomAppbar extends StatelessWidget implements PreferredSize{
     return AppBar(
       elevation: 0,
       backgroundColor: Colors.white,
-      title: Column(
+      title: Stack(
         children: [
-          Stack(
-            children: [
-              // Align(
-              //   alignment: Alignment.centerLeft,
-              //   child: IconButton(onPressed: () {
-              //       print('@@@@@@@@@@@');
-              //       scaffoldKey.currentState?.openDrawer();
-              //     },
-              //       icon: Icon(Icons.linear_scale, color: Pastel.blacksoft),
-              //   ),
-              // ),
-              Positioned(
-                right: 30,
-                child: IconButton(
-                  alignment: Alignment.centerRight,
-                    visualDensity: const VisualDensity(horizontal: -4.0),
-                    onPressed: () {
-                      Provider.of<Cursor>(context, listen: false).changeIsMonth();
-                    }, icon: const Icon(Icons.change_circle_rounded), color: Pastel.blacksoft),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: IconButton(
-                  alignment: Alignment.centerRight,
-                  visualDensity: const VisualDensity(horizontal: -4.0),
-                  icon: const Icon(Icons.today, color: Pastel.blacksoft,),
-                  onPressed: () {
-                    Provider.of<Cursor>(context, listen: false).changeCursor(DateTime.now());
-                  },
-                ),
-              ),
-            ],
+          // Align(
+          //   alignment: Alignment.centerLeft,
+          //   child: IconButton(onPressed: () {
+          //       print('@@@@@@@@@@@');
+          //       scaffoldKey.currentState?.openDrawer();
+          //     },
+          //       icon: Icon(Icons.linear_scale, color: Pastel.blacksoft),
+          //   ),
+          // ),
+          Positioned(
+            right: 30,
+            child: IconButton(
+              alignment: Alignment.centerRight,
+              visualDensity: const VisualDensity(horizontal: -4.0),
+              onPressed: () {
+                Provider.of<Cursor>(context, listen: false).changeIsMonth();
+              },
+              icon: const Icon(Icons.change_circle_rounded), color: Pastel.blacksoft),
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: IconButton(
+              alignment: Alignment.centerRight,
+              visualDensity: const VisualDensity(horizontal: -4.0),
+              icon: const Icon(Icons.today, color: Pastel.blacksoft,),
+              onPressed: () {
+                Provider.of<Cursor>(context, listen: false).changeCursor(DateTime.now());
+              },
+            ),
           ),
         ],
       ),
@@ -66,7 +63,7 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
+    return const Drawer(
       backgroundColor: Pastel.orange,
       child: Text('Hello'),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:my_calender/bottomSheet.dart';
 import 'package:my_calender/scheduleClass.dart';
 import 'package:provider/provider.dart';
 import 'package:my_calender/customclass/palette.dart';
@@ -65,24 +66,36 @@ class _WeekCalState extends State<WeekCal> {
                     child: CustomScrollView(
                       slivers: [
                         SliverFixedExtentList(
-                          itemExtent: 30,
+                          itemExtent: 40,
                           delegate: SliverChildBuilderDelegate((BuildContext context, int idx){
-                            return Padding(
-                              padding: EdgeInsets.only(top: 3),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(right: 10),
+                            return Card(
+                              child: GestureDetector(
+                                behavior: HitTestBehavior.translucent,
+                                onTap: (){
+                                  showModalBottomSheet<void>(
+                                      context: context,
+                                      builder: (BuildContext context){
+                                        return ScheduleEdit(box, idx);
+                                      }
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 10),
+                                      child: GestureDetector(
+                                        onTap: (){
+                                          print("icons tapped@@@@@@@@@@@@@@@");
+                                        },
                                         child: Icon(Icons.radio_button_unchecked_outlined, size: 20, color: Pastel.black,),
                                       ),
-                                      MyText("test ${box.get(Provider.of<Cursor>(context, listen: false).returnAsString())![idx].name}", 15, Pastel.black),
-                                    ],
-                                  ),
-                                  Divider(height: 5, color: Pastel.blacksoft,),
-                                ],
-                              ),
+                                      ),
+                                    MyText("test ${box.get(Provider.of<Cursor>(context, listen: false).returnAsString())![idx].name}", 15, Pastel.black),
+                                    const Spacer(),
+                                    const Icon(Icons.info_outline, size: 20),
+                                  ],
+                                ),
+                              )
                             );
                           },
                             childCount: box.get(Provider.of<Cursor>(context, listen: false).returnAsString()) == null ?
@@ -133,11 +146,11 @@ class _WeekCalState extends State<WeekCal> {
 
                               if(box.containsKey(scheduleDate)) {
                                 List tmp = box.get(scheduleDate)!;
-                                tmp.add(ScheduleClass(name: text, date: DateTime.now()));
+                                tmp.add(ScheduleClass(name: text, date: Provider.of<Cursor>(context, listen: false).selected));
                                 box.put(scheduleDate, tmp);
                               }
                               else {
-                                List tmp = [ScheduleClass(name: text, date: DateTime.now())];
+                                List tmp = [ScheduleClass(name: text, date: Provider.of<Cursor>(context, listen: false).selected)];
                                 box.put(scheduleDate, tmp);
                               }
                             },
