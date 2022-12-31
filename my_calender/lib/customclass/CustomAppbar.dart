@@ -14,7 +14,6 @@ class CustomAppbar extends StatelessWidget implements PreferredSize{
       elevation: 0,
       backgroundColor: Colors.white,
       leading: IconButton(onPressed: () {
-        print('@@@@@@@@@@@');
         scaffoldKey.currentState?.openDrawer();
       },
         icon: Icon(Icons.linear_scale, color: Pastel.blacksoft),

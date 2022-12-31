@@ -48,7 +48,7 @@ class CalenderBanner extends StatelessWidget {
         ),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(onPressed: () {
             Provider.of<Cursor>(context, listen: false).isMonth

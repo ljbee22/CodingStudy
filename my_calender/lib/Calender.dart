@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:my_calender/WeekAndMonth.dart';
 import 'package:my_calender/bottomSheet.dart';
 import 'package:my_calender/scheduleClass.dart';
 import 'package:provider/provider.dart';
@@ -9,16 +10,17 @@ import 'customclass/CustomAppbar.dart';
 import 'customclass/OneDay.dart';
 import 'customclass/calenderElement.dart';
 
-class WeekCal extends StatefulWidget {
-  const WeekCal({Key? key}) : super(key: key);
+class Calender extends StatefulWidget {
+  const Calender({Key? key}) : super(key: key);
 
   @override
-  State<WeekCal> createState() => _WeekCalState();
+  State<Calender> createState() => _CalenderState();
 }
 
-class _WeekCalState extends State<WeekCal> {
+class _CalenderState extends State<Calender> {
   final key = GlobalKey<FormState>();
   static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+  FocusNode myFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class _WeekCalState extends State<WeekCal> {
         appBar: CustomAppbar(scaffoldKey: scaffoldKey,), //custom appbar
         // drawer: CustomDrawer(),
         key: scaffoldKey,
+        drawer: CustomDrawer(),
         body: ValueListenableBuilder(
             valueListenable: Hive.box<List>('lib').listenable(),
           builder: (context, Box<List> box, child) {
@@ -44,24 +47,15 @@ class _WeekCalState extends State<WeekCal> {
                   CalenderBanner(),
                   const DayofWeek(),
                   const Divider(height: 0),
-                  Row(
-                    children: [
-                      for(int i = (Provider.of<Cursor>(context).dayofweek()-1) * 7 ;
-                      i < Provider.of<Cursor>(context).dayofweek() * 7; i++)
-                        OneDay(Provider.of<Cursor>(context).daylist()[i], box),
-                    ],
+                  AnimatedCrossFade(
+                    duration: Duration(milliseconds: 200),
+                    firstChild: MonthColumn(box),
+                    secondChild: WeekColumn(box),
+                    crossFadeState: Provider.of<Cursor>(context).isMonth
+                      ? CrossFadeState.showFirst : CrossFadeState.showSecond,
                   ),
+
                   const SizedBox(height: 5),
-                  // Container(
-                  //   height: 20,
-                  //   color: Pastel.orange,
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Text("할 일"),
-                  //     ],
-                  //   ),
-                  // ),
                   TodoBanner(),
                   Expanded(
                     child: CustomScrollView(
@@ -102,7 +96,7 @@ class _WeekCalState extends State<WeekCal> {
                                       const Spacer(),
                                       Padding(
                                         padding: EdgeInsets.only(right: 5),
-                                        child: const Icon(Icons.info_outline, size: 20, color: Pastel.black,),
+                                        child: const Icon(Icons.edit, size: 20, color: Pastel.black,),
                                       ),
                                     ],
                                   ),
@@ -132,13 +126,13 @@ class _WeekCalState extends State<WeekCal> {
                                   ),
                                   Expanded(
                                     child: TextFormField(
-                                      //TODO: 여기에 info 버튼을 추가하고, box.get(Provider.of<Cursor>(context, listen: false).returnAsString())!.length를 idx로 전달
                                       // autofocus: true,
                                       key: key,
                                       // autovalidateMode: AutovalidateMode.always,
+                                      textAlignVertical: TextAlignVertical.center,
+                                      style: TextStyle(fontSize: 15),
                                       controller: TextEditingController(),
-                                      // cursorHeight: 20,
-                                      // textAlignVertical: TextAlignVertical.center,
+                                      focusNode: myFocusNode,
                                       cursorColor: Pastel.grey,
                                       decoration: InputDecoration(
                                         hintText: "새 일정",
@@ -181,9 +175,9 @@ class _WeekCalState extends State<WeekCal> {
                                           List tmp = [ScheduleClass(name: text, date: Provider.of<Cursor>(context, listen: false).selected)];
                                           box.put(scheduleDate, tmp);
                                         }
+                                        myFocusNode.requestFocus();
                                       },
                                       onSaved: (text){
-                                        print("@@@@@@@@@@@@@22222222222222");
                                         if(text!.isEmpty) {
                                           FocusManager.instance.primaryFocus?.unfocus();
                                           return;
@@ -207,17 +201,17 @@ class _WeekCalState extends State<WeekCal> {
                                     child: GestureDetector(
                                       onTap: () {
                                         String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
-                                        if(!box.containsKey(scheduleDate)) {
-                                          box.put(scheduleDate, []);
-                                        }
                                         showModalBottomSheet<void>(
                                             context: context,
                                             builder: (BuildContext context){
+                                              if(!box.containsKey(scheduleDate)) {
+                                                return ScheduleEdit(box, 0);
+                                              }
                                               return ScheduleEdit(box, box.get(scheduleDate)!.length);
                                             }
                                         );
                                       },
-                                      child: const Icon(Icons.info_outline, size: 20, color: Pastel.grey,),
+                                      child: const Icon(Icons.edit, size: 20, color: Pastel.grey,),
                                     ),
                                   ),
                                 ],

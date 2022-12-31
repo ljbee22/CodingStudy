@@ -3,9 +3,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:my_calender/scheduleClass.dart';
 import 'package:provider/provider.dart';
 
-import 'package:my_calender/monthCal.dart';
 import 'cursor.dart';
-import 'weekCal.dart';
+import 'Calender.dart';
 
 
 void main() async{
@@ -34,7 +33,7 @@ class MyApp extends StatelessWidget {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
             ),
-            home: Provider.of<Cursor>(context).isMonth ? const MonthCal() : const WeekCal()
+            home: Calender(),
         );
       }
     );

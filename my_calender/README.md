@@ -171,6 +171,15 @@ MY Calender Project
 1. textformfield 입력받을 때 spacebar 만을 입력받는 문제 해결해야함
 2. 빈 textformfield 눌러서 bottomsheet 띄우면 빈 리스트를 삽입해서 일정 있는것처럼 표시됨... -> 취소
 
+혼자 코딩 - 재범
+1. WeekCal 과 MonthCal 리팩토링해서 하나로 합침
+2. 주간 달력과 월간 달력을 WeekAndMonth.dart 에 따로 정리해서 삼항 연산자로 사용
+3. AnimatedCrossFade 활용하여 애니메이션 넣음
+4. Drawer 안 뜨던 문제는 해결
+5. 빈 리스트가 저장되던 문제 해결
+6. bottomSheet 디자인 조금 변경, 삭제 버튼 모양만 추가
+7. 텍스트 필드 위로 조금 올라가있는게 좀 불편함
+
 ---
 # 추후 수정해야할 요소들
 

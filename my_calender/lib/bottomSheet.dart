@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:my_calender/scheduleClass.dart';
 import 'package:provider/provider.dart';
@@ -19,8 +20,13 @@ class ScheduleEdit extends StatefulWidget {
 class _ScheduleEditState extends State<ScheduleEdit> {
   @override
   Widget build(BuildContext context) {
-    String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
-    List totalList = widget.box.get(scheduleDate);
+    String scheduleDate = Provider.of<Cursor>(context).returnAsString();
+    List totalList;
+    if(widget.box.containsKey(scheduleDate)) {
+      totalList = widget.box.get(scheduleDate);
+    } else {
+      totalList = [];
+    }
     ScheduleClass oneList;
     if(totalList.length == widget.idx) {
       oneList = ScheduleClass(name: "", date: Provider.of<Cursor>(context, listen: false).selected);
@@ -33,105 +39,117 @@ class _ScheduleEditState extends State<ScheduleEdit> {
     controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Pastel.black),
+        backgroundColor: Pastel.purple,
         elevation: 0,
         toolbarHeight: 50,
-        title: Stack(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                child: Text("완료", style: TextStyle(fontSize: 20, color: Pastel.white, fontWeight: FontWeight.w500),),
-                onPressed: (){
-                },
-              ),
+            TextButton(
+              child: Text("삭제", style: TextStyle(fontSize: 20, color: Pastel.redaccent, fontWeight: FontWeight.w500),),
+              onPressed: () {},
+            ),
+            TextButton(
+              child: Text("완료", style: TextStyle(fontSize: 20, color: Pastel.black, fontWeight: FontWeight.w500),),
+              onPressed: (){
+              },
             ),
           ],
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Container(
-              height: 30,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: Pastel.grey, width: 0),
-                color: Pastel.white,
-              ),
-              child: TextFormField(
-                //TODO: 여기에 info 버튼을 추가하고, widget.box.get(Provider.of<Cursor>(context, listen: false).returnAsString())!.length를 idx로 전달
-                // autofocus: true,
-                // key: key,
-                // autovalidateMode: AutovalidateMode.always,
-                // initialValue: ,
-                controller: controller,
-                // cursorHeight: 20,
-                // textAlignVertical: TextAlignVertical.center,
-                cursorColor: Pastel.grey,
-                decoration: InputDecoration(
-                    hintText: "새 일정",
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.transparent
-                      ),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.transparent
-                      ),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Colors.transparent
-                      ),
-                    ),
-                    isCollapsed: true
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+          child: Column(
+            children: [
+              Container(
+                height: 30,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: Pastel.grey, width: 0),
+                  color: Pastel.white,
                 ),
-                validator: (text) {
-                  if(text!.isEmpty) {
-                    return "null";
-                  }
-                  return null;
-                },
-                onFieldSubmitted: (text) {
-                  if(text.isEmpty) {
-                    FocusManager.instance.primaryFocus?.unfocus();
-                    return;
-                  }
-                  String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: TextFormField(
+                    //TODO: 여기에 info 버튼을 추가하고, widget.box.get(Provider.of<Cursor>(context, listen: false).returnAsString())!.length를 idx로 전달
+                    // autofocus: true,
+                    // key: key,
+                    controller: controller,
+                    // cursorHeight: 20,
+                    style: TextStyle(fontSize: 15),
+                    textAlignVertical: TextAlignVertical.center,
+                    cursorColor: Pastel.grey,
+                    decoration: InputDecoration(
+                        hintText: "새 일정",
+                        border: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.transparent
+                          ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.transparent
+                          ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.transparent
+                          ),
+                        ),
+                        // isCollapsed: true
+                    ),
+                    validator: (text) {
+                      if(text!.isEmpty) {
+                        return "null";
+                      }
+                      return null;
+                    },
+                    onFieldSubmitted: (text) {
+                      if(text.isEmpty) {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        return;
+                      }
+                      String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
 
-                  if(widget.box.containsKey(scheduleDate)) {
-                    List tmp = widget.box.get(scheduleDate)!;
-                    tmp.add(ScheduleClass(name: text, date: Provider.of<Cursor>(context, listen: false).selected));
-                    widget.box.put(scheduleDate, tmp);
-                  }
-                  else {
-                    List tmp = [ScheduleClass(name: text, date: Provider.of<Cursor>(context, listen: false).selected)];
-                    widget.box.put(scheduleDate, tmp);
-                  }
-                },
-                onSaved: (text){
-                  print("@@@@@@@@@@@@@22222222222222");
-                  if(text!.isEmpty) {
-                    FocusManager.instance.primaryFocus?.unfocus();
-                    return;
-                  }
-                  String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
+                      if(widget.box.containsKey(scheduleDate)) {
+                        List tmp = widget.box.get(scheduleDate)!;
+                        tmp.add(ScheduleClass(name: text, date: Provider.of<Cursor>(context, listen: false).selected));
+                        widget.box.put(scheduleDate, tmp);
+                      }
+                      else {
+                        List tmp = [ScheduleClass(name: text, date: Provider.of<Cursor>(context, listen: false).selected)];
+                        widget.box.put(scheduleDate, tmp);
+                      }
+                    },
+                    onSaved: (text){
+                      print("@@@@@@@@@@@@@22222222222222");
+                      if(text!.isEmpty) {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        return;
+                      }
+                      String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
 
-                  if(widget.box.containsKey(scheduleDate)) {
-                    List tmp = widget.box.get(scheduleDate)!;
-                    tmp.add(ScheduleClass(name: text, date: DateTime.now()));
-                    widget.box.put(scheduleDate, tmp);
-                  }
-                  else {
-                    List tmp = [ScheduleClass(name: text, date: DateTime.now())];
-                    widget.box.put(scheduleDate, tmp);
-                  }
-                },
+                      if(widget.box.containsKey(scheduleDate)) {
+                        List tmp = widget.box.get(scheduleDate)!;
+                        tmp.add(ScheduleClass(name: text, date: DateTime.now()));
+                        widget.box.put(scheduleDate, tmp);
+                      }
+                      else {
+                        List tmp = [ScheduleClass(name: text, date: DateTime.now())];
+                        widget.box.put(scheduleDate, tmp);
+                      }
+                    },
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
