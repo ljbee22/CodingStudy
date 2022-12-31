@@ -161,6 +161,16 @@ MY Calender Project
 7. 아이콘 일단 한번 추가해봄
 8. 스페이스바 눌렀을 때에도 값이 들어가는 문제 수정해야함
 
+## 12.31
+
+1. bottomsheet 구조 회의
+2. bottomsheet 구현 시작
+
+다음 계획
+
+1. textformfield 입력받을 때 spacebar 만을 입력받는 문제 해결해야함
+2. 빈 textformfield 눌러서 bottomsheet 띄우면 빈 리스트를 삽입해서 일정 있는것처럼 표시됨... -> 취소
+
 ---
 # 추후 수정해야할 요소들
 
