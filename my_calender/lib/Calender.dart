@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:my_calender/customclass/palette.dart';
 import 'cursor.dart';
 import 'customclass/CustomAppbar.dart';
-import 'customclass/OneDay.dart';
+import 'package:flutter/services.dart';
 import 'customclass/calenderElement.dart';
 
 class Calender extends StatefulWidget {
@@ -21,6 +21,11 @@ class _CalenderState extends State<Calender> {
   final key = GlobalKey<FormState>();
   static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   FocusNode myFocusNode = FocusNode();
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+  }
 
   @override
   Widget build(BuildContext context) {
