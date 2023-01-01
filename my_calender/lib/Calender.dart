@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:my_calender/WeekAndMonth.dart';
 import 'package:my_calender/bottomSheet.dart';
-import 'package:my_calender/scheduleClass.dart';
+import 'package:my_calender/customclass/scheduleClass.dart';
 import 'package:provider/provider.dart';
 import 'package:my_calender/customclass/palette.dart';
 import 'cursor.dart';
@@ -20,6 +20,7 @@ class Calender extends StatefulWidget {
 class _CalenderState extends State<Calender> {
   final key = GlobalKey<FormState>();
   static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+  final myController = TextEditingController();
   FocusNode myFocusNode = FocusNode();
   @override
   void initState() {
@@ -31,10 +32,6 @@ class _CalenderState extends State<Calender> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // if (key.currentState!.validate()) {
-        //   print("@@@@@@@@@@@@@");
-        //   key.currentState!.save();
-        // }
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Scaffold(
@@ -152,7 +149,7 @@ class _CalenderState extends State<Calender> {
                                       // autovalidateMode: AutovalidateMode.always,
                                       textAlignVertical: TextAlignVertical.center,
                                       style: TextStyle(fontSize: 15),
-                                      controller: TextEditingController(),
+                                      controller: myController,
                                       focusNode: myFocusNode,
                                       cursorColor: Pastel.grey,
                                       decoration: InputDecoration(
@@ -181,10 +178,15 @@ class _CalenderState extends State<Calender> {
                                         return null;
                                       },
                                       onFieldSubmitted: (text) {
+                                        //filtering
+                                        text = text.trim();
+
                                         if(text.isEmpty) {
                                           FocusManager.instance.primaryFocus?.unfocus();
+                                          myController.clear();
                                           return;
                                         }
+
                                         String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
 
                                         if(box.containsKey(scheduleDate)) {
@@ -197,23 +199,7 @@ class _CalenderState extends State<Calender> {
                                           box.put(scheduleDate, tmp);
                                         }
                                         myFocusNode.requestFocus();
-                                      },
-                                      onSaved: (text){
-                                        if(text!.isEmpty) {
-                                          FocusManager.instance.primaryFocus?.unfocus();
-                                          return;
-                                        }
-                                        String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
-
-                                        if(box.containsKey(scheduleDate)) {
-                                          List tmp = box.get(scheduleDate)!;
-                                          tmp.add(ScheduleClass(name: text, date: DateTime.now()));
-                                          box.put(scheduleDate, tmp);
-                                        }
-                                        else {
-                                          List tmp = [ScheduleClass(name: text, date: DateTime.now())];
-                                          box.put(scheduleDate, tmp);
-                                        }
+                                        myController.clear();
                                       },
                                     ),
                                   ),

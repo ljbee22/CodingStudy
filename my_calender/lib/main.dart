@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:my_calender/scheduleClass.dart';
+import 'package:my_calender/customclass/scheduleClass.dart';
 import 'package:provider/provider.dart';
 import 'cursor.dart';
 import 'Calender.dart';

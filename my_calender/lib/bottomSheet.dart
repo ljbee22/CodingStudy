@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
-import 'package:my_calender/scheduleClass.dart';
+import 'package:my_calender/customclass/scheduleClass.dart';
 import 'package:provider/provider.dart';
 
 import 'cursor.dart';
@@ -18,8 +18,15 @@ class ScheduleEdit extends StatefulWidget {
 }
 
 class _ScheduleEditState extends State<ScheduleEdit> {
+  final TextEditingController _controller = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    _controller.text = ;
+  }
   @override
   Widget build(BuildContext context) {
+    print("widget is rebuilt@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     String scheduleDate = Provider.of<Cursor>(context).returnAsString();
     List totalList;
     if(widget.box.containsKey(scheduleDate)) {
@@ -33,10 +40,8 @@ class _ScheduleEditState extends State<ScheduleEdit> {
     } else {
       oneList = totalList[widget.idx];
     }
-    TextEditingController controller = TextEditingController(
-      text: oneList.name,
-    );
-    controller.selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
+
+    _controller.selection = TextSelection.fromPosition(TextPosition(offset: _controller.text.length));
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Pastel.black),
@@ -68,7 +73,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
           child: Column(
             children: [
               Container(
-                height: 30,
+                width: MediaQuery.of(context).size.width - 40,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                   border: Border.all(color: Pastel.grey, width: 0),
@@ -77,11 +82,9 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: TextFormField(
-                    //TODO: 여기에 info 버튼을 추가하고, widget.box.get(Provider.of<Cursor>(context, listen: false).returnAsString())!.length를 idx로 전달
-                    // autofocus: true,
-                    // key: key,
-                    controller: controller,
-                    // cursorHeight: 20,
+                    controller: _controller,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
                     style: TextStyle(fontSize: 15),
                     textAlignVertical: TextAlignVertical.center,
                     cursorColor: Pastel.grey,
@@ -102,52 +105,45 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                               color: Colors.transparent
                           ),
                         ),
-                        // isCollapsed: true
                     ),
-                    validator: (text) {
-                      if(text!.isEmpty) {
-                        return "null";
-                      }
-                      return null;
-                    },
-                    onFieldSubmitted: (text) {
-                      if(text.isEmpty) {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        return;
-                      }
-                      String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
-
-                      if(widget.box.containsKey(scheduleDate)) {
-                        List tmp = widget.box.get(scheduleDate)!;
-                        tmp.add(ScheduleClass(name: text, date: Provider.of<Cursor>(context, listen: false).selected));
-                        widget.box.put(scheduleDate, tmp);
-                      }
-                      else {
-                        List tmp = [ScheduleClass(name: text, date: Provider.of<Cursor>(context, listen: false).selected)];
-                        widget.box.put(scheduleDate, tmp);
-                      }
-                    },
-                    onSaved: (text){
-                      print("@@@@@@@@@@@@@22222222222222");
-                      if(text!.isEmpty) {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        return;
-                      }
-                      String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
-
-                      if(widget.box.containsKey(scheduleDate)) {
-                        List tmp = widget.box.get(scheduleDate)!;
-                        tmp.add(ScheduleClass(name: text, date: DateTime.now()));
-                        widget.box.put(scheduleDate, tmp);
-                      }
-                      else {
-                        List tmp = [ScheduleClass(name: text, date: DateTime.now())];
-                        widget.box.put(scheduleDate, tmp);
-                      }
-                    },
                   ),
                 ),
               ),
+
+              Container(
+                height: 30,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: Pastel.grey, width: 0),
+                  color: Pastel.white,
+                ),
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: TextFormField(
+                    style: TextStyle(fontSize: 15),
+                    textAlignVertical: TextAlignVertical.center,
+                    cursorColor: Pastel.grey,
+                    decoration: InputDecoration(
+                      hintText: "새 일정",
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Colors.transparent
+                        ),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Colors.transparent
+                        ),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Colors.transparent
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              )
             ],
           ),
         ),
