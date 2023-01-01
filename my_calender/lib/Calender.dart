@@ -31,6 +31,7 @@ class _CalenderState extends State<Calender> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
       },
@@ -63,7 +64,7 @@ class _CalenderState extends State<Calender> {
                     child: CustomScrollView(
                       slivers: [
                         SliverFixedExtentList(
-                          itemExtent: 35,
+                          itemExtent: 40,
                           delegate: SliverChildBuilderDelegate((BuildContext context, int idx){
                             return Padding(
                               padding: const EdgeInsets.only(top: 5),
@@ -75,6 +76,9 @@ class _CalenderState extends State<Calender> {
                                 ),
                                 child: GestureDetector(
                                   behavior: HitTestBehavior.translucent,
+                                  onLongPress: () {
+
+                                  },
                                   onTap: (){
                                     //TODO 눌렀을때 키보드 focus out 되게. 전체 구현성공하면 무시
                                     showModalBottomSheet<void>(
@@ -108,7 +112,10 @@ class _CalenderState extends State<Calender> {
                                                   color: Pastel.black,
                                                   fontSize: 15,
                                                   fontFamily: "Myfont",
-                                                )
+                                                ),
+                                              // children: [
+                                              //   TextSpan(text: "!!!!"),
+                                              // ]
                                             ),
                                           )
                                       ),

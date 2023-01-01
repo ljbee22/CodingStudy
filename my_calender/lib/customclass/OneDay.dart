@@ -57,20 +57,27 @@ class _OneDayState extends State<OneDay> {
                         15,
                         widget.oneDay.weekday == 7
                             ? Pastel.redaccent
-                            : Pastel.black),
+                            : Pastel.black,
+                        FontWeight.w300
+                    ),
                   ),
                   if (widget.box.containsKey(
                       DateFormat('yyyy.MM.dd').format(widget.oneDay)))
                     Positioned(
-                        top: 7,
-                        left: 30,
+                        top: 5,
+                        left: 28,
                         child: Container(
-                            height: 7,
-                            width: 7,
-                            decoration: const BoxDecoration(
+                            height: 13,
+                            width: 13,
+                            decoration: BoxDecoration(
                               color: Pastel.red,
-                              shape: BoxShape.circle,
-                            ))),
+                              borderRadius: BorderRadius.all(Radius.circular(3)),
+                            ),
+                          child: MyText(
+                              widget.box.get(DateFormat('yyyy.MM.dd').format(widget.oneDay)).length.toString(),
+                              10, Pastel.black, FontWeight.w500),
+                        ),
+                    ),
                 ],
               )),
         ));

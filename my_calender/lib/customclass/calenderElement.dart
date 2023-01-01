@@ -58,9 +58,14 @@ class CalenderBanner extends StatelessWidget {
             icon: Icon(Icons.arrow_back_rounded, size: 16,), color: Pastel.blacksoft,
           ),
           Provider.of<Cursor>(context, listen: false).isMonth
-              ? MyText("${Provider.of<Cursor>(context).selected.year}년 ${Provider.of<Cursor>(context).selected.month}월", 17, Pastel.black)
+              ? MyText(
+              "${Provider.of<Cursor>(context).selected.year}년 ${Provider.of<Cursor>(context).selected.month}월",
+              17,
+              Pastel.black,
+              FontWeight.w300
+          )
               : MyText("${Provider.of<Cursor>(context).selected.year}년 ${Provider.of<Cursor>(context).selected.month}월 "
-              "${Provider.of<Cursor>(context).dayofweek()}주차", 17, Pastel.black),
+              "${Provider.of<Cursor>(context).dayofweek()}주차", 17, Pastel.black, FontWeight.w300),
           IconButton(onPressed: () {
             Provider.of<Cursor>(context, listen: false).isMonth
                 ? Provider.of<Cursor>(context, listen: false).plusMonth(true)
@@ -79,7 +84,8 @@ class MyText extends StatelessWidget {
   final String t;
   final double fsize;
   final Color color;
-  const MyText(this.t, this.fsize, this.color, {Key? key}) : super(key: key);
+  final FontWeight fontWeight;
+  const MyText(this.t, this.fsize, this.color, this.fontWeight, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +95,7 @@ class MyText extends StatelessWidget {
       style: TextStyle(
           fontSize: fsize,
           color: color,
-        fontWeight: FontWeight.w300
+          fontWeight: fontWeight,
       ),
     );
   }
@@ -106,7 +112,8 @@ class MonthAppbar extends StatelessWidget implements PreferredSizeWidget{
         backgroundColor: Pastel.pink,
         elevation: 0,
         title: MyText(
-            "${Provider.of<Cursor>(context).selected.year}년 ${Provider.of<Cursor>(context).selected.month}월", 20, Pastel.black
+            "${Provider.of<Cursor>(context).selected.year}년 ${Provider.of<Cursor>(context).selected.month}월",
+            20, Pastel.black, FontWeight.w300
         ),
         actions: [
           IconButton(
@@ -155,7 +162,7 @@ class WeekAppbar extends StatelessWidget implements PreferredSizeWidget{
         elevation: 0,
         title: MyText(
             "${Provider.of<Cursor>(context).selected.year}년 ${Provider.of<Cursor>(context).selected.month}월 "
-                "${Provider.of<Cursor>(context).dayofweek()}주차", 20, Pastel.black,
+                "${Provider.of<Cursor>(context).dayofweek()}주차", 20, Pastel.black, FontWeight.w300,
         ),
         actions: [
           IconButton(
@@ -197,15 +204,15 @@ class TodoBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        // borderRadius: BorderRadius.only(topRight: Radius.circular(5), topLeft: Radius.circular(5)),
-        border: Border(
-            left: BorderSide(width: 1, style: BorderStyle.solid, color: Pastel.black),
-            top: BorderSide(width: 1, style: BorderStyle.solid, color: Pastel.black),
-            right: BorderSide(width: 1, style: BorderStyle.solid, color: Pastel.black),
-        ),
-      ),
-      child: Text("할 일"),
+      // decoration: BoxDecoration(
+      //   // borderRadius: BorderRadius.only(topRight: Radius.circular(5), topLeft: Radius.circular(5)),
+      //   border: Border(
+      //       left: BorderSide(width: 1, style: BorderStyle.solid, color: Pastel.black),
+      //       top: BorderSide(width: 1, style: BorderStyle.solid, color: Pastel.black),
+      //       right: BorderSide(width: 1, style: BorderStyle.solid, color: Pastel.black),
+      //   ),
+      // ),
+      child: MyText("할 일", 15, Pastel.black, FontWeight.w500),
     );
   }
 }
