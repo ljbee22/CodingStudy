@@ -87,6 +87,7 @@ class _CalenderState extends State<Calender> {
                                     );
                                   },
                                   child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
@@ -97,7 +98,22 @@ class _CalenderState extends State<Calender> {
                                           child: ImageIcon(AssetImage("assets/icon/check_unchecked.png"), size: 20, color: Pastel.black,),
                                         ),
                                         ),
-                                      MyText("${box.get(Provider.of<Cursor>(context, listen: false).returnAsString())![idx].name}", 15, Pastel.black),
+                                      Container(
+                                          width: MediaQuery.of(context).size.width-100,
+                                          alignment: Alignment.centerLeft,
+                                          child: RichText(
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            text: TextSpan(
+                                                text: "${box.get(Provider.of<Cursor>(context, listen: false).returnAsString())![idx].name}",
+                                                style: TextStyle(
+                                                  color: Pastel.black,
+                                                  fontSize: 15,
+                                                  fontFamily: "Myfont",
+                                                )
+                                            ),
+                                          )
+                                      ),
                                       const Spacer(),
                                       Padding(
                                         padding: EdgeInsets.only(right: 5),
