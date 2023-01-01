@@ -18,14 +18,9 @@ class ScheduleEdit extends StatefulWidget {
 }
 
 class _ScheduleEditState extends State<ScheduleEdit> {
-  final TextEditingController _controller = TextEditingController();
-  @override
-  void initState() {
-    super.initState();
-    _controller.text = ;
-  }
   @override
   Widget build(BuildContext context) {
+    final TextEditingController _controller = TextEditingController();
     print("widget is rebuilt@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     String scheduleDate = Provider.of<Cursor>(context).returnAsString();
     List totalList;
@@ -40,6 +35,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
     } else {
       oneList = totalList[widget.idx];
     }
+    _controller.text = oneList.name;
 
     _controller.selection = TextSelection.fromPosition(TextPosition(offset: _controller.text.length));
     return Scaffold(
@@ -51,9 +47,14 @@ class _ScheduleEditState extends State<ScheduleEdit> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            if(totalList.length > widget.idx)
             TextButton(
               child: Text("삭제", style: TextStyle(fontSize: 20, color: Pastel.redaccent, fontWeight: FontWeight.w500),),
-              onPressed: () {},
+              onPressed: () {
+                totalList.removeAt(widget.idx);
+                widget.box.put(scheduleDate, totalList);
+                Navigator.pop(context);
+              },
             ),
             TextButton(
               child: Text("완료", style: TextStyle(fontSize: 20, color: Pastel.black, fontWeight: FontWeight.w500),),
@@ -73,7 +74,6 @@ class _ScheduleEditState extends State<ScheduleEdit> {
           child: Column(
             children: [
               Container(
-                width: MediaQuery.of(context).size.width - 40,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                   border: Border.all(color: Pastel.grey, width: 0),

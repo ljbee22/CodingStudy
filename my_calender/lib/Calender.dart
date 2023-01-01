@@ -76,6 +76,7 @@ class _CalenderState extends State<Calender> {
                                 child: GestureDetector(
                                   behavior: HitTestBehavior.translucent,
                                   onTap: (){
+                                    //TODO 눌렀을때 키보드 focus out 되게. 전체 구현성공하면 무시
                                     showModalBottomSheet<void>(
                                         context: context,
                                         builder: (BuildContext context){
@@ -207,6 +208,7 @@ class _CalenderState extends State<Calender> {
                                     padding: EdgeInsets.only(right: 5),
                                     child: GestureDetector(
                                       onTap: () {
+                                        //TODO 눌렀을때 키보드 focus out 되게. 전체 구현성공하면 무시
                                         String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
                                         showModalBottomSheet<void>(
                                             context: context,
