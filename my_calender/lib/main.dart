@@ -9,7 +9,7 @@ import 'Calender.dart';
 void main() async{
   await Hive.initFlutter(); // hive database 초기화
   Hive.registerAdapter(ScheduleClassAdapter());
-  await Hive.openBox<List>('lib');
+  await Hive.openBox<List>('Box');
   runApp(const MyApp());
 }
 

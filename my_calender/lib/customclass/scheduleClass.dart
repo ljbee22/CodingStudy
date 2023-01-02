@@ -19,6 +19,8 @@ class ScheduleClass{
   bool btime; // 시간 존재 여부
   @HiveField(4)
   bool done; // 일정 해결 여부
+  @HiveField(5)
+  String memo; // 간단한 메모
 
 
   ScheduleClass({
@@ -26,6 +28,7 @@ class ScheduleClass{
     this.alarm = false,
     required this.date,
     this.btime = false,
-    this.done = false
+    this.done = false,
+    this.memo = "메모"
   });
 }

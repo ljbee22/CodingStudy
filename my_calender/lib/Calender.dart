@@ -30,6 +30,7 @@ class _CalenderState extends State<Calender> {
 
   @override
   Widget build(BuildContext context) {
+    String scheduleDate = Provider.of<Cursor>(context).returnAsString();
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
@@ -41,7 +42,7 @@ class _CalenderState extends State<Calender> {
         key: scaffoldKey,
         drawer: CustomDrawer(),
         body: ValueListenableBuilder(
-            valueListenable: Hive.box<List>('lib').listenable(),
+            valueListenable: Hive.box<List>('Box').listenable(),
           builder: (context, Box<List> box, child) {
             return Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -84,7 +85,7 @@ class _CalenderState extends State<Calender> {
                                     showModalBottomSheet<void>(
                                         context: context,
                                         builder: (BuildContext context){
-                                          return ScheduleEdit(box, idx);
+                                          return ScheduleEdit(box, idx, box.get(scheduleDate)![idx], false);
                                         }
                                     );
                                   },
@@ -107,7 +108,7 @@ class _CalenderState extends State<Calender> {
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             text: TextSpan(
-                                                text: "${box.get(Provider.of<Cursor>(context, listen: false).returnAsString())![idx].name}",
+                                                text: "${box.get(scheduleDate)![idx].name}",
                                                 style: TextStyle(
                                                   color: Pastel.black,
                                                   fontSize: 15,
@@ -130,8 +131,8 @@ class _CalenderState extends State<Calender> {
                               ),
                             );
                           },
-                            childCount: box.get(Provider.of<Cursor>(context, listen: false).returnAsString()) == null ?
-                            0 : box.get(Provider.of<Cursor>(context, listen: false).returnAsString())!.length,
+                            childCount: box.get(scheduleDate) == null ?
+                            0 : box.get(scheduleDate)!.length,
                           ),
                         ),
                         SliverToBoxAdapter(
@@ -195,8 +196,6 @@ class _CalenderState extends State<Calender> {
                                           return;
                                         }
 
-                                        String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
-
                                         if(box.containsKey(scheduleDate)) {
                                           List tmp = box.get(scheduleDate)!;
                                           tmp.add(ScheduleClass(name: text, date: Provider.of<Cursor>(context, listen: false).selected));
@@ -216,14 +215,15 @@ class _CalenderState extends State<Calender> {
                                     child: GestureDetector(
                                       onTap: () {
                                         //TODO 눌렀을때 키보드 focus out 되게. 전체 구현성공하면 무시
-                                        String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
                                         showModalBottomSheet<void>(
                                             context: context,
                                             builder: (BuildContext context){
                                               if(!box.containsKey(scheduleDate)) {
-                                                return ScheduleEdit(box, 0);
+                                                // 일정이 없는 날에 새 일정 추가
+                                                return ScheduleEdit(box, 0, ScheduleClass(name: "", date: Provider.of<Cursor>(context).selected), true);
                                               }
-                                              return ScheduleEdit(box, box.get(scheduleDate)!.length);
+                                              //일정이 있는 날에 새 일정 추가
+                                              return ScheduleEdit(box, box.get(scheduleDate)!.length, ScheduleClass(name: "", date: Provider.of<Cursor>(context).selected), true);
                                             }
                                         );
                                       },
