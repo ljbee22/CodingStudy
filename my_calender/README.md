@@ -195,6 +195,15 @@ MY Calender Project
 혼자 코딩
 1. 해당 날짜에 할일 숫자를 표시하도록 수정
 
+## 1.2
+1. bottomsheet 인자 수정
+2. scheduleClass에 memo element 추가 -> build runner 까지 돌림
+
+다음 계획
+
+1. bottomsheet "완료" 버튼 기능오류 해결(unfocus 했을 때 값 대입이 안됨...)
+2. bottomsheet 완성!!!
+
 ---
 # 추후 수정해야할 요소들
 
