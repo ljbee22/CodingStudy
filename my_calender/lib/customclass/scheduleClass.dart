@@ -29,6 +29,6 @@ class ScheduleClass{
     required this.date,
     this.btime = false,
     this.done = false,
-    this.memo = "메모"
+    this.memo = ""
   });
 }

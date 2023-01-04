@@ -61,8 +61,7 @@ class _OneDayState extends State<OneDay> {
                         FontWeight.w300
                     ),
                   ),
-                  if (widget.box.containsKey(
-                      DateFormat('yyyy.MM.dd').format(widget.oneDay)))
+                  if (widget.box.containsKey(DateFormat('yyyy.MM.dd').format(widget.oneDay)))
                     Positioned(
                         top: 5,
                         left: 28,
