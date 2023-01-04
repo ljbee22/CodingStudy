@@ -204,6 +204,14 @@ MY Calender Project
 1. bottomsheet "완료" 버튼 기능오류 해결(unfocus 했을 때 값 대입이 안됨...)
 2. bottomsheet 완성!!!
 
+## 1.4
+1. bottomsheet 에서 name 과 memo 저장 가능하게 함
+2. toggle buttom 만듦
+3. 삭제했을 때 빈 리스트이면 키를 제거하게 함
+
+다음 계획
+1. listwheelscrollview 로 날짜 변경하게 만들 예정
+
 ---
 # 추후 수정해야할 요소들
 
@@ -247,3 +255,6 @@ MY Calender Project
 
 bottomModalSheet에서 날짜를 수정하면, 그 ScheduleClass 자체의 날짜가 아니라, 
 hiveBox에 등록된 날짜를 바꾸도록 해야지 일정이 실제로 이동한다. 나중에 추가할때 염두해야함
+
+## 1.4
+1. 반복 논의하기
