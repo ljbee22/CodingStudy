@@ -192,6 +192,53 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                     ),
                   ),
                   //날짜 설정 -> 캘린더를 띄우기 or 하루 미루기, 일주일 미루기 버튼
+                  Padding(
+                    padding: EdgeInsets.only(top: 5),
+                    child: Container(
+                      height: 80,
+                      child: Row(
+                        children: [
+                          // 연도
+                          Expanded(
+                            child: ListWheelScrollView.useDelegate(
+                              physics: FixedExtentScrollPhysics(),
+                              diameterRatio: 10,
+                              controller: FixedExtentScrollController(initialItem: 100),
+                              onSelectedItemChanged: (int idx) {
+                                widget.oneSchedule.newYear(widget.oneSchedule.date.year+idx-100);
+                                print(widget.oneSchedule.date);
+                              },
+                              childDelegate: ListWheelChildListDelegate(
+                                  children: [
+                                    for(int i = widget.oneSchedule.date.year - 100; i<widget.oneSchedule.date.year + 100; i++) Text(i.toString()),
+                                  ]
+                              ),
+                                itemExtent: 30,
+
+                            ),
+                          ),
+                          // 월
+                          Expanded(
+                            child: ListWheelScrollView(
+                                itemExtent: 30,
+                                children: [
+                                  for(int i = 0; i<100; i++) Text(i.toString()),
+                                ]
+                            ),
+                          ),
+                          // 일
+                          Expanded(
+                            child: ListWheelScrollView(
+                                itemExtent: 30,
+                                children: [
+                                  for(int i = 0; i<100; i++) Text(i.toString()),
+                                ]
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   Row(
                     children: [
                       Expanded(
@@ -220,7 +267,6 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                             child: const Text("날짜 수정")
                         ),
                       )
-
                     ],
                   ),
                   Container( // 시간 여부 -> 설정
