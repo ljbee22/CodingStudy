@@ -30,6 +30,7 @@ class _CalenderState extends State<Calender> {
   @override
   Widget build(BuildContext context) {
     String scheduleDate = Provider.of<Cursor>(context).returnAsString();
+    DateTime dateTime = Provider.of<Cursor>(context).selected;
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
@@ -190,11 +191,11 @@ class _CalenderState extends State<Calender> {
 
                                         if(box.containsKey(scheduleDate)) {
                                           List tmp = box.get(scheduleDate)!;
-                                          tmp.add(ScheduleClass(name: text, date: Provider.of<Cursor>(context, listen: false).selected));
+                                          tmp.add(ScheduleClass(name: text, date: dateTime));
                                           box.put(scheduleDate, tmp);
                                         }
                                         else {
-                                          List tmp = [ScheduleClass(name: text, date: Provider.of<Cursor>(context, listen: false).selected)];
+                                          List tmp = [ScheduleClass(name: text, date: dateTime)];
                                           box.put(scheduleDate, tmp);
                                         }
                                         myFocusNode.requestFocus();
@@ -212,10 +213,10 @@ class _CalenderState extends State<Calender> {
                                             builder: (BuildContext context){
                                               if(!box.containsKey(scheduleDate)) {
                                                 // 일정이 없는 날에 새 일정 추가
-                                                return ScheduleEdit(box, 0, ScheduleClass(name: "", date: Provider.of<Cursor>(context).selected), true);
+                                                return ScheduleEdit(box, 0, ScheduleClass(name: "", date: dateTime), true);
                                               }
                                               //일정이 있는 날에 새 일정 추가
-                                              return ScheduleEdit(box, box.get(scheduleDate)!.length, ScheduleClass(name: "", date: Provider.of<Cursor>(context).selected), true);
+                                              return ScheduleEdit(box, box.get(scheduleDate)!.length, ScheduleClass(name: "", date: dateTime), true);
                                             }
                                         );
                                       },

@@ -12,23 +12,37 @@ class ScheduleClass{
   @HiveField(0)
   String name; // 일정 이름
   @HiveField(1)
-  bool alarm; // 알림 여부
+  String memo; // 간단한 메모
   @HiveField(2)
-  DateTime date; // 일정 날짜 및 시간 저장
+  DateTime date; // 날짜 저장
   @HiveField(3)
   bool btime; // 시간 존재 여부
   @HiveField(4)
-  bool done; // 일정 해결 여부
+  String time; // 시간 저장
   @HiveField(5)
-  String memo; // 간단한 메모
+  bool done; // 일정 해결 여부
+  @HiveField(6)
+  bool alarm; // 알림 여부
 
 
   ScheduleClass({
     required this.name,
-    this.alarm = false,
+    this.memo = "",
     required this.date,
     this.btime = false,
+    this.time = "09:00",
     this.done = false,
-    this.memo = ""
+    this.alarm = false
   });
+
+  void newYear(int y) {
+    date = DateTime(y);
+  }
+
+  void newMonth(int m) {
+    date = DateTime(date.year, m);
+  }
+  void newDay(int d) {
+    date = DateTime(date.year, date.month, d);
+  }
 }
