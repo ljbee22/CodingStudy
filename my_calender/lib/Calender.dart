@@ -18,7 +18,6 @@ class Calender extends StatefulWidget {
 }
 
 class _CalenderState extends State<Calender> {
-  final key = GlobalKey<FormState>();
   static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   final myController = TextEditingController();
   FocusNode myFocusNode = FocusNode();
@@ -38,7 +37,6 @@ class _CalenderState extends State<Calender> {
       },
       child: Scaffold(
         appBar: CustomAppbar(scaffoldKey: scaffoldKey,), //custom appbar
-        // drawer: CustomDrawer(),
         key: scaffoldKey,
         drawer: CustomDrawer(),
         body: ValueListenableBuilder(
@@ -154,7 +152,6 @@ class _CalenderState extends State<Calender> {
                                   Expanded(
                                     child: TextFormField(
                                       // autofocus: true,
-                                      key: key,
                                       // autovalidateMode: AutovalidateMode.always,
                                       textAlignVertical: TextAlignVertical.center,
                                       style: TextStyle(fontSize: 15),
@@ -180,12 +177,7 @@ class _CalenderState extends State<Calender> {
                                         ),
                                         isCollapsed: true
                                       ),
-                                      validator: (text) {
-                                        if(text!.isEmpty) {
-                                          return "null";
-                                        }
-                                        return null;
-                                      },
+
                                       onFieldSubmitted: (text) {
                                         //filtering
                                         text = text.trim();
