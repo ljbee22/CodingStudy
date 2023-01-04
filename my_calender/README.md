@@ -208,9 +208,12 @@ MY Calender Project
 1. bottomsheet 에서 name 과 memo 저장 가능하게 함
 2. toggle buttom 만듦
 3. 삭제했을 때 빈 리스트이면 키를 제거하게 함
+4. listwheelscrollview를 도입
 
 다음 계획
-1. listwheelscrollview 로 날짜 변경하게 만들 예정
+1. listwheelscrollview로 날짜 변경하게 만들 예정
+2. 시간도 scrollview로 변경할 수 있게
+3. 알"림" 기능 넣기
 
 ---
 # 추후 수정해야할 요소들
