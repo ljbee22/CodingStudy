@@ -35,14 +35,7 @@ class ScheduleClass{
     this.alarm = false
   });
 
-  void newYear(int y) {
-    date = DateTime(y);
-  }
-
-  void newMonth(int m) {
-    date = DateTime(date.year, m);
-  }
-  void newDay(int d) {
-    date = DateTime(date.year, date.month, d);
+  void newDate(DateTime A) {
+    date = A;
   }
 }

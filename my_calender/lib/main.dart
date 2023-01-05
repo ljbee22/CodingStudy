@@ -4,6 +4,7 @@ import 'package:my_calender/customclass/scheduleClass.dart';
 import 'package:provider/provider.dart';
 import 'cursor.dart';
 import 'Calender.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 
 void main() async{
@@ -34,6 +35,14 @@ class MyApp extends StatelessWidget {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
             ),
+            localizationsDelegates: [
+              GlobalMaterialLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: [
+              Locale('ko', ''),
+              Locale('en', ''),
+            ],
             home: Calender(),
         );
       }

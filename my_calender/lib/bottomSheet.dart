@@ -4,6 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:my_calender/customclass/bottomSheetElement.dart';
 import 'package:my_calender/customclass/scheduleClass.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'cursor.dart';
 import 'customclass/palette.dart';
@@ -192,50 +193,72 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                     ),
                   ),
                   //날짜 설정 -> 캘린더를 띄우기 or 하루 미루기, 일주일 미루기 버튼
+                  // Padding(
+                  //   padding: EdgeInsets.only(top: 5),
+                  //   child: Container(
+                  //     height: 80,
+                  //     child: Row(
+                  //       children: [
+                  //         // 연도
+                  //         Expanded(
+                  //           child: ListWheelScrollView.useDelegate(
+                  //             physics: FixedExtentScrollPhysics(),
+                  //             diameterRatio: 10,
+                  //             controller: FixedExtentScrollController(initialItem: 100),
+                  //             onSelectedItemChanged: (int idx) {
+                  //
+                  //             },
+                  //             childDelegate: ListWheelChildListDelegate(
+                  //                 children: [
+                  //                   for(int i = 2000; i < 2100; i++) Text(i.toString()),
+                  //                 ]
+                  //             ),
+                  //               itemExtent: 30,
+                  //
+                  //           ),
+                  //         ),
+                  //         // 월
+                  //         Expanded(
+                  //           child: ListWheelScrollView(
+                  //               itemExtent: 30,
+                  //               children: [
+                  //                 for(int i = 0; i<100; i++) Text(i.toString()),
+                  //               ]
+                  //           ),
+                  //         ),
+                  //         // 일
+                  //         Expanded(
+                  //           child: ListWheelScrollView(
+                  //               itemExtent: 30,
+                  //               children: [
+                  //                 for(int i = 0; i<100; i++) Text(i.toString()),
+                  //               ]
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                   Padding(
                     padding: EdgeInsets.only(top: 5),
                     child: Container(
-                      height: 80,
-                      child: Row(
-                        children: [
-                          // 연도
-                          Expanded(
-                            child: ListWheelScrollView.useDelegate(
-                              physics: FixedExtentScrollPhysics(),
-                              diameterRatio: 10,
-                              controller: FixedExtentScrollController(initialItem: 100),
-                              onSelectedItemChanged: (int idx) {
-                                widget.oneSchedule.newYear(widget.oneSchedule.date.year+idx-100);
-                                print(widget.oneSchedule.date);
-                              },
-                              childDelegate: ListWheelChildListDelegate(
-                                  children: [
-                                    for(int i = widget.oneSchedule.date.year - 100; i<widget.oneSchedule.date.year + 100; i++) Text(i.toString()),
-                                  ]
-                              ),
-                                itemExtent: 30,
-
-                            ),
-                          ),
-                          // 월
-                          Expanded(
-                            child: ListWheelScrollView(
-                                itemExtent: 30,
-                                children: [
-                                  for(int i = 0; i<100; i++) Text(i.toString()),
-                                ]
-                            ),
-                          ),
-                          // 일
-                          Expanded(
-                            child: ListWheelScrollView(
-                                itemExtent: 30,
-                                children: [
-                                  for(int i = 0; i<100; i++) Text(i.toString()),
-                                ]
-                            ),
-                          ),
-                        ],
+                      height: 120,
+                      child: CupertinoTheme(
+                        data: CupertinoThemeData(
+                          textTheme: CupertinoTextThemeData(
+                            dateTimePickerTextStyle: TextStyle(
+                              fontSize: 17,
+                            )
+                          )
+                        ),
+                        child: CupertinoDatePicker(
+                          initialDateTime: widget.oneSchedule.date,
+                          onDateTimeChanged: (date){
+                            widget.oneSchedule.newDate(date);
+                            print(widget.oneSchedule.date);
+                            },
+                          mode: CupertinoDatePickerMode.date,
+                        ),
                       ),
                     ),
                   ),
