@@ -23,7 +23,9 @@ class ScheduleEdit extends StatefulWidget {
 
 class _ScheduleEditState extends State<ScheduleEdit> {
   final key = GlobalKey<FormState>();
-  bool isLeft = true;
+  bool isLeft = true; // 토글 버튼
+  late DateTime tmpDate;
+  bool isDate = false; // 캘린더 표시 여부 확인
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +57,12 @@ class _ScheduleEditState extends State<ScheduleEdit> {
               child: const Text("완료", style: TextStyle(fontSize: 20, color: Pastel.black, fontWeight: FontWeight.w500),),
               onPressed: (){
                 if(key.currentState!.validate()){
-                  key.currentState!.save();
+                  key.currentState!.save(); // 이름과 메모 저장
                 }
 
                 List totalList;
+                widget.oneSchedule.newDate(tmpDate); // 날짜 저장
+
                 if(widget.isNew) {
                   if(widget.box.containsKey(scheduleDate)) {
                     totalList = widget.box.get(scheduleDate);
@@ -141,7 +145,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                                 onSaved: (text) {
                                   text = text!.trim();
                                   widget.oneSchedule.name = text;
-                                  print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                                  print("@@@@@@@@@@@이름 저장@@@@@@@@@@@@");
                                 },
                               ),
                         ),
@@ -184,7 +188,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                             onSaved: (text) {
                               text = text!.trim();
                               widget.oneSchedule.memo = text;
-                              print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                              print("@@@@@@@@@@@@메모 저장 @@@@@@@@@@@");
                             },
                           ),
                         ),
@@ -193,105 +197,60 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                     ),
                   ),
                   //날짜 설정 -> 캘린더를 띄우기 or 하루 미루기, 일주일 미루기 버튼
-                  // Padding(
-                  //   padding: EdgeInsets.only(top: 5),
-                  //   child: Container(
-                  //     height: 80,
-                  //     child: Row(
-                  //       children: [
-                  //         // 연도
-                  //         Expanded(
-                  //           child: ListWheelScrollView.useDelegate(
-                  //             physics: FixedExtentScrollPhysics(),
-                  //             diameterRatio: 10,
-                  //             controller: FixedExtentScrollController(initialItem: 100),
-                  //             onSelectedItemChanged: (int idx) {
-                  //
-                  //             },
-                  //             childDelegate: ListWheelChildListDelegate(
-                  //                 children: [
-                  //                   for(int i = 2000; i < 2100; i++) Text(i.toString()),
-                  //                 ]
-                  //             ),
-                  //               itemExtent: 30,
-                  //
-                  //           ),
-                  //         ),
-                  //         // 월
-                  //         Expanded(
-                  //           child: ListWheelScrollView(
-                  //               itemExtent: 30,
-                  //               children: [
-                  //                 for(int i = 0; i<100; i++) Text(i.toString()),
-                  //               ]
-                  //           ),
-                  //         ),
-                  //         // 일
-                  //         Expanded(
-                  //           child: ListWheelScrollView(
-                  //               itemExtent: 30,
-                  //               children: [
-                  //                 for(int i = 0; i<100; i++) Text(i.toString()),
-                  //               ]
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 5),
-                    child: Container(
-                      height: 120,
-                      child: CupertinoTheme(
-                        data: CupertinoThemeData(
-                          textTheme: CupertinoTextThemeData(
-                            dateTimePickerTextStyle: TextStyle(
-                              fontSize: 17,
-                            )
-                          )
-                        ),
-                        child: CupertinoDatePicker(
-                          initialDateTime: widget.oneSchedule.date,
-                          onDateTimeChanged: (date){
-                            widget.oneSchedule.newDate(date);
-                            print(widget.oneSchedule.date);
-                            },
-                          mode: CupertinoDatePickerMode.date,
-                        ),
+
+                  const SizedBox(height: 10),
+
+                  GestureDetector(
+                    onTap: (){
+                      setState((){
+                      isDate = !isDate;
+                      });
+                      print(isDate);
+                    },
+                    child: AnimatedContainer(
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: Pastel.grey),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      duration: const Duration(milliseconds: 0),
+                      height: isDate ? 30+115 : 30,
+                      width: 400,
+                      child: Column(
+                        children: [
+                          Text("일정 변경"),
+
+                          if(isDate)
+                            Padding(
+                            padding: const EdgeInsets.only(top: 5),
+                            child: Container(
+                              height: 110,
+                              width: 350,
+                              child: CupertinoTheme(
+                                data: CupertinoThemeData(
+                                    textTheme: CupertinoTextThemeData(
+                                        dateTimePickerTextStyle: TextStyle(
+                                          fontSize: 17,
+                                        )
+                                    )
+                                ),
+                                child: CupertinoDatePicker(
+                                  initialDateTime: widget.oneSchedule.date,
+                                  onDateTimeChanged: (date){
+                                    tmpDate = date;
+                                    print(tmpDate);
+                                  },
+                                  mode: CupertinoDatePickerMode.date,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                        ],
                       ),
                     ),
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
-                            onPressed: (){
-                            },
-                            style: ButtonStyle(
 
-                            ),
-                            child: const Text("내일로")
-                        ),
-                      ),
-                      Expanded(
-                        child: ElevatedButton(
-                            onPressed: (){
 
-                            },
-                            child: const Text("다음주로")
-                        ),
-                      ),
-                      Expanded(
-                        child: ElevatedButton(
-                            onPressed: (){
-
-                            },
-                            child: const Text("날짜 수정")
-                        ),
-                      )
-                    ],
-                  ),
                   Container( // 시간 여부 -> 설정
                   ),
                 ],
