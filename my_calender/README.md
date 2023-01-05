@@ -215,6 +215,16 @@ MY Calender Project
 2. 시간도 scrollview로 변경할 수 있게
 3. 알"림" 기능 넣기
 
+## 1.5
+1. DatePicker cupertino date picker로 구현
+2. 날짜 이제 정상적으로 저장함
+3. 일단 animated container 넣음
+
+다음 계획
+1. 애니메이션 정상적으로 보이게 하기
+2. 시간 변경도 구현
+3. 알림 기능 구현
+
 ---
 # 추후 수정해야할 요소들
 
