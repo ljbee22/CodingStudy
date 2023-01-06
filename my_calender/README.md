@@ -225,6 +225,18 @@ MY Calender Project
 2. 시간 변경도 구현
 3. 알림 기능 구현
 
+## 1.6
+
+1. timepicker 구현
+2. scheduleClass 에서 시간과 날짜 통합
+3. 날짜 변경 구현하긴 함
+4. boxController 생성
+
+다음 계획
+1. 새 일정에서 이름이랑 메모가 다른곳 tap했을 때 저장이 안됨(사라짐)
+2. rebuild 되면서 날짜 현재랑 바뀐거랑 비교(tmpDate 정의 위치 해결)
+3. 날짜 이동하면 initalValue가 이상해지는 문제 해결
+
 ---
 # 추후 수정해야할 요소들
 
