@@ -14,14 +14,12 @@ class ScheduleClass{
   @HiveField(1)
   String memo; // 간단한 메모
   @HiveField(2)
-  DateTime date; // 날짜 저장
+  DateTime date; // 날짜, 시간 저장
   @HiveField(3)
   bool btime; // 시간 존재 여부
   @HiveField(4)
-  String time; // 시간 저장
-  @HiveField(5)
   bool done; // 일정 해결 여부
-  @HiveField(6)
+  @HiveField(5)
   bool alarm; // 알림 여부
 
 
@@ -30,7 +28,6 @@ class ScheduleClass{
     this.memo = "",
     required this.date,
     this.btime = false,
-    this.time = "09:00",
     this.done = false,
     this.alarm = false
   });

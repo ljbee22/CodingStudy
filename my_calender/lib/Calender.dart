@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:my_calender/WeekAndMonth.dart';
 import 'package:my_calender/bottomSheet.dart';
+import 'package:my_calender/customclass/boxController.dart';
 import 'package:my_calender/customclass/scheduleClass.dart';
 import 'package:provider/provider.dart';
 import 'package:my_calender/customclass/palette.dart';
@@ -189,15 +190,10 @@ class _CalenderState extends State<Calender> {
                                           return;
                                         }
 
-                                        if(box.containsKey(scheduleDate)) {
-                                          List tmp = box.get(scheduleDate)!;
-                                          tmp.add(ScheduleClass(name: text, date: dateTime));
-                                          box.put(scheduleDate, tmp);
-                                        }
-                                        else {
-                                          List tmp = [ScheduleClass(name: text, date: dateTime)];
-                                          box.put(scheduleDate, tmp);
-                                        }
+                                        BoxController().newSchedule(
+                                            box, scheduleDate,
+                                            ScheduleClass(name: text, date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)
+                                        ));
                                         myFocusNode.requestFocus();
                                         myController.clear();
                                       },
@@ -213,10 +209,10 @@ class _CalenderState extends State<Calender> {
                                             builder: (BuildContext context){
                                               if(!box.containsKey(scheduleDate)) {
                                                 // 일정이 없는 날에 새 일정 추가
-                                                return ScheduleEdit(box, 0, ScheduleClass(name: "", date: dateTime), true);
+                                                return ScheduleEdit(box, 0, ScheduleClass(name: "", date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
                                               }
                                               //일정이 있는 날에 새 일정 추가
-                                              return ScheduleEdit(box, box.get(scheduleDate)!.length, ScheduleClass(name: "", date: dateTime), true);
+                                              return ScheduleEdit(box, box.get(scheduleDate)!.length, ScheduleClass(name: "", date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
                                             }
                                         );
                                       },

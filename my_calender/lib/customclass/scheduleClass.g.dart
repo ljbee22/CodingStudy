@@ -21,16 +21,15 @@ class ScheduleClassAdapter extends TypeAdapter<ScheduleClass> {
       memo: fields[1] as String,
       date: fields[2] as DateTime,
       btime: fields[3] as bool,
-      time: fields[4] as String,
-      done: fields[5] as bool,
-      alarm: fields[6] as bool,
+      done: fields[4] as bool,
+      alarm: fields[5] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, ScheduleClass obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -40,10 +39,8 @@ class ScheduleClassAdapter extends TypeAdapter<ScheduleClass> {
       ..writeByte(3)
       ..write(obj.btime)
       ..writeByte(4)
-      ..write(obj.time)
-      ..writeByte(5)
       ..write(obj.done)
-      ..writeByte(6)
+      ..writeByte(5)
       ..write(obj.alarm);
   }
 

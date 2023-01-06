@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:my_calender/customclass/bottomSheetElement.dart';
+import 'package:my_calender/customclass/boxController.dart';
 import 'package:my_calender/customclass/scheduleClass.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,14 +24,13 @@ class ScheduleEdit extends StatefulWidget {
 
 class _ScheduleEditState extends State<ScheduleEdit> {
   final key = GlobalKey<FormState>();
-  bool isLeft = true; // 토글 버튼
-  late DateTime tmpDate;
   bool isDate = false; // 캘린더 표시 여부 확인
+  DateTime tmpDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
     String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
-
+    print("@@@@@@@@@@다시 빌드됨@@@@@@@@@@@@");
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -45,11 +45,8 @@ class _ScheduleEditState extends State<ScheduleEdit> {
             TextButton(
               child: const Text("삭제", style: TextStyle(fontSize: 20, color: Pastel.redaccent, fontWeight: FontWeight.w500),),
               onPressed: () {
-                List totalList = widget.box.get(scheduleDate);
-                totalList.removeAt(widget.idx);
-                if(totalList.length == 0){
-                  widget.box.delete(scheduleDate);}
-                else {widget.box.put(scheduleDate, totalList);}
+                print("@@@@@@@@@@삭제@@@@@@@@@@@@");
+                BoxController().deleteSchedule(widget.box, scheduleDate, widget.idx);
                 Navigator.pop(context);
               },
             ),
@@ -60,21 +57,20 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                   key.currentState!.save(); // 이름과 메모 저장
                 }
 
-                List totalList;
-                widget.oneSchedule.newDate(tmpDate); // 날짜 저장
+                // widget.oneSchedule.newDate(tmpDate); // 날짜 저장
 
-                if(widget.isNew) {
-                  if(widget.box.containsKey(scheduleDate)) {
-                    totalList = widget.box.get(scheduleDate);
-                    totalList.add(widget.oneSchedule);
-                  } else {
-                    totalList = [widget.oneSchedule];
+                if(widget.isNew) { // 새로운 일정을 추가
+                  print("@@@@@@@@@@@새로운 일정 추가됨@@@@@@@@@@");
+                  BoxController().newSchedule(widget.box, scheduleDate, widget.oneSchedule);
+                } else { // 존재하는 일정을 수정
+                  if(widget.oneSchedule.date == tmpDate) { // 날짜가 변경되지 않음 -> 수정
+                    print("@@@@@@@@@@날짜는 그대로 수정@@@@@@@@@@@@");
+                    BoxController().editSchedule(widget.box, scheduleDate, widget.oneSchedule, widget.idx);
+                  } else { //날짜가 변경됨 -> 삭제, 새로운 일정 삽입
+                    print("@@@@@@@@@@날짜 수정됨@@@@@@@@@@@@");
+                    BoxController().changeScheduleDate(widget.box, scheduleDate, tmpDate, widget.oneSchedule, widget.idx);
                   }
-                } else {
-                  totalList = widget.box.get(scheduleDate);
-                  totalList[widget.idx] = widget.oneSchedule;
                 }
-                widget.box.put(scheduleDate, totalList);
                 Navigator.pop(context);
               },
             ),
@@ -207,22 +203,76 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                       });
                       print(isDate);
                     },
-                    child: AnimatedContainer(
+                    child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(width: 1, color: Pastel.grey),
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      duration: const Duration(milliseconds: 0),
-                      height: isDate ? 30+115 : 30,
                       width: 400,
                       child: Column(
                         children: [
-                          Text("일정 변경"),
-
-                          if(isDate)
-                            Padding(
-                            padding: const EdgeInsets.only(top: 5),
-                            child: Container(
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                              child: Text("일정 변경")
+                          ),
+                            AnimatedCrossFade(
+                                firstChild: SizedBox(
+                                  height: 110,
+                                  width: 350,
+                                  child: CupertinoTheme(
+                                    data: CupertinoThemeData(
+                                        textTheme: CupertinoTextThemeData(
+                                            dateTimePickerTextStyle: TextStyle(
+                                              fontSize: 17,
+                                            )
+                                        )
+                                    ),
+                                    child: CupertinoDatePicker(
+                                      initialDateTime: widget.oneSchedule.date,
+                                      onDateTimeChanged: (date){
+                                        tmpDate = date;
+                                        print(tmpDate);
+                                      },
+                                      mode: CupertinoDatePickerMode.date,
+                                    ),
+                                  ),
+                                ),
+                                secondChild: Container(),
+                                crossFadeState: isDate ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                                duration: const Duration(milliseconds: 200)
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 1, color: Pastel.grey),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    width: 400,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
+                          child: Row(
+                            children: [
+                              Text("시간"),
+                              Spacer(),
+                              GestureDetector(
+                                  child: CustomToggle(widget.oneSchedule.btime),
+                                onTap: () {
+                                    setState(() {
+                                      widget.oneSchedule.btime = !widget.oneSchedule.btime;
+                                    });
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        AnimatedCrossFade(
+                            firstChild: SizedBox(
                               height: 110,
                               width: 350,
                               child: CupertinoTheme(
@@ -239,17 +289,17 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                                     tmpDate = date;
                                     print(tmpDate);
                                   },
-                                  mode: CupertinoDatePickerMode.date,
+                                  mode: CupertinoDatePickerMode.time,
                                 ),
                               ),
                             ),
-                          ),
-
-                        ],
-                      ),
+                            secondChild: Container(),
+                            crossFadeState: widget.oneSchedule.btime ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                            duration: const Duration(milliseconds: 200)
+                        ),
+                      ],
                     ),
                   ),
-
 
                   Container( // 시간 여부 -> 설정
                   ),
