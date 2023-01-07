@@ -24,8 +24,6 @@ class ScheduleEdit extends StatefulWidget {
 
 class _ScheduleEditState extends State<ScheduleEdit> {
 
-
-  final key = GlobalKey<FormState>();
   late String title;
   late String memo;
   bool isDate = false; // 캘린더 표시 여부 확인
@@ -70,14 +68,10 @@ class _ScheduleEditState extends State<ScheduleEdit> {
               onPressed: (){
                 bool isDateChanged = widget.oneSchedule.isDayChanged(tmpDate);
 
-                if(key.currentState!.validate()){
-                  key.currentState!.save(); // 이름과 메모를 임시 변수에 저장
-                }
-
                 print("${tmpDate}@############################@ ${tmpTime}");
 
-                widget.oneSchedule.name = title;
-                widget.oneSchedule.memo = memo;
+                widget.oneSchedule.name = title.trim(); // 이름 저장 with trimming
+                widget.oneSchedule.memo = memo.trim(); // 메모 저장 with trimming
                 widget.oneSchedule.btime = isToggleOn;
                 widget.oneSchedule.changeDateAndTime(tmpDate, tmpTime); // 날짜 저장
                 print("@@@@@@@@@@@@@@@@@@@${widget.oneSchedule.date}");
@@ -103,17 +97,13 @@ class _ScheduleEditState extends State<ScheduleEdit> {
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
-          if(key.currentState!.validate()){
-            key.currentState!.save();
-          }
-
+          title = title.trim();
           FocusManager.instance.primaryFocus?.unfocus();
         },
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
             child: Form(
-              key: key,
               child: Column(
                 children: [
                   Container(
@@ -130,7 +120,6 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                                 controller: TextEditingController(
                                   text: title,
                                 ),
-                                // keyboardType: TextInputType.multiline,
                                 // maxLines: null,
                                 style: TextStyle(fontSize: 15),
                                 textAlignVertical: TextAlignVertical.center,
@@ -154,15 +143,9 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                                     ),
                                 ),
                                 onFieldSubmitted: (text) {
-                                  text = text.trim();
                                   if(text.isEmpty) FocusManager.instance.primaryFocus?.unfocus();
-                                  title = text;
                                 },
-                                validator: (text){
-                                  return null;
-                                },
-                                onSaved: (text) {
-                                  text = text!.trim();
+                                onChanged: (text) {
                                   title = text;
                                   print("@@@@@@@@@@@이름 저장@@@@@@@@@@@@");
                                 },
@@ -197,16 +180,10 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                               ),
                             ),
                             onFieldSubmitted: (text) {
-                              text = text.trim();
                               if(text.isEmpty) FocusManager.instance.primaryFocus?.unfocus();
-                              memo = text;
                             },
-                            validator: (text){
-                              return null;
-                            },
-                            onSaved: (text) {
-                              text = text!.trim();
-                              memo = text;
+                            onChanged: (text) {
+                              memo = text!;
                               print("@@@@@@@@@@@@메모 저장 @@@@@@@@@@@");
                             },
                           ),
