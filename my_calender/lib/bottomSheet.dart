@@ -23,11 +23,26 @@ class ScheduleEdit extends StatefulWidget {
 }
 
 class _ScheduleEditState extends State<ScheduleEdit> {
+
+
   final key = GlobalKey<FormState>();
+  late String title;
+  late String memo;
   bool isDate = false; // 캘린더 표시 여부 확인
-  DateTime tmpDate = DateTime.now();
+  late DateTime tmpDate; // oneSchedule에 넣을 날짜
+  late DateTime tmpTime; // oneSchedule에 넣을 시간
+  late bool isToggleOn;
 
   @override
+  void initState(){
+    super.initState();
+    title = widget.oneSchedule.name;
+    memo = widget.oneSchedule.memo;
+    tmpDate = widget.oneSchedule.date;
+    tmpTime = widget.oneSchedule.date;
+    isToggleOn = widget.oneSchedule.btime;
+  }
+
   Widget build(BuildContext context) {
     String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
     print("@@@@@@@@@@다시 빌드됨@@@@@@@@@@@@");
@@ -53,22 +68,30 @@ class _ScheduleEditState extends State<ScheduleEdit> {
             TextButton(
               child: const Text("완료", style: TextStyle(fontSize: 20, color: Pastel.black, fontWeight: FontWeight.w500),),
               onPressed: (){
+                bool isDateChanged = widget.oneSchedule.isDayChanged(tmpDate);
+
                 if(key.currentState!.validate()){
-                  key.currentState!.save(); // 이름과 메모 저장
+                  key.currentState!.save(); // 이름과 메모를 임시 변수에 저장
                 }
 
-                // widget.oneSchedule.newDate(tmpDate); // 날짜 저장
+                print("${tmpDate}@############################@ ${tmpTime}");
+
+                widget.oneSchedule.name = title;
+                widget.oneSchedule.memo = memo;
+                widget.oneSchedule.btime = isToggleOn;
+                widget.oneSchedule.changeDateAndTime(tmpDate, tmpTime); // 날짜 저장
+                print("@@@@@@@@@@@@@@@@@@@${widget.oneSchedule.date}");
 
                 if(widget.isNew) { // 새로운 일정을 추가
                   print("@@@@@@@@@@@새로운 일정 추가됨@@@@@@@@@@");
                   BoxController().newSchedule(widget.box, scheduleDate, widget.oneSchedule);
                 } else { // 존재하는 일정을 수정
-                  if(widget.oneSchedule.date == tmpDate) { // 날짜가 변경되지 않음 -> 수정
-                    print("@@@@@@@@@@날짜는 그대로 수정@@@@@@@@@@@@");
-                    BoxController().editSchedule(widget.box, scheduleDate, widget.oneSchedule, widget.idx);
-                  } else { //날짜가 변경됨 -> 삭제, 새로운 일정 삽입
+                  if(isDateChanged) { //날짜가 변경됨 -> 삭제, 새로운 일정 삽입
                     print("@@@@@@@@@@날짜 수정됨@@@@@@@@@@@@");
                     BoxController().changeScheduleDate(widget.box, scheduleDate, tmpDate, widget.oneSchedule, widget.idx);
+                  } else {// 날짜가 변경되지 않음 -> 수정
+                    print("@@@@@@@@@@날짜는 그대로 수정@@@@@@@@@@@@");
+                    BoxController().editSchedule(widget.box, scheduleDate, widget.oneSchedule, widget.idx);
                   }
                 }
                 Navigator.pop(context);
@@ -105,7 +128,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                           padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                           child: TextFormField(
                                 controller: TextEditingController(
-                                  text: widget.oneSchedule.name,
+                                  text: title,
                                 ),
                                 // keyboardType: TextInputType.multiline,
                                 // maxLines: null,
@@ -133,14 +156,14 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                                 onFieldSubmitted: (text) {
                                   text = text.trim();
                                   if(text.isEmpty) FocusManager.instance.primaryFocus?.unfocus();
-                                  widget.oneSchedule.name = text;
+                                  title = text;
                                 },
                                 validator: (text){
                                   return null;
                                 },
                                 onSaved: (text) {
                                   text = text!.trim();
-                                  widget.oneSchedule.name = text;
+                                  title = text;
                                   print("@@@@@@@@@@@이름 저장@@@@@@@@@@@@");
                                 },
                               ),
@@ -150,7 +173,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                           padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                           child: TextFormField(
                             controller: TextEditingController(
-                              text: widget.oneSchedule.memo,
+                              text: memo,
                             ),
                             style: TextStyle(fontSize: 15),
                             textAlignVertical: TextAlignVertical.center,
@@ -176,14 +199,14 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                             onFieldSubmitted: (text) {
                               text = text.trim();
                               if(text.isEmpty) FocusManager.instance.primaryFocus?.unfocus();
-                              widget.oneSchedule.memo = text;
+                              memo = text;
                             },
                             validator: (text){
                               return null;
                             },
                             onSaved: (text) {
                               text = text!.trim();
-                              widget.oneSchedule.memo = text;
+                              memo = text;
                               print("@@@@@@@@@@@@메모 저장 @@@@@@@@@@@");
                             },
                           ),
@@ -228,7 +251,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                                         )
                                     ),
                                     child: CupertinoDatePicker(
-                                      initialDateTime: widget.oneSchedule.date,
+                                      initialDateTime: tmpDate,
                                       onDateTimeChanged: (date){
                                         tmpDate = date;
                                         print(tmpDate);
@@ -261,11 +284,15 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                               Text("시간"),
                               Spacer(),
                               GestureDetector(
-                                  child: CustomToggle(widget.oneSchedule.btime),
+                                  child: CustomToggle(isToggleOn),
                                 onTap: () {
                                     setState(() {
-                                      widget.oneSchedule.btime = !widget.oneSchedule.btime;
+                                      isToggleOn = !isToggleOn;
                                     });
+
+                                    if(!isToggleOn){ // 토글이 꺼져 있으면 실행
+                                      tmpTime = DateTime(1,1,1,9); // 9시로 초기화
+                                    }
                                 },
                               ),
                             ],
@@ -284,17 +311,16 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                                     )
                                 ),
                                 child: CupertinoDatePicker(
-                                  initialDateTime: widget.oneSchedule.date,
+                                  initialDateTime: tmpTime,
                                   onDateTimeChanged: (date){
-                                    tmpDate = date;
-                                    print(tmpDate);
+                                    tmpTime = date;
                                   },
                                   mode: CupertinoDatePickerMode.time,
                                 ),
                               ),
                             ),
                             secondChild: Container(),
-                            crossFadeState: widget.oneSchedule.btime ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                            crossFadeState: isToggleOn ? CrossFadeState.showFirst : CrossFadeState.showSecond,
                             duration: const Duration(milliseconds: 200)
                         ),
                       ],

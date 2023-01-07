@@ -35,4 +35,16 @@ class ScheduleClass{
   void newDate(DateTime A) {
     date = A;
   }
+
+  void changeDateAndTime(DateTime newDate, DateTime newTime){
+    date = DateTime(newDate.year, newDate.month, newDate.day, newTime.hour, newTime.minute);
+  }
+
+  bool isDayChanged(DateTime A){
+    if(date.year != A.year) return true;
+    if(date.month != A.month) return true;
+    if(date.day != A.day) return true;
+
+    return false;
+  }
 }
