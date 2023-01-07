@@ -237,6 +237,14 @@ MY Calender Project
 2. rebuild 되면서 날짜 현재랑 바뀐거랑 비교(tmpDate 정의 위치 해결)
 3. 날짜 이동하면 initalValue가 이상해지는 문제 해결
 
+## 1.7
+
+1. bottomSheet 구조 및 변수 수정
+2. bottomSheet 일정과 시간 관련 버그 수정
+
+다음 계획
+1. 알람 기능 추가 (푸시 알림으로)
+
 ---
 # 추후 수정해야할 요소들
 
