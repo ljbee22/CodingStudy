@@ -26,7 +26,7 @@ class _CalenderState extends State<Calender> {
   @override
   void initState() {
     super.initState();
-    initNotification();
+    NotificationController().initNotification();
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   }
 

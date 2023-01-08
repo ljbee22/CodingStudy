@@ -30,7 +30,8 @@ class _ScheduleEditState extends State<ScheduleEdit> {
   bool isDate = false; // 캘린더 표시 여부 확인
   late DateTime tmpDate; // oneSchedule에 넣을 날짜
   late DateTime tmpTime; // oneSchedule에 넣을 시간
-  late bool isToggleOn;
+  late bool isTimeToggleOn;
+  late bool isAlarmToggleOn;
 
   @override
   void initState(){
@@ -39,7 +40,8 @@ class _ScheduleEditState extends State<ScheduleEdit> {
     memo = widget.oneSchedule.memo;
     tmpDate = widget.oneSchedule.date;
     tmpTime = widget.oneSchedule.date;
-    isToggleOn = widget.oneSchedule.btime;
+    isTimeToggleOn = widget.oneSchedule.btime;
+    isAlarmToggleOn = widget.oneSchedule.alarm;
   }
 
   Widget build(BuildContext context) {
@@ -70,12 +72,16 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                 bool isDateChanged = widget.oneSchedule.isDayChanged(tmpDate);
 
                 print("${tmpDate}@############################@ ${tmpTime}");
+                print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&${isAlarmToggleOn}");
 
-                widget.oneSchedule.name = title.trim(); // 이름 저장 with trimming
-                widget.oneSchedule.memo = memo.trim(); // 메모 저장 with trimming
-                widget.oneSchedule.btime = isToggleOn;
-                widget.oneSchedule.changeDateAndTime(tmpDate, tmpTime); // 날짜 저장
-                print("@@@@@@@@@@@@@@@@@@@${widget.oneSchedule.date}");
+                widget.oneSchedule.changeScheduleElements(
+                  title.trim(),
+                  memo.trim(),
+                  tmpDate,
+                  tmpTime,
+                  isTimeToggleOn,
+                  isAlarmToggleOn,
+                );
 
                 if(widget.isNew) { // 새로운 일정을 추가
                   print("@@@@@@@@@@@새로운 일정 추가됨@@@@@@@@@@");
@@ -256,20 +262,21 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
+                          padding: const EdgeInsets.fromLTRB(15, 8, 15, 8),
                           child: Row(
                             children: [
                               Text("시간"),
                               Spacer(),
                               GestureDetector(
-                                  child: CustomToggle(isToggleOn),
+                                  child: CustomToggle(isTimeToggleOn),
                                 onTap: () {
                                     setState(() {
-                                      isToggleOn = !isToggleOn;
+                                      isTimeToggleOn = !isTimeToggleOn;
                                     });
 
-                                    if(!isToggleOn){ // 토글이 꺼져 있으면 실행
+                                    if(!isTimeToggleOn){ // 토글이 꺼져 있으면 실행
                                       tmpTime = DateTime(1,1,1,9); // 9시로 초기화
+                                      isAlarmToggleOn = false;
                                     }
                                 },
                               ),
@@ -277,28 +284,52 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                           ),
                         ),
                         AnimatedCrossFade(
-                            firstChild: SizedBox(
-                              height: 110,
-                              width: 350,
-                              child: CupertinoTheme(
-                                data: CupertinoThemeData(
-                                    textTheme: CupertinoTextThemeData(
-                                        dateTimePickerTextStyle: TextStyle(
-                                          fontSize: 17,
+                            firstChild: Column(
+                              children: [
+                                const Divider(height: 0, indent: 8, endIndent: 8,),
+                                SizedBox(
+                                  height: 110,
+                                  width: 350,
+                                  child: CupertinoTheme(
+                                    data: CupertinoThemeData(
+                                        textTheme: CupertinoTextThemeData(
+                                            dateTimePickerTextStyle: TextStyle(
+                                              fontSize: 17,
+                                            )
                                         )
-                                    )
+                                    ),
+                                    child: CupertinoDatePicker(
+                                      initialDateTime: tmpTime,
+                                      onDateTimeChanged: (date){
+                                        tmpTime = date;
+                                      },
+                                      mode: CupertinoDatePickerMode.time,
+                                    ),
+                                  ),
                                 ),
-                                child: CupertinoDatePicker(
-                                  initialDateTime: tmpTime,
-                                  onDateTimeChanged: (date){
-                                    tmpTime = date;
-                                  },
-                                  mode: CupertinoDatePickerMode.time,
+                                const Divider(height: 0, indent: 8, endIndent: 8,),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(15, 8, 15, 8),
+                                  child: Row(
+                                    children: [
+                                      Text("알림 설정"),
+                                      Spacer(),
+                                      GestureDetector(
+                                        child: CustomToggle(isAlarmToggleOn),
+                                        onTap: () {
+                                          print("${isAlarmToggleOn} 누르기전에!!!!!!!!!!!!!!!!");
+                                          setState(() {
+                                            isAlarmToggleOn = !isAlarmToggleOn;
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
                             secondChild: Container(),
-                            crossFadeState: isToggleOn ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                            crossFadeState: isTimeToggleOn ? CrossFadeState.showFirst : CrossFadeState.showSecond,
                             duration: const Duration(milliseconds: 200)
                         ),
                       ],
@@ -307,9 +338,6 @@ class _ScheduleEditState extends State<ScheduleEdit> {
 
                   Container( // 시간 여부 -> 설정
                   ),
-                  FloatingActionButton(onPressed: () {
-                    showNotification();
-                  })
                 ],
               ),
             ),

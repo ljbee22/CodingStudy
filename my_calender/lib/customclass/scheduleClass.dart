@@ -44,7 +44,15 @@ class ScheduleClass{
     if(date.year != A.year) return true;
     if(date.month != A.month) return true;
     if(date.day != A.day) return true;
-
     return false;
+  }
+
+  changeScheduleElements(String name, String memo, DateTime newDate, DateTime newTime, bool btime, bool alarm){
+    this.name = name;
+    this.memo = memo;
+    this.date = DateTime(newDate.year, newDate.month, newDate.day, newTime.hour, newTime.minute);
+    this.btime = btime;
+    this.alarm = alarm;
+    //TODO done에 관한 것도 넣기
   }
 }
