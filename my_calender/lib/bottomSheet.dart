@@ -332,6 +332,9 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                             crossFadeState: isTimeToggleOn ? CrossFadeState.showFirst : CrossFadeState.showSecond,
                             duration: const Duration(milliseconds: 200)
                         ),
+                        FloatingActionButton(onPressed: (){
+                          NotificationController().showNotification(1, "title");
+                        })
                       ],
                     ),
                   ),
