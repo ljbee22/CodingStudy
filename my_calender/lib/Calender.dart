@@ -10,6 +10,7 @@ import 'cursor.dart';
 import 'customclass/CustomAppbar.dart';
 import 'package:flutter/services.dart';
 import 'customclass/calenderElement.dart';
+import 'package:my_calender/localNotification.dart';
 
 class Calender extends StatefulWidget {
   const Calender({Key? key}) : super(key: key);
@@ -25,6 +26,7 @@ class _CalenderState extends State<Calender> {
   @override
   void initState() {
     super.initState();
+    initNotification();
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   }
 

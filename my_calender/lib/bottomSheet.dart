@@ -4,6 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:my_calender/customclass/bottomSheetElement.dart';
 import 'package:my_calender/customclass/boxController.dart';
 import 'package:my_calender/customclass/scheduleClass.dart';
+import 'package:my_calender/localNotification.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -306,6 +307,9 @@ class _ScheduleEditState extends State<ScheduleEdit> {
 
                   Container( // 시간 여부 -> 설정
                   ),
+                  FloatingActionButton(onPressed: () {
+                    showNotification();
+                  })
                 ],
               ),
             ),
