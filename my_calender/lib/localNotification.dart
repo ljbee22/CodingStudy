@@ -57,6 +57,8 @@ class NotificationController{
   }
 
   scheduleNotification(int idx, String title, DateTime schedule) async{
+    final tzDateTime = tz.TZDateTime.from(schedule, tz.local);
+
     var androidDetails = const AndroidNotificationDetails(
       '유니크한 알림 채널 ID',
       '알림종류 설명',
@@ -75,7 +77,7 @@ class NotificationController{
       idx,
       title,
       "",
-      tz.TZDateTime.from(schedule, tz.local),
+      tzDateTime,
       NotificationDetails(android: androidDetails, iOS: iosDetails),
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
         androidAllowWhileIdle: true,

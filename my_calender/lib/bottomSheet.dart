@@ -11,7 +11,6 @@ import 'cursor.dart';
 import 'customclass/palette.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 
 class ScheduleEdit extends StatefulWidget {
   final Box box;
@@ -48,6 +47,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
 
 
   Widget build(BuildContext context) {
+    DateTime initDate = Provider.of<Cursor>(context, listen: false).selected;
     String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
     print("@@@@@@@@@@다시 빌드됨@@@@@@@@@@@@");
     return Scaffold(
@@ -278,7 +278,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                                     });
 
                                     if(!isTimeToggleOn){ // 토글이 꺼져 있으면 실행
-                                      tmpTime = DateTime(1,1,1,9); // 9시로 초기화
+                                      tmpTime = DateTime(initDate.year,initDate.month,initDate.day,initDate.hour+1); //시간 초기화
                                       isAlarmToggleOn = false;
                                     }
                                 },

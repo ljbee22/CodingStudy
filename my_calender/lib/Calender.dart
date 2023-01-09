@@ -13,7 +13,6 @@ import 'customclass/calenderElement.dart';
 import 'package:my_calender/localNotification.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 
 
 class Calender extends StatefulWidget {
@@ -41,7 +40,7 @@ class _CalenderState extends State<Calender> {
 
   Future<void> configureLocalTimeZone() async {
     tz.initializeTimeZones();
-    final String? timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+    final String timeZoneName = DateTime.now().timeZoneName;
     tz.setLocalLocation(tz.getLocation(timeZoneName!));
   }
 
