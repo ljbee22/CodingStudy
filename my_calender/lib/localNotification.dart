@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 
 class NotificationController{
@@ -52,6 +53,32 @@ class NotificationController{
         title,
         '',
         NotificationDetails(android: androidDetails, iOS: iosDetails)
+    );
+  }
+
+  scheduleNotification(int idx, String title, DateTime schedule) async{
+    var androidDetails = const AndroidNotificationDetails(
+      '유니크한 알림 채널 ID',
+      '알림종류 설명',
+      priority: Priority.high,
+      importance: Importance.max,
+      color: Color.fromARGB(255, 255, 0, 0),
+    );
+
+    var iosDetails = const DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+    );
+
+    notifications.zonedSchedule(
+      idx,
+      title,
+      "",
+      tz.TZDateTime.from(schedule, tz.local),
+      NotificationDetails(android: androidDetails, iOS: iosDetails),
+        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+        androidAllowWhileIdle: true,
     );
   }
 }

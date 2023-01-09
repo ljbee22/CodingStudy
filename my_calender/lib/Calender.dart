@@ -11,6 +11,10 @@ import 'customclass/CustomAppbar.dart';
 import 'package:flutter/services.dart';
 import 'customclass/calenderElement.dart';
 import 'package:my_calender/localNotification.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+
 
 class Calender extends StatefulWidget {
   const Calender({Key? key}) : super(key: key);
@@ -26,8 +30,19 @@ class _CalenderState extends State<Calender> {
   @override
   void initState() {
     super.initState();
-    NotificationController().initNotification();
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+    _init();
+  }
+
+  Future<void> _init() async{
+    await configureLocalTimeZone();
+    await NotificationController().initNotification();
+  }
+
+  Future<void> configureLocalTimeZone() async {
+    tz.initializeTimeZones();
+    final String? timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation(timeZoneName!));
   }
 
   @override

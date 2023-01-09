@@ -7,9 +7,11 @@ import 'package:my_calender/customclass/scheduleClass.dart';
 import 'package:my_calender/localNotification.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'cursor.dart';
 import 'customclass/palette.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 
 class ScheduleEdit extends StatefulWidget {
   final Box box;
@@ -43,6 +45,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
     isTimeToggleOn = widget.oneSchedule.btime;
     isAlarmToggleOn = widget.oneSchedule.alarm;
   }
+
 
   Widget build(BuildContext context) {
     String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
@@ -333,7 +336,8 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                             duration: const Duration(milliseconds: 200)
                         ),
                         FloatingActionButton(onPressed: (){
-                          NotificationController().showNotification(1, "title");
+                          NotificationController().scheduleNotification(1, title, tmpTime);
+                          print("${tmpTime} is when alarm goes up@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
                         })
                       ],
                     ),
