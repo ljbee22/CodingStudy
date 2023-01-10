@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:my_calender/customclass/bottomSheetElement.dart';
 import 'package:my_calender/customclass/boxController.dart';
+import 'package:my_calender/customclass/calenderElement.dart';
 import 'package:my_calender/customclass/scheduleClass.dart';
 import 'package:my_calender/localNotification.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +34,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
   late DateTime tmpTime; // oneSchedule에 넣을 시간
   late bool isTimeToggleOn;
   late bool isAlarmToggleOn;
+  bool isError = false;
 
   @override
   void initState(){
@@ -49,7 +51,9 @@ class _ScheduleEditState extends State<ScheduleEdit> {
   Widget build(BuildContext context) {
     DateTime initDate = Provider.of<Cursor>(context, listen: false).selected;
     String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
+    int uniqueIdx = int.parse("${initDate.year}${initDate.month}${initDate.day}${widget.idx}");
     print("@@@@@@@@@@다시 빌드됨@@@@@@@@@@@@");
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -65,6 +69,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
               child: const Text("삭제", style: TextStyle(fontSize: 20, color: Pastel.redaccent, fontWeight: FontWeight.w500),),
               onPressed: () {
                 print("@@@@@@@@@@삭제@@@@@@@@@@@@");
+                NotificationController().notifications.cancel(uniqueIdx);
                 BoxController().deleteSchedule(widget.box, scheduleDate, widget.idx);
                 Navigator.pop(context);
               },
@@ -73,9 +78,6 @@ class _ScheduleEditState extends State<ScheduleEdit> {
               child: const Text("완료", style: TextStyle(fontSize: 20, color: Pastel.black, fontWeight: FontWeight.w500),),
               onPressed: (){
                 bool isDateChanged = widget.oneSchedule.isDayChanged(tmpDate);
-
-                print("${tmpDate}@############################@ ${tmpTime}");
-                print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&${isAlarmToggleOn}");
 
                 widget.oneSchedule.changeScheduleElements(
                   title.trim(),
@@ -86,6 +88,26 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                   isAlarmToggleOn,
                 );
 
+                //알림 추가 시에 알림 울리게 하는 함수
+                if(widget.oneSchedule.alarm) { // alarm이  true 일때만 실행
+                  if(widget.oneSchedule.date.isAfter(initDate) ){
+                    // 시간이 제대로 정해져 있으면 알림 설정
+                    NotificationController().scheduleNotification(uniqueIdx, widget.oneSchedule.name, widget.oneSchedule.date);
+                    print("${widget.oneSchedule.date}에 알람이 울립니다");
+                  }
+                  else{
+                    // 시간이 제대로 설정이 안 되어 있으면 아래 경고문 띄워주는 변수(isError 활성화)
+                    setState((){isError = true;});
+                    return;
+                  }
+                }
+
+                //알림을 끈 상태면 기존의 알림을 지운다
+                if(!widget.oneSchedule.alarm){
+                  NotificationController().notifications.cancel(uniqueIdx);
+                }
+
+                // 위에서 수정한 일정을 실제로 hivebox에 적용
                 if(widget.isNew) { // 새로운 일정을 추가
                   print("@@@@@@@@@@@새로운 일정 추가됨@@@@@@@@@@");
                   BoxController().newSchedule(widget.box, scheduleDate, widget.oneSchedule);
@@ -157,7 +179,6 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                                 },
                                 onChanged: (text) {
                                   title = text;
-                                  print("@@@@@@@@@@@이름 저장@@@@@@@@@@@@");
                                 },
                               ),
                         ),
@@ -194,7 +215,6 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                             },
                             onChanged: (text) {
                               memo = text!;
-                              print("@@@@@@@@@@@@메모 저장 @@@@@@@@@@@");
                             },
                           ),
                         ),
@@ -211,7 +231,6 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                       setState((){
                       isDate = !isDate;
                       });
-                      print(isDate);
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -278,7 +297,6 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                                     });
 
                                     if(!isTimeToggleOn){ // 토글이 꺼져 있으면 실행
-                                      tmpTime = DateTime(initDate.year,initDate.month,initDate.day,initDate.hour+1); //시간 초기화
                                       isAlarmToggleOn = false;
                                     }
                                 },
@@ -305,6 +323,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                                       initialDateTime: tmpTime,
                                       onDateTimeChanged: (date){
                                         tmpTime = date;
+
                                       },
                                       mode: CupertinoDatePickerMode.time,
                                     ),
@@ -315,12 +334,16 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                                   padding: const EdgeInsets.fromLTRB(15, 8, 15, 8),
                                   child: Row(
                                     children: [
-                                      Text("알림 설정"),
-                                      Spacer(),
+                                      const Text("알림 설정"),
+                                      if(isError)
+                                        const Padding(
+                                          padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                          child: MyText("현재 시간 이후로 설정해주세요!", 10, Pastel.redaccent, FontWeight.w200),
+                                        ),
+                                      const Spacer(),
                                       GestureDetector(
                                         child: CustomToggle(isAlarmToggleOn),
                                         onTap: () {
-                                          print("${isAlarmToggleOn} 누르기전에!!!!!!!!!!!!!!!!");
                                           setState(() {
                                             isAlarmToggleOn = !isAlarmToggleOn;
                                           });
@@ -335,10 +358,6 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                             crossFadeState: isTimeToggleOn ? CrossFadeState.showFirst : CrossFadeState.showSecond,
                             duration: const Duration(milliseconds: 200)
                         ),
-                        FloatingActionButton(onPressed: (){
-                          NotificationController().scheduleNotification(1, title, tmpTime);
-                          print("${tmpTime} is when alarm goes up@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-                        })
                       ],
                     ),
                   ),

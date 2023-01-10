@@ -11,7 +11,7 @@ import 'customclass/CustomAppbar.dart';
 import 'package:flutter/services.dart';
 import 'customclass/calenderElement.dart';
 import 'package:my_calender/localNotification.dart';
-import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 
@@ -41,7 +41,13 @@ class _CalenderState extends State<Calender> {
   Future<void> configureLocalTimeZone() async {
     tz.initializeTimeZones();
     final String timeZoneName = DateTime.now().timeZoneName;
-    tz.setLocalLocation(tz.getLocation(timeZoneName!));
+
+    try{
+      tz.setLocalLocation(tz.getLocation(timeZoneName));
+    }
+    catch(e){
+      tz.setLocalLocation(tz.getLocation("Asia/Seoul"));
+    }
   }
 
   @override
