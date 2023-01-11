@@ -73,7 +73,7 @@ class _CalenderState extends State<Calender> {
                   const DayOfWeek(),
                   const Divider(height: 0),
                   AnimatedCrossFade(
-                    duration: Duration(milliseconds: 200),
+                    duration: const Duration(milliseconds: 200),
                     firstChild: MonthColumn(box),
                     secondChild: WeekColumn(box),
                     crossFadeState: Provider.of<Cursor>(context).isMonth
@@ -99,27 +99,28 @@ class _CalenderState extends State<Calender> {
                                 child: GestureDetector(
                                   behavior: HitTestBehavior.translucent,
                                   onLongPress: () {
-
+                                    //TODO 길게 누르면 위치 바꿈
                                   },
                                   onTap: (){
-                                    //TODO 눌렀을때 키보드 focus out 되게. 전체 구현성공하면 무시
                                     showModalBottomSheet<void>(
                                         context: context,
                                         builder: (BuildContext context){
                                           return ScheduleEdit(box, idx, box.get(scheduleDate)![idx], false);
                                         }
                                     );
+                                    FocusManager.instance.primaryFocus?.unfocus();
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Padding(
-                                        padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
+                                        padding: const EdgeInsets.fromLTRB(5, 0, 10, 0),
                                         child: GestureDetector(
                                           onTap: (){
+                                            //TODO 체크표시 아이콘도 구현
                                             print("icons tapped@@@@@@@@@@@@@@@");
                                           },
-                                          child: ImageIcon(AssetImage("assets/icon/check_unchecked.png"), size: 20, color: Pastel.black,),
+                                          child: const ImageIcon(AssetImage("assets/icon/check_unchecked.png"), size: 20, color: Pastel.black,),
                                         ),
                                         ),
                                       Container(
@@ -130,21 +131,18 @@ class _CalenderState extends State<Calender> {
                                             overflow: TextOverflow.ellipsis,
                                             text: TextSpan(
                                                 text: "${box.get(scheduleDate)![idx].name}",
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   color: Pastel.black,
                                                   fontSize: 15,
                                                   fontFamily: "Myfont",
                                                 ),
-                                              // children: [
-                                              //   TextSpan(text: "!!!!"),
-                                              // ]
                                             ),
-                                          )
+                                          ),
                                       ),
                                       const Spacer(),
-                                      Padding(
+                                      const Padding(
                                         padding: EdgeInsets.only(right: 5),
-                                        child: const Icon(Icons.edit, size: 20, color: Pastel.black,),
+                                        child: Icon(Icons.edit, size: 20, color: Pastel.black,),
                                       ),
                                     ],
                                   ),
@@ -168,49 +166,30 @@ class _CalenderState extends State<Calender> {
                               ),
                               child: Row(
                                 children: [
-                                  Padding(
+                                  const Padding(
                                     padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
                                     child: ImageIcon(AssetImage("assets/icon/check_notwork.png"), size: 20, color: Pastel.grey,),
                                   ),
                                   Expanded(
                                     child: TextFormField(
-                                      // autofocus: true,
-                                      // autovalidateMode: AutovalidateMode.always,
                                       textAlignVertical: TextAlignVertical.center,
-                                      style: TextStyle(fontSize: 15),
+                                      style: const TextStyle(fontSize: 15),
                                       controller: myController,
                                       focusNode: myFocusNode,
                                       cursorColor: Pastel.grey,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration.collapsed(
                                         hintText: "새 일정",
-                                        border: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: Colors.transparent
-                                          ),
-                                        ),
-                                        enabledBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent
-                                          ),
-                                        ),
-                                        focusedBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent
-                                          ),
-                                        ),
-                                        isCollapsed: true
+                                        border: InputBorder.none,
                                       ),
 
                                       onFieldSubmitted: (text) {
                                         //filtering
                                         text = text.trim();
-
                                         if(text.isEmpty) {
                                           FocusManager.instance.primaryFocus?.unfocus();
                                           myController.clear();
                                           return;
                                         }
-
                                         BoxController().newSchedule(
                                             box, scheduleDate,
                                             ScheduleClass(name: text, date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)
@@ -221,10 +200,9 @@ class _CalenderState extends State<Calender> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(right: 5),
+                                    padding: const EdgeInsets.only(right: 5),
                                     child: GestureDetector(
                                       onTap: () {
-                                        //TODO 눌렀을때 키보드 focus out 되게. 전체 구현성공하면 무시
                                         showModalBottomSheet<void>(
                                             context: context,
                                             builder: (BuildContext context){
@@ -236,6 +214,7 @@ class _CalenderState extends State<Calender> {
                                               return ScheduleEdit(box, box.get(scheduleDate)!.length, ScheduleClass(name: "", date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
                                             }
                                         );
+                                        FocusManager.instance.primaryFocus?.unfocus();
                                       },
                                       child: const Icon(Icons.edit, size: 20, color: Pastel.grey,),
                                     ),
