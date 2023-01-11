@@ -270,6 +270,13 @@ MY Calender Project
 3. dart 파일 통합
 4. textformfield border 코드 깔끔하게 변경
 
+1. Reorderable List View 로 변경하여 구현
+
+다음 계획
+1. Card 레이아웃 수정 및 디자인 통일
+2. Reorder 할 때 빈 칸 생기는 문제 수정
+3. 모아보기 기능 구현 논의
+
 ---
 # 추후 수정해야할 요소들
 
