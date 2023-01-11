@@ -44,6 +44,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
 
   @override
   Widget build(BuildContext context) {
+    //TODO initDate가 cursor.selected라서 0시 0분임... -> DateTime.now 추가
     DateTime initDate = Provider.of<Cursor>(context, listen: false).selected;
     String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
     int uniqueIdx = int.parse("${initDate.year}${initDate.month}${initDate.day}${widget.idx}");
@@ -84,9 +85,10 @@ class _ScheduleEditState extends State<ScheduleEdit> {
 
                 //알림 추가 시에 알림 울리게 하는 함수
                 if(widget.oneSchedule.alarm) { // alarm 이  true 일때만 실행
-                  if(widget.oneSchedule.date.isAfter(initDate) ){
+                  if(widget.oneSchedule.date.isAfter(DateTime.now()) ){
                     // 시간이 제대로 정해져 있으면 알림 설정
                     NotificationController().scheduleNotification(uniqueIdx, widget.oneSchedule.name, widget.oneSchedule.date);
+                    print("this is initdate : ${initDate}");
                     print("${widget.oneSchedule.date}에 알람이 울립니다");
                   }
                   else{
