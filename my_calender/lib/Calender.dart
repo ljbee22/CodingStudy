@@ -83,150 +83,157 @@ class _CalenderState extends State<Calender> {
                   const SizedBox(height: 5),
                   const TodoBanner(),
                   Expanded(
-                    child: CustomScrollView(
-                      slivers: [
-                        SliverFixedExtentList(
-                          itemExtent: 40,
-                          delegate: SliverChildBuilderDelegate((BuildContext context, int idx){
-                            return Padding(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          ReorderableListView.builder(
+                            physics: const NeverScrollableScrollPhysics(), // listview 자체 스크롤 disable
+                            shrinkWrap: true,
+                            itemExtent: 40,
+                            buildDefaultDragHandles: false,
+                            itemCount: box.get(scheduleDate) == null ? 0 : box.get(scheduleDate)!.length,
+                            onReorder: (int oldIndex, int newIndex) {
+                              List tmpList = box.get(scheduleDate)!;
+                              if (oldIndex < newIndex) {
+                                newIndex -= 1;
+                              }
+                              final ScheduleClass item = tmpList.removeAt(oldIndex);
+                              tmpList.insert(newIndex, item);
+
+                              box.put(scheduleDate, tmpList);
+                            },
+
+                            itemBuilder: (BuildContext context, int idx){
+                               ScheduleClass oneSchedule = box.get(scheduleDate)![idx];
+                               return ReorderableDelayedDragStartListener(
+                                 key: Key("$idx"),
+                                 index: idx,
+                                 child: Card(
+                                   margin: const EdgeInsets.fromLTRB(0, 5, 0, 3),
+                                     shape: RoundedRectangleBorder(
+                                     borderRadius: BorderRadius.circular(5),
+                                     side: const BorderSide(
+                                       color: Pastel.black,
+                                       width: 0,
+                                     ),
+                                   ),
+                                     child: GestureDetector(
+                                       behavior: HitTestBehavior.translucent,
+                                       onTap: (){
+                                         showModalBottomSheet<void>(
+                                             context: context,
+                                             builder: (BuildContext context){
+                                               return ScheduleEdit(box, idx, oneSchedule, false);
+                                             }
+                                         );
+                                         FocusManager.instance.primaryFocus?.unfocus();
+                                       },
+                                       child: ListTile(
+                                         visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                                         contentPadding: const EdgeInsets.only(left: 5, right: 5),
+                                         dense: true,
+                                         leading: GestureDetector(
+                                           onTap: (){
+                                             //TODO 체크표시 아이콘도 구현
+                                             print("icons tapped@@@@@@@@@@@@@@@");
+                                           },
+                                           child: const ImageIcon(AssetImage("assets/icon/check_unchecked.png"), size: 20, color: Pastel.black,),
+                                         ),
+                                         title: RichText(
+                                           maxLines: 1,
+                                           overflow: TextOverflow.ellipsis,
+                                           text: TextSpan(
+                                             text: "${box.get(scheduleDate)![idx].name}",
+                                             style: const TextStyle(
+                                               color: Pastel.black,
+                                               fontSize: 15,
+                                               fontFamily: "Myfont",
+                                             ),
+                                           ),
+                                         ),
+                                         trailing: const Padding(
+                                           padding: EdgeInsets.only(right: 5),
+                                           child: Icon(Icons.edit, size: 20, color: Pastel.black,),
+                                         ),
+                                       )
+                                     )
+                                 ),
+                               );
+                               },
+                          ),
+                          Padding(
                               padding: const EdgeInsets.only(top: 5),
                               child: Container(
+                                height: 30,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
                                   border: Border.all(color: Pastel.grey, width: 0),
                                   color: Pastel.white,
                                 ),
-                                child: GestureDetector(
-                                  behavior: HitTestBehavior.translucent,
-                                  onLongPress: () {
-                                    //TODO 길게 누르면 위치 바꿈
-                                  },
-                                  onTap: (){
-                                    showModalBottomSheet<void>(
-                                        context: context,
-                                        builder: (BuildContext context){
-                                          return ScheduleEdit(box, idx, box.get(scheduleDate)![idx], false);
-                                        }
-                                    );
-                                    FocusManager.instance.primaryFocus?.unfocus();
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(5, 0, 10, 0),
-                                        child: GestureDetector(
-                                          onTap: (){
-                                            //TODO 체크표시 아이콘도 구현
-                                            print("icons tapped@@@@@@@@@@@@@@@");
-                                          },
-                                          child: const ImageIcon(AssetImage("assets/icon/check_unchecked.png"), size: 20, color: Pastel.black,),
+                                child: Row(
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
+                                      child: ImageIcon(AssetImage("assets/icon/check_notwork.png"), size: 20, color: Pastel.grey,),
+                                    ),
+                                    Expanded(
+                                      child: TextFormField(
+                                        textAlignVertical: TextAlignVertical.center,
+                                        style: const TextStyle(fontSize: 15),
+                                        controller: myController,
+                                        focusNode: myFocusNode,
+                                        cursorColor: Pastel.grey,
+                                        decoration: const InputDecoration.collapsed(
+                                          hintText: "새 일정",
+                                          border: InputBorder.none,
                                         ),
-                                        ),
-                                      Container(
-                                          width: MediaQuery.of(context).size.width-100,
-                                          alignment: Alignment.centerLeft,
-                                          child: RichText(
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            text: TextSpan(
-                                                text: "${box.get(scheduleDate)![idx].name}",
-                                                style: const TextStyle(
-                                                  color: Pastel.black,
-                                                  fontSize: 15,
-                                                  fontFamily: "Myfont",
-                                                ),
-                                            ),
-                                          ),
-                                      ),
-                                      const Spacer(),
-                                      const Padding(
-                                        padding: EdgeInsets.only(right: 5),
-                                        child: Icon(Icons.edit, size: 20, color: Pastel.black,),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ),
-                            );
-                          },
-                            childCount: box.get(scheduleDate) == null ?
-                            0 : box.get(scheduleDate)!.length,
-                          ),
-                        ),
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 5),
-                            child: Container(
-                              height: 30,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(color: Pastel.grey, width: 0),
-                                color: Pastel.white,
-                              ),
-                              child: Row(
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
-                                    child: ImageIcon(AssetImage("assets/icon/check_notwork.png"), size: 20, color: Pastel.grey,),
-                                  ),
-                                  Expanded(
-                                    child: TextFormField(
-                                      textAlignVertical: TextAlignVertical.center,
-                                      style: const TextStyle(fontSize: 15),
-                                      controller: myController,
-                                      focusNode: myFocusNode,
-                                      cursorColor: Pastel.grey,
-                                      decoration: const InputDecoration.collapsed(
-                                        hintText: "새 일정",
-                                        border: InputBorder.none,
-                                      ),
 
-                                      onFieldSubmitted: (text) {
-                                        //filtering
-                                        text = text.trim();
-                                        if(text.isEmpty) {
-                                          FocusManager.instance.primaryFocus?.unfocus();
+                                        onFieldSubmitted: (text) {
+                                          //filtering
+                                          text = text.trim();
+                                          if(text.isEmpty) {
+                                            FocusManager.instance.primaryFocus?.unfocus();
+                                            myController.clear();
+                                            return;
+                                          }
+                                          BoxController().newSchedule(
+                                              box, scheduleDate,
+                                              ScheduleClass(name: text, date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)
+                                              ));
+                                          myFocusNode.requestFocus();
                                           myController.clear();
-                                          return;
-                                        }
-                                        BoxController().newSchedule(
-                                            box, scheduleDate,
-                                            ScheduleClass(name: text, date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)
-                                        ));
-                                        myFocusNode.requestFocus();
-                                        myController.clear();
-                                      },
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 5),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        showModalBottomSheet<void>(
-                                            context: context,
-                                            builder: (BuildContext context){
-                                              if(!box.containsKey(scheduleDate)) {
-                                                // 일정이 없는 날에 새 일정 추가
-                                                return ScheduleEdit(box, 0, ScheduleClass(name: "", date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 5),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          showModalBottomSheet<void>(
+                                              context: context,
+                                              builder: (BuildContext context){
+                                                if(!box.containsKey(scheduleDate)) {
+                                                  // 일정이 없는 날에 새 일정 추가
+                                                  return ScheduleEdit(box, 0, ScheduleClass(name: "", date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
+                                                }
+                                                //일정이 있는 날에 새 일정 추가
+                                                return ScheduleEdit(box, box.get(scheduleDate)!.length, ScheduleClass(name: "", date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
                                               }
-                                              //일정이 있는 날에 새 일정 추가
-                                              return ScheduleEdit(box, box.get(scheduleDate)!.length, ScheduleClass(name: "", date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
-                                            }
-                                        );
-                                        FocusManager.instance.primaryFocus?.unfocus();
-                                      },
-                                      child: const Icon(Icons.edit, size: 20, color: Pastel.grey,),
+                                          );
+                                          FocusManager.instance.primaryFocus?.unfocus();
+                                        },
+                                        child: const Icon(Icons.edit, size: 20, color: Pastel.grey,),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
+                  const SizedBox(height: 10)
                 ],
               ),
             );

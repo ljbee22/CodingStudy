@@ -150,7 +150,7 @@ class _OneDayState extends State<OneDay> {
               )
                   : null,
               padding: const EdgeInsets.fromLTRB(0, 4, 0, 10),
-              height: 80,
+              height: 60,
               child:
               (widget.oneDay.month != Provider.of<Cursor>(context).selected.month) &&
                   (Provider.of<Cursor>(context, listen: false).isMonth)
