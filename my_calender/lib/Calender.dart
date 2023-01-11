@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:my_calender/WeekAndMonth.dart';
 import 'package:my_calender/bottomSheet.dart';
 import 'package:my_calender/customclass/boxController.dart';
 import 'package:my_calender/customclass/scheduleClass.dart';
+import 'package:my_calender/customclass/cursor.dart';
+import 'package:my_calender/customclass/calenderElement.dart';
 import 'package:provider/provider.dart';
-import 'package:my_calender/customclass/palette.dart';
-import 'cursor.dart';
-import 'customclass/CustomAppbar.dart';
 import 'package:flutter/services.dart';
-import 'customclass/calenderElement.dart';
 import 'package:my_calender/localNotification.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -33,11 +30,13 @@ class _CalenderState extends State<Calender> {
     _init();
   }
 
+  //notification initialize
   Future<void> _init() async{
     await configureLocalTimeZone();
     await NotificationController().initNotification();
   }
 
+  //notification initialize -> timezone init
   Future<void> configureLocalTimeZone() async {
     tz.initializeTimeZones();
     final String timeZoneName = DateTime.now().timeZoneName;
@@ -62,7 +61,7 @@ class _CalenderState extends State<Calender> {
       child: Scaffold(
         appBar: CustomAppbar(scaffoldKey: scaffoldKey,), //custom appbar
         key: scaffoldKey,
-        drawer: CustomDrawer(),
+        drawer: const CustomDrawer(),
         body: ValueListenableBuilder(
             valueListenable: Hive.box<List>('Box').listenable(),
           builder: (context, Box<List> box, child) {
@@ -70,8 +69,8 @@ class _CalenderState extends State<Calender> {
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Column(
                 children: [
-                  CalenderBanner(),
-                  const DayofWeek(),
+                  const CalenderBanner(),
+                  const DayOfWeek(),
                   const Divider(height: 0),
                   AnimatedCrossFade(
                     duration: Duration(milliseconds: 200),
@@ -82,7 +81,7 @@ class _CalenderState extends State<Calender> {
                   ),
 
                   const SizedBox(height: 5),
-                  TodoBanner(),
+                  const TodoBanner(),
                   Expanded(
                     child: CustomScrollView(
                       slivers: [

@@ -1,9 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:my_calender/customclass/scheduleClass.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 class BoxController {
   // 새로운 일정을 만듦 (맨 아래에)

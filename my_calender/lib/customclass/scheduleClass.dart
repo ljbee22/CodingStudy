@@ -1,9 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive/hive.dart';
-import 'package:provider/provider.dart';
-import '../cursor.dart';
-import '../Calender.dart';
 
 part 'scheduleClass.g.dart';
 
@@ -21,7 +17,6 @@ class ScheduleClass{
   bool done; // 일정 해결 여부
   @HiveField(5)
   bool alarm; // 알림 여부
-
 
   ScheduleClass({
     required this.name,
@@ -53,6 +48,6 @@ class ScheduleClass{
     this.date = DateTime(newDate.year, newDate.month, newDate.day, newTime.hour, newTime.minute);
     this.btime = btime;
     this.alarm = alarm;
-    //TODO done에 관한 것도 넣기
+    //TODO done 에 관한 것도 넣기
   }
 }

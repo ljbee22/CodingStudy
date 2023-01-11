@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:my_calender/customclass/scheduleClass.dart';
 import 'package:provider/provider.dart';
-import 'cursor.dart';
+import 'package:my_calender/customclass/cursor.dart';
 import 'Calender.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -16,8 +16,6 @@ void main() async{
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -35,15 +33,15 @@ class MyApp extends StatelessWidget {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
             ),
-            localizationsDelegates: [
+            localizationsDelegates: const [
               GlobalMaterialLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            supportedLocales: [
+            supportedLocales: const [
               Locale('ko', ''),
               Locale('en', ''),
             ],
-            home: Calender(),
+            home: const Calender(),
         );
       }
     );

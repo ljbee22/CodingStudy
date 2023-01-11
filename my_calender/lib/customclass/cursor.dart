@@ -10,22 +10,22 @@ class Cursor with ChangeNotifier{
   });
 
   /*특정 요일을 대입 -> 그 요일이 속한 달의 첫번째 요일을 숫자로 리턴*/
-  int dayofweek(){
+  int dayOfWeek(){
     final firstDay = DateTime(selected.year, selected.month, 1);
     var firstDayVal = firstDay.weekday;
     return ((selected.day+firstDayVal-2) ~/ 7) + 1;
   }
 
-  List<DateTime> daylist() {
-    DateTime firstday = DateTime(selected.year, selected.month,1);
-    List<DateTime> dlist = List<DateTime>.filled(42,DateTime(0,0,0));
+  List<DateTime> dayList() {
+    DateTime firstDay = DateTime(selected.year, selected.month,1);
+    List<DateTime> dList = List<DateTime>.filled(42,DateTime(0,0,0));
     int i = 0;
-    int j = 2-firstday.weekday;
+    int j = 2-firstDay.weekday;
     while (i <= 41) {
-      dlist[i] = DateTime(firstday.year, firstday.month, j++);
+      dList[i] = DateTime(firstDay.year, firstDay.month, j++);
       i++;
     }
-    return dlist;
+    return dList;
   }
 
   void changeCursor(DateTime newCursor) {

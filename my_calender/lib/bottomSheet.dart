@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
-import 'package:my_calender/customclass/bottomSheetElement.dart';
 import 'package:my_calender/customclass/boxController.dart';
 import 'package:my_calender/customclass/calenderElement.dart';
 import 'package:my_calender/customclass/scheduleClass.dart';
 import 'package:my_calender/localNotification.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
-import 'cursor.dart';
-import 'customclass/palette.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
+import 'package:my_calender/customclass/cursor.dart';
 
 class ScheduleEdit extends StatefulWidget {
   final Box box;
@@ -30,8 +25,8 @@ class _ScheduleEditState extends State<ScheduleEdit> {
   late String title;
   late String memo;
   bool isDate = false; // 캘린더 표시 여부 확인
-  late DateTime tmpDate; // oneSchedule에 넣을 날짜
-  late DateTime tmpTime; // oneSchedule에 넣을 시간
+  late DateTime tmpDate; // oneSchedule 에 넣을 날짜
+  late DateTime tmpTime; // oneSchedule 에 넣을 시간
   late bool isTimeToggleOn;
   late bool isAlarmToggleOn;
   bool isError = false;
@@ -47,7 +42,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
     isAlarmToggleOn = widget.oneSchedule.alarm;
   }
 
-
+  @override
   Widget build(BuildContext context) {
     DateTime initDate = Provider.of<Cursor>(context, listen: false).selected;
     String scheduleDate = Provider.of<Cursor>(context, listen: false).returnAsString();
@@ -57,7 +52,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Pastel.black),
+        iconTheme: const IconThemeData(color: Pastel.black),
         backgroundColor: Pastel.purple,
         elevation: 0,
         toolbarHeight: 50,
@@ -68,7 +63,6 @@ class _ScheduleEditState extends State<ScheduleEdit> {
             TextButton(
               child: const Text("삭제", style: TextStyle(fontSize: 20, color: Pastel.redaccent, fontWeight: FontWeight.w500),),
               onPressed: () {
-                print("@@@@@@@@@@삭제@@@@@@@@@@@@");
                 NotificationController().notifications.cancel(uniqueIdx);
                 BoxController().deleteSchedule(widget.box, scheduleDate, widget.idx);
                 Navigator.pop(context);
@@ -89,7 +83,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                 );
 
                 //알림 추가 시에 알림 울리게 하는 함수
-                if(widget.oneSchedule.alarm) { // alarm이  true 일때만 실행
+                if(widget.oneSchedule.alarm) { // alarm 이  true 일때만 실행
                   if(widget.oneSchedule.date.isAfter(initDate) ){
                     // 시간이 제대로 정해져 있으면 알림 설정
                     NotificationController().scheduleNotification(uniqueIdx, widget.oneSchedule.name, widget.oneSchedule.date);
@@ -107,7 +101,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                   NotificationController().notifications.cancel(uniqueIdx);
                 }
 
-                // 위에서 수정한 일정을 실제로 hivebox에 적용
+                // 위에서 수정한 일정을 실제로 hivebox 에 적용
                 if(widget.isNew) { // 새로운 일정을 추가
                   print("@@@@@@@@@@@새로운 일정 추가됨@@@@@@@@@@");
                   BoxController().newSchedule(widget.box, scheduleDate, widget.oneSchedule);
@@ -147,32 +141,15 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                     child: Column(
                       children: [
                         Padding(
-                          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                           child: TextFormField(
-                                controller: TextEditingController(
-                                  text: title,
-                                ),
-                                // maxLines: null,
-                                style: TextStyle(fontSize: 15),
+                                controller: TextEditingController(text: title),
+                                style: const TextStyle(fontSize: 15),
                                 textAlignVertical: TextAlignVertical.center,
                                 cursorColor: Pastel.grey,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                     hintText: "새 일정",
-                                    border: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.transparent
-                                      ),
-                                    ),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.transparent
-                                      ),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.transparent
-                                      ),
-                                    ),
+                                    border: InputBorder.none,
                                 ),
                                 onFieldSubmitted: (text) {
                                   if(text.isEmpty) FocusManager.instance.primaryFocus?.unfocus();
@@ -186,46 +163,27 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                           child: TextFormField(
-                            controller: TextEditingController(
-                              text: memo,
-                            ),
-                            style: TextStyle(fontSize: 15),
+                            controller: TextEditingController(text: memo),
+                            style: const TextStyle(fontSize: 15),
                             textAlignVertical: TextAlignVertical.center,
                             cursorColor: Pastel.grey,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: "메모",
-                              border: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.transparent
-                                ),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.transparent
-                                ),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.transparent
-                                ),
-                              ),
+                              border: InputBorder.none,
                             ),
                             onFieldSubmitted: (text) {
                               if(text.isEmpty) FocusManager.instance.primaryFocus?.unfocus();
                             },
                             onChanged: (text) {
-                              memo = text!;
+                              memo = text;
                             },
                           ),
                         ),
-
                       ],
                     ),
                   ),
                   //날짜 설정 -> 캘린더를 띄우기 or 하루 미루기, 일주일 미루기 버튼
-
                   const SizedBox(height: 10),
-
                   GestureDetector(
                     onTap: (){
                       setState((){
@@ -240,7 +198,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                       width: 400,
                       child: Column(
                         children: [
-                          Padding(
+                          const Padding(
                             padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                               child: Text("일정 변경")
                           ),
@@ -249,11 +207,9 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                                   height: 110,
                                   width: 350,
                                   child: CupertinoTheme(
-                                    data: CupertinoThemeData(
+                                    data: const CupertinoThemeData(
                                         textTheme: CupertinoTextThemeData(
-                                            dateTimePickerTextStyle: TextStyle(
-                                              fontSize: 17,
-                                            )
+                                            dateTimePickerTextStyle: TextStyle(fontSize: 17)
                                         )
                                     ),
                                     child: CupertinoDatePicker(
@@ -274,7 +230,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10),
                   Container(
                     decoration: BoxDecoration(
                       border: Border.all(width: 1, color: Pastel.grey),
@@ -287,8 +243,8 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                           padding: const EdgeInsets.fromLTRB(15, 8, 15, 8),
                           child: Row(
                             children: [
-                              Text("시간"),
-                              Spacer(),
+                              const Text("시간"),
+                              const Spacer(),
                               GestureDetector(
                                   child: CustomToggle(isTimeToggleOn),
                                 onTap: () {
@@ -312,18 +268,15 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                                   height: 110,
                                   width: 350,
                                   child: CupertinoTheme(
-                                    data: CupertinoThemeData(
+                                    data: const CupertinoThemeData(
                                         textTheme: CupertinoTextThemeData(
-                                            dateTimePickerTextStyle: TextStyle(
-                                              fontSize: 17,
-                                            )
+                                            dateTimePickerTextStyle: TextStyle(fontSize: 17)
                                         )
                                     ),
                                     child: CupertinoDatePicker(
                                       initialDateTime: tmpTime,
                                       onDateTimeChanged: (date){
                                         tmpTime = date;
-
                                       },
                                       mode: CupertinoDatePickerMode.time,
                                     ),

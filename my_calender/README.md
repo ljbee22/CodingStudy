@@ -264,6 +264,12 @@ MY Calender Project
 다음 계획
 1. 일정 모아보기 만들기
 
+## 1.11 나 혼자 코딩 - 현태
+1. 불필요한 위젯 삭제 (month, week appbar)
+2. const 등등 추가
+3. dart 파일 통합
+4. textformfield border 코드 깔끔하게 변경
+
 ---
 # 추후 수정해야할 요소들
 
@@ -292,3 +298,6 @@ MY Calender Project
 2. 알림 울리고 나면 알림 토글 false로 바꾸기
 3. 체크박스도 어찌어찌 구현해야됨
 4. 알림 설정하면 설정이 됐는지 안됐는지 표시
+
+## 1.11
+1. 키보드 킨 상태에서 -> 일정 수정버튼 누르고 완료 or 취소해서 bottomsheet 나가도 다시 키보드 뜸
