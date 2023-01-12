@@ -102,9 +102,9 @@ class _CalenderState extends State<Calender> {
                                   index: idx,
                                   key: Key("$idx"),
                                   child: Padding(
-                                    padding: const EdgeInsets.only(top: 5),
+                                    padding: const EdgeInsets.only(top: 8),
                                     child: Container(
-                                        height: 35,
+                                        height: box.get(scheduleDate)![idx].btime ? 45 : 35,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(5),
                                           border: Border.all(color: Pastel.grey, width: 0),
@@ -134,25 +134,40 @@ class _CalenderState extends State<Calender> {
                                                 ),
                                               ),
                                               Container(
-                                                  width: MediaQuery.of(context).size.width-100,
                                                   alignment: Alignment.centerLeft,
                                                   child: RichText(
-                                                    maxLines: 1,
+                                                    maxLines: box.get(scheduleDate)![idx].btime ? 2 : 1,
                                                     overflow: TextOverflow.ellipsis,
                                                     text: TextSpan(
-                                                      text: "${box.get(scheduleDate)![idx].name}",
-                                                      style: const TextStyle(
-                                                        color: Pastel.black,
-                                                        fontSize: 15,
-                                                        fontFamily: "Myfont",
-                                                      ),
-                                                      // children: [
-                                                      //   TextSpan(text: "!!!!"),
-                                                      // ]
+                                                      children: [
+                                                        TextSpan(
+                                                          text: "${box.get(scheduleDate)![idx].name}\n",
+                                                          style: const TextStyle(
+                                                            color: Pastel.black,
+                                                            fontSize: 17,
+                                                            fontFamily: "Myfont",
+                                                          ),
+                                                        ),
+                                                        if(box.get(scheduleDate)![idx].btime)
+                                                          TextSpan(
+                                                            text: "${box.get(scheduleDate)![idx].timeString()}",
+                                                            style: const TextStyle(
+                                                              color: Pastel.blacksoft,
+                                                              fontSize: 12,
+                                                              fontFamily: "Myfont",
+                                                            ),
+                                                          ),
+                                                      ],
                                                     ),
                                                   )
                                               ),
                                               const Spacer(),
+                                              if(box.get(scheduleDate)![idx].alarm)
+                                                const Padding(
+                                                  padding: EdgeInsets.only(right: 5),
+                                                  child: Icon(Icons.timelapse_outlined, size: 20, color: Pastel.black,),
+                                                ),
+
                                               const Padding(
                                                 padding: EdgeInsets.only(right: 5),
                                                 child: Icon(Icons.edit, size: 20, color: Pastel.black,),
@@ -167,9 +182,9 @@ class _CalenderState extends State<Calender> {
                           ),
                           SliverToBoxAdapter(
                             child: Padding(
-                              padding: const EdgeInsets.only(top: 5),
+                              padding: const EdgeInsets.only(top: 8),
                               child: Container(
-                                height: 30,
+                                height: 35,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
                                   border: Border.all(color: Pastel.grey, width: 0),

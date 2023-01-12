@@ -1,6 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive/hive.dart';
-
+import 'package:intl/intl.dart';
 part 'scheduleClass.g.dart';
 
 @HiveType(typeId: 1)
@@ -49,5 +49,9 @@ class ScheduleClass{
     this.btime = btime;
     this.alarm = alarm;
     //TODO done 에 관한 것도 넣기
+  }
+
+  String timeString() {
+    return DateFormat.jm().format(date);
   }
 }
