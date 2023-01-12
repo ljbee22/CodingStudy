@@ -82,6 +82,10 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                   isAlarmToggleOn,
                 );
 
+                if(widget.oneSchedule.name.isEmpty) {
+                  return;
+                }
+
                 //알림 추가 시에 알림 울리게 하는 함수
                 if(widget.oneSchedule.alarm) { // alarm 이  true 일때만 실행
                   if(widget.oneSchedule.date.isAfter(DateTime.now())){

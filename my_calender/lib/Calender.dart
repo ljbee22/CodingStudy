@@ -64,104 +64,109 @@ class _CalenderState extends State<Calender> {
         drawer: const CustomDrawer(),
         body: ValueListenableBuilder(
             valueListenable: Hive.box<List>('Box').listenable(),
-          builder: (context, Box<List> box, child) {
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-              child: Column(
-                children: [
-                  const CalenderBanner(),
-                  const DayOfWeek(),
-                  const Divider(height: 0),
-                  AnimatedCrossFade(
-                    duration: const Duration(milliseconds: 200),
-                    firstChild: MonthColumn(box),
-                    secondChild: WeekColumn(box),
-                    crossFadeState: Provider.of<Cursor>(context).isMonth
-                      ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-                  ),
+            builder: (context, Box<List> box, child) {
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                child: Column(
+                  children: [
+                    const CalenderBanner(),
+                    const DayOfWeek(),
+                    const Divider(height: 0),
+                    AnimatedCrossFade(
+                      duration: const Duration(milliseconds: 200),
+                      firstChild: MonthColumn(box),
+                      secondChild: WeekColumn(box),
+                      crossFadeState: Provider.of<Cursor>(context).isMonth
+                          ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                    ),
 
-                  const SizedBox(height: 5),
-                  const TodoBanner(),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          ReorderableListView.builder(
-                            physics: const NeverScrollableScrollPhysics(), // listview 자체 스크롤 disable
-                            shrinkWrap: true,
-                            itemExtent: 40,
-                            buildDefaultDragHandles: false,
-                            itemCount: box.get(scheduleDate) == null ? 0 : box.get(scheduleDate)!.length,
-                            onReorder: (int oldIndex, int newIndex) {
-                              List tmpList = box.get(scheduleDate)!;
-                              if (oldIndex < newIndex) {
-                                newIndex -= 1;
+                    const SizedBox(height: 5),
+                    const TodoBanner(),
+                    Expanded(
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverReorderableList(
+                              itemCount: box.get(scheduleDate) == null ? 0 : box.get(scheduleDate)!.length,
+                              onReorder: (int oldIndex, int newIndex) {
+                                List tmpList = box.get(scheduleDate)!;
+                                if (oldIndex < newIndex) {
+                                  newIndex -= 1;
+                                }
+                                final ScheduleClass item = tmpList.removeAt(oldIndex);
+                                tmpList.insert(newIndex, item);
+
+                                box.put(scheduleDate, tmpList);
+                              },
+                              itemBuilder: (BuildContext context, int idx){
+                                return ReorderableDelayedDragStartListener(
+                                  index: idx,
+                                  key: Key("$idx"),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 5),
+                                    child: Container(
+                                        height: 35,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(5),
+                                          border: Border.all(color: Pastel.grey, width: 0),
+                                          color: Pastel.white,
+                                        ),
+                                        child: GestureDetector(
+                                          behavior: HitTestBehavior.translucent,
+                                          onTap: (){
+                                            showModalBottomSheet<void>(
+                                                context: context,
+                                                builder: (BuildContext context){
+                                                  return ScheduleEdit(box, idx, box.get(scheduleDate)![idx], false);
+                                                }
+                                            );
+                                            FocusManager.instance.primaryFocus?.unfocus();
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.fromLTRB(5, 0, 10, 0),
+                                                child: GestureDetector(
+                                                  onTap: (){
+                                                    print("icons tapped@@@@@@@@@@@@@@@");
+                                                  },
+                                                  child: const ImageIcon(AssetImage("assets/icon/check_unchecked.png"), size: 20, color: Pastel.black,),
+                                                ),
+                                              ),
+                                              Container(
+                                                  width: MediaQuery.of(context).size.width-100,
+                                                  alignment: Alignment.centerLeft,
+                                                  child: RichText(
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    text: TextSpan(
+                                                      text: "${box.get(scheduleDate)![idx].name}",
+                                                      style: const TextStyle(
+                                                        color: Pastel.black,
+                                                        fontSize: 15,
+                                                        fontFamily: "Myfont",
+                                                      ),
+                                                      // children: [
+                                                      //   TextSpan(text: "!!!!"),
+                                                      // ]
+                                                    ),
+                                                  )
+                                              ),
+                                              const Spacer(),
+                                              const Padding(
+                                                padding: EdgeInsets.only(right: 5),
+                                                child: Icon(Icons.edit, size: 20, color: Pastel.black,),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                    ),
+                                  ),
+                                );
                               }
-                              final ScheduleClass item = tmpList.removeAt(oldIndex);
-                              tmpList.insert(newIndex, item);
-
-                              box.put(scheduleDate, tmpList);
-                            },
-
-                            itemBuilder: (BuildContext context, int idx){
-                               ScheduleClass oneSchedule = box.get(scheduleDate)![idx];
-                               return ReorderableDelayedDragStartListener(
-                                 key: Key("$idx"),
-                                 index: idx,
-                                 child: Card(
-                                   margin: const EdgeInsets.fromLTRB(0, 5, 0, 3),
-                                     shape: RoundedRectangleBorder(
-                                     borderRadius: BorderRadius.circular(5),
-                                     side: const BorderSide(
-                                       color: Pastel.black,
-                                       width: 0,
-                                     ),
-                                   ),
-                                     child: GestureDetector(
-                                       behavior: HitTestBehavior.translucent,
-                                       onTap: (){
-                                         showModalBottomSheet<void>(
-                                             context: context,
-                                             builder: (BuildContext context){
-                                               return ScheduleEdit(box, idx, oneSchedule, false);
-                                             }
-                                         );
-                                         FocusManager.instance.primaryFocus?.unfocus();
-                                       },
-                                       child: ListTile(
-                                         visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                                         contentPadding: const EdgeInsets.only(left: 5, right: 5),
-                                         dense: true,
-                                         leading: GestureDetector(
-                                           onTap: (){
-                                             //TODO 체크표시 아이콘도 구현
-                                             print("icons tapped@@@@@@@@@@@@@@@");
-                                           },
-                                           child: const ImageIcon(AssetImage("assets/icon/check_unchecked.png"), size: 20, color: Pastel.black,),
-                                         ),
-                                         title: RichText(
-                                           maxLines: 1,
-                                           overflow: TextOverflow.ellipsis,
-                                           text: TextSpan(
-                                             text: "${box.get(scheduleDate)![idx].name}",
-                                             style: const TextStyle(
-                                               color: Pastel.black,
-                                               fontSize: 15,
-                                               fontFamily: "Myfont",
-                                             ),
-                                           ),
-                                         ),
-                                         trailing: const Padding(
-                                           padding: EdgeInsets.only(right: 5),
-                                           child: Icon(Icons.edit, size: 20, color: Pastel.black,),
-                                         ),
-                                       )
-                                     )
-                                 ),
-                               );
-                               },
                           ),
-                          Padding(
+                          SliverToBoxAdapter(
+                            child: Padding(
                               padding: const EdgeInsets.only(top: 5),
                               child: Container(
                                 height: 30,
@@ -184,18 +189,19 @@ class _CalenderState extends State<Calender> {
                                         focusNode: myFocusNode,
                                         cursorColor: Pastel.grey,
                                         decoration: const InputDecoration.collapsed(
-                                          hintText: "새 일정",
-                                          border: InputBorder.none,
+                                            hintText: "새 일정",
+                                            border: InputBorder.none
                                         ),
-
                                         onFieldSubmitted: (text) {
                                           //filtering
                                           text = text.trim();
+
                                           if(text.isEmpty) {
                                             FocusManager.instance.primaryFocus?.unfocus();
                                             myController.clear();
                                             return;
                                           }
+
                                           BoxController().newSchedule(
                                               box, scheduleDate,
                                               ScheduleClass(name: text, date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)
@@ -229,15 +235,15 @@ class _CalenderState extends State<Calender> {
                                 ),
                               ),
                             ),
+                          ),
                         ],
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10)
-                ],
-              ),
-            );
-          }
+                    const SizedBox(height: 10)
+                  ],
+                ),
+              );
+            }
         ),
       ),
     );
