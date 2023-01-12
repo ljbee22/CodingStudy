@@ -412,9 +412,9 @@ class Pastel {
   static const Color pinkaccent = Color(0xffFCCEE2);
   static const Color pink = Color(0xffFAE3D9);
   static const Color bluegreen = Color(0xffBBDED6);
-  static const Color sky = Color(0xff88d4ff);
+  static const Color sky = Color(0xffD5F7FF);
   static const Color purple = Color(0xffBFCFFF);
-  static const Color yellow = Color(0xffFFFFC2);
+  static const Color yellow = Color(0xffFFF1BC);
   static const Color orange = Color(0xffFECEA8);
   static const Color redaccent = Color(0xffE84A5F);
   static const Color grey = Color(0xff7E97A6);

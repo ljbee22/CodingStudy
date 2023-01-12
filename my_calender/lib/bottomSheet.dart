@@ -30,6 +30,8 @@ class _ScheduleEditState extends State<ScheduleEdit> {
   late bool isTimeToggleOn;
   late bool isAlarmToggleOn;
   bool isError = false;
+  late int colorIdx;
+  List<Color> colorList = [Pastel.white, Pastel.pink, Pastel.yellow, Pastel.green, Pastel.sky, Pastel.purple];
 
   @override
   void initState(){
@@ -40,7 +42,38 @@ class _ScheduleEditState extends State<ScheduleEdit> {
     tmpTime = widget.oneSchedule.date;
     isTimeToggleOn = widget.oneSchedule.btime;
     isAlarmToggleOn = widget.oneSchedule.alarm;
+    colorIdx = widget.oneSchedule.colorIdx;
   }
+
+  Widget colorCircle (int idx) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          colorIdx = idx;
+        });
+      },
+      child: Container(
+        width: 25,
+        height: 25,
+        decoration: BoxDecoration(
+          color: colorList[idx],
+          shape: BoxShape.circle,
+          boxShadow: [
+            if(idx == colorIdx)
+              const BoxShadow(
+                color: Pastel.grey,
+                blurRadius: 1,
+                spreadRadius: 1,
+              )
+          ],
+          border: Border.all(
+              color: Pastel.blacksoft,
+              width: 1,
+          ),
+        ),
+      ),
+    );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +113,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                   tmpTime,
                   isTimeToggleOn,
                   isAlarmToggleOn,
+                  colorIdx
                 );
 
                 if(widget.oneSchedule.name.isEmpty) {
@@ -136,6 +170,16 @@ class _ScheduleEditState extends State<ScheduleEdit> {
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
             child: Column(
               children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      for(int idx = 0; idx < colorList.length; idx++)
+                        colorCircle(idx)
+                    ],
+                  ),
+                ),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),

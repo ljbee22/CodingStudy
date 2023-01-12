@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:my_calender/customclass/calenderElement.dart';
 part 'scheduleClass.g.dart';
 
 @HiveType(typeId: 1)
@@ -17,6 +19,8 @@ class ScheduleClass{
   bool done; // 일정 해결 여부
   @HiveField(5)
   bool alarm; // 알림 여부
+  @HiveField(6)
+  int colorIdx;
 
   ScheduleClass({
     required this.name,
@@ -24,7 +28,8 @@ class ScheduleClass{
     required this.date,
     this.btime = false,
     this.done = false,
-    this.alarm = false
+    this.alarm = false,
+    this.colorIdx = 0,
   });
 
   void newDate(DateTime A) {
@@ -42,12 +47,13 @@ class ScheduleClass{
     return false;
   }
 
-  changeScheduleElements(String name, String memo, DateTime newDate, DateTime newTime, bool btime, bool alarm){
+  changeScheduleElements(String name, String memo, DateTime newDate, DateTime newTime, bool btime, bool alarm, int colorIdx){
     this.name = name;
     this.memo = memo;
     this.date = DateTime(newDate.year, newDate.month, newDate.day, newTime.hour, newTime.minute);
     this.btime = btime;
     this.alarm = alarm;
+    this.colorIdx = colorIdx;
     //TODO done 에 관한 것도 넣기
   }
 

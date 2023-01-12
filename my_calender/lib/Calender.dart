@@ -23,6 +23,8 @@ class _CalenderState extends State<Calender> {
   static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   final myController = TextEditingController();
   FocusNode myFocusNode = FocusNode();
+  List<Color> colorList = [Pastel.white, Pastel.pink, Pastel.yellow, Pastel.green, Pastel.sky, Pastel.purple];
+
   @override
   void initState() {
     super.initState();
@@ -94,7 +96,6 @@ class _CalenderState extends State<Calender> {
                                 }
                                 final ScheduleClass item = tmpList.removeAt(oldIndex);
                                 tmpList.insert(newIndex, item);
-
                                 box.put(scheduleDate, tmpList);
                               },
                               itemBuilder: (BuildContext context, int idx){
@@ -108,7 +109,7 @@ class _CalenderState extends State<Calender> {
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(5),
                                           border: Border.all(color: Pastel.grey, width: 0),
-                                          color: Pastel.white,
+                                          color: colorList[box.get(scheduleDate)![idx].colorIdx],
                                         ),
                                         child: GestureDetector(
                                           behavior: HitTestBehavior.translucent,
