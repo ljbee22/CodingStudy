@@ -8,7 +8,9 @@ class NotificationController{
 
   //1. 앱로드시 실행할 기본설정
   initNotification() async {
-
+    print('함수 실행됨!!!!!!!!!!!!!!!!!');
+    notifications.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>()!.requestPermission();
     //안드로이드용 아이콘파일 이름
     var androidSetting = const AndroidInitializationSettings('ic_icon');
 

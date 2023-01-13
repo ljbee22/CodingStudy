@@ -130,9 +130,12 @@ class _CalenderState extends State<Calender> {
                                                 padding: const EdgeInsets.fromLTRB(5, 0, 10, 0),
                                                 child: GestureDetector(
                                                   onTap: (){
-                                                    print("icons tapped@@@@@@@@@@@@@@@");
+                                                    oneSchedule.done = !oneSchedule.done;
+                                                    BoxController().editSchedule(box, scheduleDate, oneSchedule, idx);
                                                   },
-                                                  child: const ImageIcon(AssetImage("assets/icon/check_unchecked.png"), size: 20, color: Pastel.black,),
+                                                  child: oneSchedule.done
+                                                      ? const ImageIcon(AssetImage("assets/icon/check_checked.png"), size: 20, color: Pastel.black,)
+                                                      : const ImageIcon(AssetImage("assets/icon/check_unchecked.png"), size: 20, color: Pastel.black,)
                                                 ),
                                               ),
                                               Container(
@@ -144,8 +147,10 @@ class _CalenderState extends State<Calender> {
                                                       children: [
                                                         TextSpan(
                                                           text: "${oneSchedule.name}\n",
-                                                          style: const TextStyle(
+                                                          style: TextStyle(
                                                             color: Pastel.black,
+                                                            decoration: oneSchedule.done ? TextDecoration.lineThrough : TextDecoration.none,
+                                                            fontStyle: oneSchedule.done ? FontStyle.italic : FontStyle.normal,
                                                             fontSize: 17,
                                                             fontFamily: "Myfont",
                                                           ),
@@ -164,7 +169,7 @@ class _CalenderState extends State<Calender> {
                                                   )
                                               ),
                                               const Spacer(),
-                                              if(box.get(scheduleDate)![idx].alarm)
+                                              if(oneSchedule.alarm && oneSchedule.date.isAfter(DateTime.now()))
                                                 const Padding(
                                                   padding: EdgeInsets.only(right: 5),
                                                   child: Icon(Icons.timelapse_outlined, size: 20, color: Pastel.black,),

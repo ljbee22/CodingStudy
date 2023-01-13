@@ -356,10 +356,20 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Drawer(
+    return Drawer(
       //TODO drawer 에 넣을 거 고민
-      backgroundColor: Pastel.orange,
-      child: Text('Hello'),
+      backgroundColor: Pastel.white,
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Pastel.pink,
+            ),
+              child: Text('Drawer Header')
+          )
+        ],
+      ),
     );
   }
 }
