@@ -228,6 +228,7 @@ class _CalenderState extends State<Calender> {
                                               box, scheduleDate,
                                               ScheduleClass(name: text, date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)
                                               ));
+
                                           myFocusNode.requestFocus();
                                           myController.clear();
                                         },

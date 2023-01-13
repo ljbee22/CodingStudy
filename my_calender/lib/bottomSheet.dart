@@ -83,7 +83,6 @@ class _ScheduleEditState extends State<ScheduleEdit> {
     print("@@@@@@@@@@다시 빌드됨@@@@@@@@@@@@");
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Pastel.black),
         backgroundColor: Pastel.purple,
@@ -125,7 +124,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                   if(widget.oneSchedule.date.isAfter(DateTime.now())){
                     // 시간이 제대로 정해져 있으면 알림 설정
                     NotificationController().scheduleNotification(uniqueIdx, widget.oneSchedule.name, widget.oneSchedule.date);
-                    print("this is initdate : ${initDate}");
+                    print("this is initdate : $initDate");
                     print("${widget.oneSchedule.date}에 알람이 울립니다");
                   }
                   else{
