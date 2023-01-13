@@ -99,17 +99,18 @@ class _CalenderState extends State<Calender> {
                                 box.put(scheduleDate, tmpList);
                               },
                               itemBuilder: (BuildContext context, int idx){
+                                ScheduleClass oneSchedule = box.get(scheduleDate)![idx];
                                 return ReorderableDelayedDragStartListener(
                                   index: idx,
                                   key: Key("$idx"),
                                   child: Padding(
                                     padding: const EdgeInsets.only(top: 8),
                                     child: Container(
-                                        height: box.get(scheduleDate)![idx].btime ? 45 : 35,
+                                        height: oneSchedule.btime ? 45 : 35,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(5),
                                           border: Border.all(color: Pastel.grey, width: 0),
-                                          color: colorList[box.get(scheduleDate)![idx].colorIdx],
+                                          color: colorList[oneSchedule.colorIdx],
                                         ),
                                         child: GestureDetector(
                                           behavior: HitTestBehavior.translucent,
@@ -117,7 +118,7 @@ class _CalenderState extends State<Calender> {
                                             showModalBottomSheet<void>(
                                                 context: context,
                                                 builder: (BuildContext context){
-                                                  return ScheduleEdit(box, idx, box.get(scheduleDate)![idx], false);
+                                                  return ScheduleEdit(box, idx, oneSchedule, false);
                                                 }
                                             );
                                             FocusManager.instance.primaryFocus?.unfocus();
@@ -137,21 +138,21 @@ class _CalenderState extends State<Calender> {
                                               Container(
                                                   alignment: Alignment.centerLeft,
                                                   child: RichText(
-                                                    maxLines: box.get(scheduleDate)![idx].btime ? 2 : 1,
+                                                    maxLines: oneSchedule.btime ? 2 : 1,
                                                     overflow: TextOverflow.ellipsis,
                                                     text: TextSpan(
                                                       children: [
                                                         TextSpan(
-                                                          text: "${box.get(scheduleDate)![idx].name}\n",
+                                                          text: "${oneSchedule.name}\n",
                                                           style: const TextStyle(
                                                             color: Pastel.black,
                                                             fontSize: 17,
                                                             fontFamily: "Myfont",
                                                           ),
                                                         ),
-                                                        if(box.get(scheduleDate)![idx].btime)
+                                                        if(oneSchedule.btime)
                                                           TextSpan(
-                                                            text: "${box.get(scheduleDate)![idx].timeString()}",
+                                                            text: oneSchedule.timeString(),
                                                             style: const TextStyle(
                                                               color: Pastel.blacksoft,
                                                               fontSize: 12,
