@@ -7,6 +7,7 @@ import 'package:my_calender/localNotification.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:my_calender/customclass/cursor.dart';
+import 'package:my_calender/Calender.dart' as calender;
 
 class ScheduleEdit extends StatefulWidget {
   final Box box;
@@ -152,6 +153,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                     BoxController().editSchedule(widget.box, scheduleDate, widget.oneSchedule, widget.idx);
                   }
                 }
+                calender.myController.clear();
                 Navigator.pop(context);
               },
             ),
@@ -190,7 +192,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                         child: TextFormField(
-                              controller: TextEditingController(text: title),
+                              initialValue: title,
                               style: const TextStyle(fontSize: 15),
                               textAlignVertical: TextAlignVertical.center,
                               cursorColor: Pastel.grey,
@@ -210,7 +212,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                         child: TextFormField(
-                          controller: TextEditingController(text: memo),
+                          initialValue: memo,
                           style: const TextStyle(fontSize: 15),
                           textAlignVertical: TextAlignVertical.center,
                           cursorColor: Pastel.grey,

@@ -11,6 +11,7 @@ import 'package:my_calender/localNotification.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
+final myController = TextEditingController();
 
 class Calender extends StatefulWidget {
   const Calender({Key? key}) : super(key: key);
@@ -21,8 +22,8 @@ class Calender extends StatefulWidget {
 
 class _CalenderState extends State<Calender> {
   static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
-  final myController = TextEditingController();
   FocusNode myFocusNode = FocusNode();
+  String tmpText = "";
   List<Color> colorList = [Pastel.white, Pastel.pink, Pastel.yellow, Pastel.green, Pastel.sky, Pastel.purple];
 
   @override
@@ -30,6 +31,15 @@ class _CalenderState extends State<Calender> {
     super.initState();
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     _init();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // setState 가 실행될 때마다 실행되는 함수. 사실 누구의 setState 인지는 의문
+    //정황상 cursor 를 listen 하는 것 같음(isMonth, selected)
+    super.didChangeDependencies();
+    FocusManager.instance.primaryFocus?.unfocus();
+    myController.clear();
   }
 
   //notification initialize
@@ -204,7 +214,31 @@ class _CalenderState extends State<Calender> {
                                       child: ImageIcon(AssetImage("assets/icon/check_notwork.png"), size: 20, color: Pastel.grey,),
                                     ),
                                     Expanded(
-                                      child: TextFormField(
+                                      child: Provider.of<Cursor>(context).isMonth
+                                      ? GestureDetector(
+                                        onTap: () {
+                                          showModalBottomSheet<void>(
+                                              context: context,
+                                              builder: (BuildContext context){
+                                                if(!box.containsKey(scheduleDate)) {
+                                                  // 일정이 없는 날에 새 일정 추가
+                                                  return ScheduleEdit(box, 0, ScheduleClass(name: "", date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
+                                                }
+                                                //일정이 있는 날에 새 일정 추가
+                                                return ScheduleEdit(box, box.get(scheduleDate)!.length, ScheduleClass(name: "", date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
+                                              }
+                                          );
+                                          FocusManager.instance.primaryFocus?.unfocus();
+                                        },
+                                        child: const Text("새 일정",
+                                          style: TextStyle(
+                                            color: Pastel.grey,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w300
+                                          ),
+                                        ),
+                                      )
+                                      : TextFormField(
                                         textAlignVertical: TextAlignVertical.center,
                                         style: const TextStyle(fontSize: 15),
                                         controller: myController,
@@ -217,7 +251,6 @@ class _CalenderState extends State<Calender> {
                                         onFieldSubmitted: (text) {
                                           //filtering
                                           text = text.trim();
-
                                           if(text.isEmpty) {
                                             FocusManager.instance.primaryFocus?.unfocus();
                                             myController.clear();
@@ -232,6 +265,8 @@ class _CalenderState extends State<Calender> {
                                           myFocusNode.requestFocus();
                                           myController.clear();
                                         },
+
+                                        onChanged: (text){tmpText = text;},
                                       ),
                                     ),
                                     Padding(
@@ -243,10 +278,10 @@ class _CalenderState extends State<Calender> {
                                               builder: (BuildContext context){
                                                 if(!box.containsKey(scheduleDate)) {
                                                   // 일정이 없는 날에 새 일정 추가
-                                                  return ScheduleEdit(box, 0, ScheduleClass(name: "", date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
+                                                  return ScheduleEdit(box, 0, ScheduleClass(name: tmpText, date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
                                                 }
                                                 //일정이 있는 날에 새 일정 추가
-                                                return ScheduleEdit(box, box.get(scheduleDate)!.length, ScheduleClass(name: "", date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
+                                                return ScheduleEdit(box, box.get(scheduleDate)!.length, ScheduleClass(name: tmpText, date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
                                               }
                                           );
                                           FocusManager.instance.primaryFocus?.unfocus();
