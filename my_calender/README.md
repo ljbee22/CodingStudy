@@ -305,6 +305,9 @@ MY Calender Project
 3. 새일정 추가 textformfield에서 치다가 편집버튼 누르면 앞서 쳤던 text 전달
 4. bottomsheet에서 textformfield 누르면 커서 위치 이상한거 수정
 
+다음 계획
+1. 주간화면 아래 애니메이션 삽입 및 터치 시 반응 구현**
+
 ---
 # 추후 수정해야할 요소들
 
