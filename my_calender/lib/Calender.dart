@@ -24,6 +24,7 @@ class _CalenderState extends State<Calender> {
   static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   FocusNode myFocusNode = FocusNode();
   String tmpText = "";
+  bool flowerIconTapped = false;
   List<Color> colorList = [Pastel.white, Pastel.pink, Pastel.yellow, Pastel.green, Pastel.sky, Pastel.purple];
 
   @override
@@ -182,7 +183,7 @@ class _CalenderState extends State<Calender> {
                                               if(oneSchedule.alarm && oneSchedule.date.isAfter(DateTime.now()))
                                                 const Padding(
                                                   padding: EdgeInsets.only(right: 5),
-                                                  child: Icon(Icons.timelapse_outlined, size: 20, color: Pastel.black,),
+                                                  child: ImageIcon(AssetImage("assets/icon/alarm_clock.png"), size: 20, color: Pastel.black,),
                                                 ),
 
                                               const Padding(
@@ -295,6 +296,26 @@ class _CalenderState extends State<Calender> {
                             ),
                           ),
                         ],
+                      ),
+                    ),
+                    if(!Provider.of<Cursor>(context).isMonth)
+                    GestureDetector(
+                      onTap: (){
+                        print("object");
+                        setState(() {flowerIconTapped = true;});
+                        Future.delayed(const Duration(milliseconds: 500)).then((value){
+                          flowerIconTapped = false;
+                          setState(() {});
+                        });
+                      },
+                      child: Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: flowerIconTapped ? AssetImage('assets/background/flower_demo.gif') : AssetImage('assets/background/flower_demo_stop.png') ,
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 10)

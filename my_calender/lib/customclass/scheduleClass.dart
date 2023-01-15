@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:my_calender/customclass/calenderElement.dart';
 part 'scheduleClass.g.dart';
 
+//typeId 0은 안된다
 @HiveType(typeId: 1)
 class ScheduleClass{
   @HiveField(0)
