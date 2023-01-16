@@ -312,6 +312,13 @@ MY Calender Project
 1. 이미지 터치 시에 png->gif로 전환 성공
 2. SettingClass 정의(아직 추가중)
 
+## 1.16
+1. Setting Class 추가
+2. 일요일로 시작할 경우 daylist 변경되도록 수정
+3. 주간 화면에서 Container 잘려 보이는 문제 수정
+4. 버튼 효과 넣어보려고 했으나 마음에 안들어서 다시 삭제
+5. Font List 만듦
+
 ---
 # 추후 수정해야할 요소들
 
