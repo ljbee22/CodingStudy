@@ -32,6 +32,7 @@ class _CalenderState extends State<Calender> {
     super.initState();
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     _init();
+
   }
 
   @override
@@ -77,7 +78,7 @@ class _CalenderState extends State<Calender> {
         drawer: const CustomDrawer(),
         body: ValueListenableBuilder(
             valueListenable: Hive.box<List>('Box').listenable(),
-            builder: (context, Box<List> box, child) {
+            builder: (context, box, child) {
               return Padding(
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 child: Column(

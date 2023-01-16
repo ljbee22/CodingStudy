@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:my_calender/customclass/cursor.dart';
+import 'package:my_calender/customclass/hiveClass.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+final settingBox = Hive.box("setting");
 
 ///************* main calender element **************///
 
@@ -448,3 +452,7 @@ class Pastel {
   static const Color white = Color(0xfff4efeb);
   static const Color test = Color(0xffd5dc92);
 }
+
+///*************** font list *****************///
+
+List fontList = ["Myfont"];

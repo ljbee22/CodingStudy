@@ -62,14 +62,18 @@ class ScheduleClass{
 }
 
 @HiveType(typeId: 2)
-class SettingClass {
+class SettingClass{
   @HiveField(0)
-  bool isMondayStart; // 월요일 시작 or 일요일 시작?
+  bool isSunday; // 월요일 시작 or 일요일 시작?
   @HiveField(1)
   int themeIdx; // 컬러테마 인덱스
+  @HiveField(2)
+  int fontIdx;
+
 
   SettingClass({
-    this.isMondayStart = false, // default = 월요일 시작
+    this.isSunday = true, // default = 일요일 시작
     this.themeIdx = 0, // default = 기본 컬러 테마(=0)
+    this.fontIdx = 0,
   });
 }
