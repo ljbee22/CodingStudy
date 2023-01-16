@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:my_calender/customclass/hiveClass.dart';
-import 'package:my_calender/localNotification.dart';
 import 'package:provider/provider.dart';
 import 'package:my_calender/customclass/cursor.dart';
-import 'Calender.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:my_calender/Calender.dart';
+import 'package:my_calender/customclass/calenderElement.dart' as data;
 
 
 void main() async{
   await Hive.initFlutter(); // hive database 초기화
   Hive.registerAdapter(ScheduleClassAdapter());
   await Hive.openBox<List>('Box');
+  await Hive.openBox('setting');
   runApp(const MyApp());
 }
 
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
             title: 'My_Calender',
             theme: ThemeData(
               primarySwatch: Colors.blue,
-              fontFamily: 'Myfont',
+              fontFamily: data.fontList[0], //TODO box에서 idx 가져오는걸로 수정
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
             ),

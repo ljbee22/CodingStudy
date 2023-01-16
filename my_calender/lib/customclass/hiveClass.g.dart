@@ -69,19 +69,22 @@ class SettingClassAdapter extends TypeAdapter<SettingClass> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return SettingClass(
-      isMondayStart: fields[0] as bool,
+      isSunday: fields[0] as bool,
       themeIdx: fields[1] as int,
+      fontIdx: fields[2] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, SettingClass obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.isMondayStart)
+      ..write(obj.isSunday)
       ..writeByte(1)
-      ..write(obj.themeIdx);
+      ..write(obj.themeIdx)
+      ..writeByte(2)
+      ..write(obj.fontIdx);
   }
 
   @override
