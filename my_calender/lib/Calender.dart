@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:my_calender/bottomSheet.dart';
 import 'package:my_calender/customclass/boxController.dart';
-import 'package:my_calender/customclass/scheduleClass.dart';
+import 'package:my_calender/customclass/hiveClass.dart';
 import 'package:my_calender/customclass/cursor.dart';
 import 'package:my_calender/customclass/calenderElement.dart';
 import 'package:provider/provider.dart';
@@ -84,7 +84,7 @@ class _CalenderState extends State<Calender> {
                   children: [
                     const CalenderBanner(),
                     const DayOfWeek(),
-                    const Divider(height: 0),
+                    const Divider(height: 0, thickness: 1),
                     AnimatedCrossFade(
                       duration: const Duration(milliseconds: 200),
                       firstChild: MonthColumn(box),
@@ -93,7 +93,7 @@ class _CalenderState extends State<Calender> {
                           ? CrossFadeState.showFirst : CrossFadeState.showSecond,
                     ),
 
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 7),
                     const TodoBanner(),
                     Expanded(
                       child: CustomScrollView(

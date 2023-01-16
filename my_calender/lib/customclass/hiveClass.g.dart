@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'scheduleClass.dart';
+part of 'hiveClass.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
@@ -54,6 +54,43 @@ class ScheduleClassAdapter extends TypeAdapter<ScheduleClass> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is ScheduleClassAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class SettingClassAdapter extends TypeAdapter<SettingClass> {
+  @override
+  final int typeId = 2;
+
+  @override
+  SettingClass read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return SettingClass(
+      isMondayStart: fields[0] as bool,
+      themeIdx: fields[1] as int,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, SettingClass obj) {
+    writer
+      ..writeByte(2)
+      ..writeByte(0)
+      ..write(obj.isMondayStart)
+      ..writeByte(1)
+      ..write(obj.themeIdx);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SettingClassAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

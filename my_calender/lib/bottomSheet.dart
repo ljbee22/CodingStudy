@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:my_calender/customclass/boxController.dart';
 import 'package:my_calender/customclass/calenderElement.dart';
-import 'package:my_calender/customclass/scheduleClass.dart';
+import 'package:my_calender/customclass/hiveClass.dart';
 import 'package:my_calender/localNotification.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';

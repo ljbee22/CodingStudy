@@ -138,57 +138,60 @@ class _OneDayState extends State<OneDay> {
           onTap: () {
             Provider.of<Cursor>(context, listen: false).changeCursor(widget.oneDay);
           },
-          child: Container(
-              decoration: (Provider.of<Cursor>(context).selected.day ==
-                  widget.oneDay.day) &&
-                  (Provider.of<Cursor>(context).selected.month ==
-                      widget.oneDay.month)
-                  ? BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: Pastel.grey, width: 0),
-                color: Pastel.white,
-              )
-                  : null,
-              padding: const EdgeInsets.fromLTRB(0, 4, 0, 10),
-              height: 60,
-              child:
-              (widget.oneDay.month != Provider.of<Cursor>(context).selected.month) &&
-                  (Provider.of<Cursor>(context, listen: false).isMonth)
-                  ? null
-                  : Stack(
-                children: [
-                  Positioned(
-                    top: 1,
-                    height: 20,
-                    width: 20,
-                    left: 3,
-                    child: MyText(
-                        widget.oneDay.day.toString(),
-                        15,
-                        widget.oneDay.weekday == 7
-                            ? Pastel.redaccent
-                            : Pastel.black,
-                        FontWeight.w300
+          child: Padding(
+            padding: const EdgeInsets.only(right: 1.0),
+            child: Container(
+                decoration: (Provider.of<Cursor>(context).selected.day ==
+                    widget.oneDay.day) &&
+                    (Provider.of<Cursor>(context).selected.month ==
+                        widget.oneDay.month)
+                    ? BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: Pastel.grey, width: 0),
+                  color: Pastel.white,
+                )
+                    : null,
+                padding: const EdgeInsets.fromLTRB(0, 4, 0, 10),
+                height: 60,
+                child:
+                (widget.oneDay.month != Provider.of<Cursor>(context).selected.month) &&
+                    (Provider.of<Cursor>(context, listen: false).isMonth)
+                    ? null
+                    : Stack(
+                        children: [
+                          Positioned(
+                            top: 1,
+                            height: 20,
+                            width: 20,
+                            left: 3,
+                            child: MyText(
+                                widget.oneDay.day.toString(),
+                                15,
+                                widget.oneDay.weekday == 7
+                                    ? Pastel.redaccent
+                                    : Pastel.black,
+                                FontWeight.w300
+                            ),
                     ),
-                  ),
-                  if (widget.box.containsKey(DateFormat('yyyy.MM.dd').format(widget.oneDay)))
-                    Positioned(
-                      top: 5,
-                      left: 28,
-                      child: Container(
-                        height: 13,
-                        width: 13,
-                        decoration: BoxDecoration(
-                          color: Pastel.red,
-                          borderRadius: BorderRadius.all(Radius.circular(3)),
-                        ),
-                        child: MyText(
-                            widget.box.get(DateFormat('yyyy.MM.dd').format(widget.oneDay)).length.toString(),
-                            10, Pastel.black, FontWeight.w500),
+                          if (widget.box.containsKey(DateFormat('yyyy.MM.dd').format(widget.oneDay)))
+                          Positioned(
+                            top: 5,
+                            left: 28,
+                            child: Container(
+                              height: 13,
+                              width: 13,
+                              decoration: const BoxDecoration(
+                                color: Pastel.red,
+                                borderRadius: BorderRadius.all(Radius.circular(3)),
+                              ),
+                              child: MyText(
+                                  widget.box.get(DateFormat('yyyy.MM.dd').format(widget.oneDay)).length.toString(),
+                                  10, Pastel.black, FontWeight.w500),
+                            ),
                       ),
-                    ),
-                ],
-              )
+                  ],
+                )
+            ),
           ),
         )
     );
@@ -202,16 +205,17 @@ class WeekColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List tmpList = Provider.of<Cursor>(context).dayList(true);
     return Column(
       children: [
         Row(
           children: [
             for(int i = (Provider.of<Cursor>(context).dayOfWeek()-1) * 7 ;
             i < Provider.of<Cursor>(context).dayOfWeek() * 7; i++)
-              OneDay(Provider.of<Cursor>(context).dayList()[i], box),
+              OneDay(tmpList[i], box),
           ],
         ),
-        const Divider(height: 0),
+        const Divider(height: 1, thickness: 1),
       ],
     );
   }
@@ -224,69 +228,57 @@ class MonthColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List tmpList = Provider.of<Cursor>(context).dayList(true);
     return Column(
       children: [
+        if(tmpList[6].month == Provider.of<Cursor>(context).selected.month)
         Row(
           children: [
             for (int i = 0; i < 7; i++)
-              OneDay(
-                  Provider.of<Cursor>(context).dayList()[i],
-                  box),
+              OneDay(tmpList[i], box),
           ],
         ),
         const Divider(height: 0),
         Row(
           children: [
             for (int i = 7; i < 14; i++)
-              OneDay(
-                  Provider.of<Cursor>(context).dayList()[i],
-                  box),
+              OneDay(tmpList[i], box),
           ],
         ),
         const Divider(height: 0),
         Row(
           children: [
             for (int i = 14; i < 21; i++)
-              OneDay(
-                  Provider.of<Cursor>(context).dayList()[i],
-                  box),
+              OneDay(tmpList[i], box),
           ],
         ),
         const Divider(height: 0),
         Row(
           children: [
             for (int i = 21; i < 28; i++)
-              OneDay(
-                  Provider.of<Cursor>(context).dayList()[i],
-                  box),
+              OneDay(tmpList[i], box),
           ],
         ),
         const Divider(height: 0),
-        if (Provider.of<Cursor>(context).dayList()[28].day > 8)
+        if (tmpList[28].day > 8)
           Column(
             children: [
               Row(
                 children: [
                   for (int i = 28; i < 35; i++)
-                    OneDay(
-                        Provider.of<Cursor>(context)
-                            .dayList()[i],
-                        box),
+                    OneDay(tmpList[i], box),
                 ],
               ),
               const Divider(height: 0),
             ],
           ),
-        if (Provider.of<Cursor>(context).dayList()[35].day > 8)
+        if (tmpList[35].day > 8)
           Column(
             children: [
               Row(
                 children: [
                   for (int i = 35; i < 42; i++)
-                    OneDay(
-                        Provider.of<Cursor>(context)
-                            .dayList()[i],
-                        box),
+                    OneDay(tmpList[i], box),
                 ],
               ),
               const Divider(height: 0),
@@ -309,29 +301,29 @@ class CustomAppbar extends StatelessWidget implements PreferredSize{
     return AppBar(
       elevation: 0,
       backgroundColor: Colors.white,
-      leading: IconButton(onPressed: () {
+      leading: IconButton(
+        padding: const EdgeInsets.only(left: 15),
+        onPressed: () {
         scaffoldKey.currentState?.openDrawer();
-      },
-        icon: Icon(Icons.linear_scale, color: Pastel.blacksoft),
+        },
+        icon: const Icon(Icons.linear_scale, color: Pastel.blacksoft, size: 30),
       ),
       title: Stack(
         children: [
           Positioned(
-            right: 30,
+            right: 40,
             child: IconButton(
-                alignment: Alignment.centerRight,
-                visualDensity: const VisualDensity(horizontal: -4.0),
                 onPressed: () {
                   Provider.of<Cursor>(context, listen: false).changeIsMonth();
                 },
-                icon: const Icon(Icons.change_circle_rounded), color: Pastel.blacksoft),
+                icon: const Icon(Icons.change_circle_rounded, color: Pastel.blacksoft, size: 30)
+            ),
           ),
           Align(
             alignment: Alignment.centerRight,
             child: IconButton(
               alignment: Alignment.centerRight,
-              visualDensity: const VisualDensity(horizontal: -4.0),
-              icon: const Icon(Icons.today, color: Pastel.blacksoft,),
+              icon: const Icon(Icons.today, color: Pastel.blacksoft, size: 30),
               onPressed: () {
                 Provider.of<Cursor>(context, listen: false).changeCursor(DateTime.now());
               },
@@ -343,7 +335,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSize{
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(40);
+  Size get preferredSize => const Size.fromHeight(50);
 
   @override
   // TODO: implement child : 몰라서 임시로 Container() 넣음
@@ -351,23 +343,45 @@ class CustomAppbar extends StatelessWidget implements PreferredSize{
 }
 
 // 최상위 appbar 와 같이 표시되는 drawer
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends StatefulWidget {
   const CustomDrawer({Key? key}) : super(key: key);
+  @override
+  State<CustomDrawer> createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
+  bool isSunday = true;
+  bool isMonday = false;
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      //TODO drawer 에 넣을 거 고민
       backgroundColor: Pastel.white,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          DrawerHeader(
-            decoration: BoxDecoration(
-              color: Pastel.pink,
+          SizedBox(
+            height: 100,
+            child: DrawerHeader(
+              decoration: BoxDecoration(
+                color: Pastel.yellow,
+              ),
+                child: Text('설정')
             ),
-              child: Text('Drawer Header')
-          )
+          ),
+          Container(
+            height: 40,
+            child: Row(
+              children: [
+                const Text("시작 요일 설정"),
+                const Spacer(),
+                // ToggleButtons(
+                //     children: children,
+                //     isSelected: isSelected)
+              ],
+            ),
+          ),
+          const Divider(height: 1, thickness: 1),
         ],
       ),
     );
