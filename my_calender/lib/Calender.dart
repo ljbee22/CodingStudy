@@ -125,6 +125,12 @@ class _CalenderState extends State<Calender> {
                                           color: colorList[oneSchedule.colorIdx],
                                         ),
                                         child: GestureDetector(
+                                          onHorizontalDragEnd: (DragEndDetails details) {
+                                            // if(details.velocity[0] < 0) {
+                                            //
+                                            // }
+                                            print(details.velocity);
+                                          },
                                           behavior: HitTestBehavior.translucent,
                                           onTap: (){
                                             showModalBottomSheet<void>(

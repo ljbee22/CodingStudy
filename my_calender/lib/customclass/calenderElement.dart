@@ -354,6 +354,7 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
+  List<bool> isselected = [box.issunday, !box]
   bool isSunday = true;
   bool isMonday = false;
 
@@ -377,11 +378,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
             height: 40,
             child: Row(
               children: [
+                SizedBox(width: 15,),
                 const Text("시작 요일 설정"),
                 const Spacer(),
-                // ToggleButtons(
-                //     children: children,
-                //     isSelected: isSelected)
+                ToggleButtons(
+                    children: [
+                      Text('월요일'),
+                      Text('일요일'),
+                    ],
+                    isSelected: [true, false],
+                  onPressed: (int idx) {},
+                ),
               ],
             ),
           ),
