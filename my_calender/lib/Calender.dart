@@ -12,6 +12,7 @@ import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 final myController = TextEditingController();
+String tmpText = "";
 
 class Calender extends StatefulWidget {
   const Calender({Key? key}) : super(key: key);
@@ -23,7 +24,6 @@ class Calender extends StatefulWidget {
 class _CalenderState extends State<Calender> {
   static final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
   FocusNode myFocusNode = FocusNode();
-  String tmpText = "";
   bool flowerIconTapped = false;
   List<Color> colorList = [Pastel.white, Pastel.pink, Pastel.yellow, Pastel.green, Pastel.sky, Pastel.purple];
 
@@ -150,37 +150,36 @@ class _CalenderState extends State<Calender> {
                                                       : const ImageIcon(AssetImage("assets/icon/check_unchecked.png"), size: 20, color: Pastel.black,)
                                                 ),
                                               ),
-                                              Container(
-                                                  alignment: Alignment.centerLeft,
-                                                  child: RichText(
-                                                    maxLines: oneSchedule.btime ? 2 : 1,
-                                                    overflow: TextOverflow.ellipsis,
-                                                    text: TextSpan(
-                                                      children: [
+                                              Expanded(
+                                                child: RichText(
+                                                  maxLines: 2,
+                                                  softWrap: false,
+                                                  text: TextSpan(
+                                                    children: [
+                                                      TextSpan(
+                                                        text: "${oneSchedule.name}\n",
+                                                        style: TextStyle(
+                                                          overflow: TextOverflow.ellipsis,
+                                                          color: Pastel.black,
+                                                          decoration: oneSchedule.done ? TextDecoration.lineThrough : TextDecoration.none,
+                                                          fontStyle: oneSchedule.done ? FontStyle.italic : FontStyle.normal,
+                                                          fontSize: 17,
+                                                          fontFamily: "Myfont",
+                                                        ),
+                                                      ),
+                                                      if(oneSchedule.btime)
                                                         TextSpan(
-                                                          text: "${oneSchedule.name}\n",
-                                                          style: TextStyle(
-                                                            color: Pastel.black,
-                                                            decoration: oneSchedule.done ? TextDecoration.lineThrough : TextDecoration.none,
-                                                            fontStyle: oneSchedule.done ? FontStyle.italic : FontStyle.normal,
-                                                            fontSize: 17,
+                                                          text: oneSchedule.timeString(),
+                                                          style: const TextStyle(
+                                                            color: Pastel.blacksoft,
+                                                            fontSize: 12,
                                                             fontFamily: "Myfont",
                                                           ),
                                                         ),
-                                                        if(oneSchedule.btime)
-                                                          TextSpan(
-                                                            text: oneSchedule.timeString(),
-                                                            style: const TextStyle(
-                                                              color: Pastel.blacksoft,
-                                                              fontSize: 12,
-                                                              fontFamily: "Myfont",
-                                                            ),
-                                                          ),
-                                                      ],
-                                                    ),
-                                                  )
+                                                    ],
+                                                  ),
+                                                ),
                                               ),
-                                              const Spacer(),
                                               if(oneSchedule.alarm && oneSchedule.date.isAfter(DateTime.now()))
                                                 const Padding(
                                                   padding: EdgeInsets.only(right: 5),
@@ -266,6 +265,7 @@ class _CalenderState extends State<Calender> {
 
                                           myFocusNode.requestFocus();
                                           myController.clear();
+                                          tmpText = "";
                                         },
 
                                         onChanged: (text){tmpText = text;},

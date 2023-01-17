@@ -154,6 +154,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                   }
                 }
                 calender.myController.clear();
+                calender.tmpText='';
                 Navigator.pop(context);
               },
             ),
@@ -192,26 +193,28 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                         child: TextFormField(
-                              initialValue: title,
-                              style: const TextStyle(fontSize: 15),
-                              textAlignVertical: TextAlignVertical.center,
-                              cursorColor: Pastel.grey,
-                              decoration: const InputDecoration(
-                                  hintText: "새 일정",
-                                  border: InputBorder.none,
-                              ),
-                              onFieldSubmitted: (text) {
-                                if(text.isEmpty) FocusManager.instance.primaryFocus?.unfocus();
-                              },
-                              onChanged: (text) {
-                                title = text;
-                              },
-                            ),
+                          maxLines: null,
+                          initialValue: title,
+                          style: const TextStyle(fontSize: 15),
+                          textAlignVertical: TextAlignVertical.center,
+                          cursorColor: Pastel.grey,
+                          decoration: const InputDecoration(
+                              hintText: "새 일정",
+                              border: InputBorder.none,
+                          ),
+                          onFieldSubmitted: (text) {
+                            if(text.isEmpty) FocusManager.instance.primaryFocus?.unfocus();
+                          },
+                          onChanged: (text) {
+                            title = text;
+                          },
+                        ),
                       ),
                       const Divider(height: 0,),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                         child: TextFormField(
+                          maxLines: null,
                           initialValue: memo,
                           style: const TextStyle(fontSize: 15),
                           textAlignVertical: TextAlignVertical.center,
