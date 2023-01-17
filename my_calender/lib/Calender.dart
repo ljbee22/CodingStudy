@@ -33,6 +33,12 @@ class _CalenderState extends State<Calender> {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     _init();
 
+    // setting box 의 최초 초기화 (어플 설치 후 최초 1회만 실행)
+    if(!Hive.box('setting').containsKey("defaultSetting")){
+      Hive.box('setting').put("defaultSetting", SettingClass());
+      // 알림 권한 설정을 위한 notification
+      NotificationController().showNotification(0, "title");
+    }
   }
 
   @override

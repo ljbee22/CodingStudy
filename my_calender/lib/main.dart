@@ -11,8 +11,9 @@ import 'package:my_calender/customclass/calenderElement.dart' as data;
 void main() async{
   await Hive.initFlutter(); // hive database 초기화
   Hive.registerAdapter(ScheduleClassAdapter());
-  await Hive.openBox<List>('Box');
-  await Hive.openBox('setting');
+  Hive.registerAdapter(SettingClassAdapter());
+  await Hive.openBox<List>('Box'); // for schedules
+  await Hive.openBox('setting'); // for settings
   runApp(const MyApp());
 }
 
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
             title: 'My_Calender',
             theme: ThemeData(
               primarySwatch: Colors.blue,
-              fontFamily: data.fontList[0], //TODO box에서 idx 가져오는걸로 수정
+              fontFamily: data.fontList[Hive.box("setting").get("basicSetting")?.fontIdx ?? 0], //TODO box에서 idx 가져오는걸로 수정
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
             ),

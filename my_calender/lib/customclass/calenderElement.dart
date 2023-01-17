@@ -6,7 +6,9 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-final settingBox = Hive.box("setting");
+class A {
+  final settingBox = Hive.box('setting'); //TODO 제대로 database 에서 값을 가져오는지 (시점때문에) 확인
+}
 
 ///************* main calender element **************///
 
@@ -209,7 +211,7 @@ class WeekColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List tmpList = Provider.of<Cursor>(context).dayList(true);
+    List tmpList = Provider.of<Cursor>(context).dayList(Hive.box('setting').get("defaultSetting").isSunday);
     return Column(
       children: [
         Row(
@@ -232,7 +234,7 @@ class MonthColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List tmpList = Provider.of<Cursor>(context).dayList(true);
+    List tmpList = Provider.of<Cursor>(context).dayList(true); // TODO 수정
     return Column(
       children: [
         if(tmpList[6].month == Provider.of<Cursor>(context).selected.month)
@@ -354,7 +356,7 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-  List<bool> isselected = [box.issunday, !box]
+  // List<bool> isselected = [box.issunday, !box]
   bool isSunday = true;
   bool isMonday = false;
 
