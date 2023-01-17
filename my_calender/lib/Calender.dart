@@ -151,15 +151,20 @@ class _CalenderState extends State<Calender> {
                                                 ),
                                               ),
                                               Expanded(
-                                                child: RichText(
-                                                  maxLines: 2,
-                                                  softWrap: false,
-                                                  text: TextSpan(
-                                                    children: [
-                                                      TextSpan(
-                                                        text: "${oneSchedule.name}\n",
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                  children: [
+                                                    Container(
+                                                      constraints: BoxConstraints(
+                                                          maxWidth: double.infinity
+                                                      ),
+                                                      height: 20,
+                                                      child: Text(
+                                                        oneSchedule.name,
+                                                        overflow: TextOverflow.ellipsis,
+                                                        maxLines: 1,
                                                         style: TextStyle(
-                                                          overflow: TextOverflow.ellipsis,
                                                           color: Pastel.black,
                                                           decoration: oneSchedule.done ? TextDecoration.lineThrough : TextDecoration.none,
                                                           fontStyle: oneSchedule.done ? FontStyle.italic : FontStyle.normal,
@@ -167,17 +172,24 @@ class _CalenderState extends State<Calender> {
                                                           fontFamily: "Myfont",
                                                         ),
                                                       ),
-                                                      if(oneSchedule.btime)
-                                                        TextSpan(
-                                                          text: oneSchedule.timeString(),
-                                                          style: const TextStyle(
+                                                    ),
+                                                    if(oneSchedule.btime)
+                                                      Container(
+                                                        constraints: BoxConstraints(
+                                                            maxWidth: double.infinity
+                                                        ),
+                                                        height: 15,
+                                                        child: Text(
+                                                          oneSchedule.timeString(),                                                          overflow: TextOverflow.ellipsis,
+                                                          maxLines: 1,
+                                                          style: TextStyle(
                                                             color: Pastel.blacksoft,
                                                             fontSize: 12,
                                                             fontFamily: "Myfont",
                                                           ),
                                                         ),
-                                                    ],
-                                                  ),
+                                                      ),
+                                                  ],
                                                 ),
                                               ),
                                               if(oneSchedule.alarm && oneSchedule.date.isAfter(DateTime.now()))
