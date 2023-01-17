@@ -319,6 +319,10 @@ MY Calender Project
 4. 버튼 효과 넣어보려고 했으나 마음에 안들어서 다시 삭제
 5. Font List 만듦
 
+## 1.17
+1. onChanged로 저장한 tmpText가 제대로 초기화되지 않는 오류 수정
+2. text 길이에 따른 정렬? 시도
+
 ---
 # 추후 수정해야할 요소들
 
