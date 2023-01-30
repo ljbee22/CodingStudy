@@ -323,6 +323,12 @@ MY Calender Project
 1. onChanged로 저장한 tmpText가 제대로 초기화되지 않는 오류 수정
 2. text 길이에 따른 정렬? 시도
 
+## 1.18 ~
+혼자 코딩 - 재범
+1. setting Box 를 사용하려고 했으나 Set State 가 되지 않는 문제가 발생
+2. Calender.dart 에 Value Listener 를 하나 더 추가하여 문제 해결
+3. 기존 Custom Toggle 을 Custom OnOff 로 이름을 변경하고 Custom Toggle 을 추가
+
 ---
 # 추후 수정해야할 요소들
 

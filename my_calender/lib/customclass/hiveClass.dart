@@ -70,10 +70,14 @@ class SettingClass{
   @HiveField(2)
   int fontIdx;
 
-
   SettingClass({
-    this.isSunday = true, // default = 일요일 시작
+    this.isSunday = false, // default = 월요일 시작
     this.themeIdx = 0, // default = 기본 컬러 테마(=0)
     this.fontIdx = 0,
   });
+
+  SettingClass sunday(bool isSunday) {
+    this.isSunday = isSunday;
+    return SettingClass(isSunday: this.isSunday, fontIdx: fontIdx, themeIdx : fontIdx);
+  }
 }

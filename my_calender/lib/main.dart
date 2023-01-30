@@ -27,24 +27,29 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => Cursor(selected: DateTime.now())),
       ],
       builder: (context, child){
-        return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'My_Calender',
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-              fontFamily: data.fontList[Hive.box("setting").get("basicSetting")?.fontIdx ?? 0], //TODO box에서 idx 가져오는걸로 수정
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-            ),
-            localizationsDelegates: const [
-              GlobalMaterialLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [
-              Locale('ko', ''),
-              Locale('en', ''),
-            ],
-            home: const Calender(),
+        return ValueListenableBuilder(
+            valueListenable: Hive.box('setting').listenable(),
+            builder: (context, settingBox, child) {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'My_Calender',
+                theme: ThemeData(
+                  primarySwatch: Colors.blue,
+                  fontFamily: data.fontList[settingBox.get("defaultSetting")?.fontIdx ?? 0], //TODO box에서 idx 가져오는걸로 수정
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                ),
+                localizationsDelegates: const [
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: const [
+                  Locale('ko', ''),
+                  Locale('en', ''),
+                ],
+                home: Calender(settingBox: settingBox,),
+            );
+          }
         );
       }
     );

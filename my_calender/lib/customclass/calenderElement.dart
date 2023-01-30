@@ -6,37 +6,48 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class A {
-  final settingBox = Hive.box('setting'); //TODO 제대로 database 에서 값을 가져오는지 (시점때문에) 확인
+class Path {
+  final settingBox = Hive.box('setting');
+  final libBox = Hive.box<List>('Box');
+}
+
+///****************** default sizes ********************///
+
+class MyForm {
+  final List<String> weekList = ['일', '월', '화', '수', '목', '금', '토', '일'];
+  final double appBarIconSize = 30;
+  final double calenderTextSize = 15;
 }
 
 ///************* main calender element **************///
 
 //월화수목금 표시해주는 widget
 class DayOfWeek extends StatelessWidget {
-  const DayOfWeek({Key? key}) : super(key: key);
+  final Box settingBox;
+  const DayOfWeek({Key? key, required this.settingBox}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    int tmp = settingBox.get('defaultSetting').isSunday ? 0 : 1;
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          SizedBox(width: 5),
-          Expanded(child:Text("월", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.black, fontWeight: FontWeight.w100),)),
-          SizedBox(width: 5),
-          Expanded(child:Text("화", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.black),)),
-          SizedBox(width: 5),
-          Expanded(child:Text("수", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.black),)),
-          SizedBox(width: 5),
-          Expanded(child:Text("목", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.black),)),
-          SizedBox(width: 5),
-          Expanded(child:Text("금", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.black),)),
-          SizedBox(width: 5),
-          Expanded(child:Text("토", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.black),)),
-          SizedBox(width: 5),
-          Expanded(child:Text("일", textAlign: TextAlign.start, style: TextStyle(fontSize: 15, color: Pastel.redaccent),)),
+        children: [
+          for(int i = tmp; i < MyForm().weekList.length - 1 + tmp; i++)
+          Expanded(
+              child:Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: Text(
+                MyForm().weekList[i],
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    fontSize: MyForm().calenderTextSize,
+                    color: i == 0 || i == 7 ? Pastel.redaccent : Pastel.black,
+                    fontWeight: FontWeight.w100
+                ),
+              ),
+          )),
         ],
       ),
     ); //요일 표시 -> 항상 고정
@@ -66,7 +77,7 @@ class CalenderBanner extends StatelessWidget {
                 ? Provider.of<Cursor>(context, listen: false).plusMonth(false)
                 : Provider.of<Cursor>(context, listen: false).plusWeek(false);
           },
-            icon: const Icon(Icons.arrow_back_rounded, size: 16,), color: Pastel.blacksoft,
+            icon: const ImageIcon(AssetImage('assets/icon/left_arrow.png'), size: 16,), color: Pastel.blacksoft,
           ),
           Provider.of<Cursor>(context, listen: false).isMonth
               ? MyText(
@@ -82,7 +93,7 @@ class CalenderBanner extends StatelessWidget {
                 ? Provider.of<Cursor>(context, listen: false).plusMonth(true)
                 : Provider.of<Cursor>(context, listen: false).plusWeek(true);
           },
-            icon: const Icon(Icons.arrow_forward_rounded, size: 16,), color: Pastel.blacksoft,
+            icon: const ImageIcon(AssetImage('assets/icon/right_arrow.png'), size: 16,), color: Pastel.blacksoft,
           ),
         ],
       ),
@@ -157,7 +168,7 @@ class _OneDayState extends State<OneDay> {
                   color: Pastel.white,
                 )
                     : null,
-                padding: const EdgeInsets.fromLTRB(0, 4, 0, 10),
+                padding: const EdgeInsets.fromLTRB(0, 4, 0, 5),
                 height: 60,
                 child:
                 (widget.oneDay.month != Provider.of<Cursor>(context).selected.month) &&
@@ -194,7 +205,16 @@ class _OneDayState extends State<OneDay> {
                                   widget.box.get(DateFormat('yyyy.MM.dd').format(widget.oneDay)).length.toString(),
                                   10, Pastel.black, FontWeight.w500),
                             ),
-                      ),
+                        ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          // color: Pastel.red,
+                          child: Image.asset('assets/icon/sprout.png'),
+                        ),
+                      )
                   ],
                 )
             ),
@@ -207,11 +227,12 @@ class _OneDayState extends State<OneDay> {
 //주간 화면에서 일자 띄워주는 widget
 class WeekColumn extends StatelessWidget {
   final Box box;
-  const WeekColumn(this.box, {Key? key}) : super(key: key);
+  final Box settingbox;
+  const WeekColumn(this.box, this.settingbox, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    List tmpList = Provider.of<Cursor>(context).dayList(Hive.box('setting').get("defaultSetting").isSunday);
+    List tmpList = Provider.of<Cursor>(context).dayList(settingbox.get('defaultSetting'));
     return Column(
       children: [
         Row(
@@ -230,11 +251,12 @@ class WeekColumn extends StatelessWidget {
 //월간 화면에서 일자 띄워주는 widget
 class MonthColumn extends StatelessWidget {
   final Box box;
-  const MonthColumn(this.box, {Key? key}) : super(key: key);
+  final Box settingBox;
+  const MonthColumn(this.box, this.settingBox, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    List tmpList = Provider.of<Cursor>(context).dayList(true); // TODO 수정
+    List tmpList = Provider.of<Cursor>(context).dayList(settingBox.get('defaultSetting')); // TODO 수정
     return Column(
       children: [
         if(tmpList[6].month == Provider.of<Cursor>(context).selected.month)
@@ -312,7 +334,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSize{
         onPressed: () {
         scaffoldKey.currentState?.openDrawer();
         },
-        icon: const Icon(Icons.linear_scale, color: Pastel.blacksoft, size: 30),
+        icon: ImageIcon(AssetImage("assets/icon/drawer.png"), color: Pastel.blacksoft, size: MyForm().appBarIconSize),
       ),
       title: Stack(
         children: [
@@ -322,14 +344,14 @@ class CustomAppbar extends StatelessWidget implements PreferredSize{
                 onPressed: () {
                   Provider.of<Cursor>(context, listen: false).changeIsMonth();
                 },
-                icon: const Icon(Icons.change_circle_rounded, color: Pastel.blacksoft, size: 30)
+                icon: ImageIcon(AssetImage("assets/icon/move.png"), color: Pastel.blacksoft, size: MyForm().appBarIconSize)
             ),
           ),
           Align(
             alignment: Alignment.centerRight,
             child: IconButton(
               alignment: Alignment.centerRight,
-              icon: const Icon(Icons.today, color: Pastel.blacksoft, size: 30),
+              icon: ImageIcon(AssetImage("assets/icon/Home.png"), color: Pastel.blacksoft, size: MyForm().appBarIconSize),
               onPressed: () {
                 Provider.of<Cursor>(context, listen: false).changeCursor(DateTime.now());
               },
@@ -356,9 +378,6 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-  // List<bool> isselected = [box.issunday, !box]
-  bool isSunday = true;
-  bool isMonday = false;
 
   @override
   Widget build(BuildContext context) {
@@ -377,20 +396,40 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
           ),
           Container(
+            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
             height: 40,
             child: Row(
               children: [
                 SizedBox(width: 15,),
                 const Text("시작 요일 설정"),
                 const Spacer(),
-                ToggleButtons(
-                    children: [
-                      Text('월요일'),
-                      Text('일요일'),
-                    ],
-                    isSelected: [true, false],
-                  onPressed: (int idx) {},
-                ),
+                CustomToggle(Path().settingBox),
+              ],
+            ),
+          ),
+          const Divider(height: 1, thickness: 1),
+          Container(
+            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+            height: 40,
+            child: Row(
+              children: [
+                SizedBox(width: 15,),
+                const Text("컬러 테마"),
+                const Spacer(),
+                CustomToggle(Path().settingBox),
+              ],
+            ),
+          ),
+          const Divider(height: 1, thickness: 1),
+          Container(
+            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+            height: 40,
+            child: Row(
+              children: [
+                SizedBox(width: 15,),
+                const Text("폰트 변경"),
+                const Spacer(),
+                CustomToggle(Path().settingBox),
               ],
             ),
           ),
@@ -401,17 +440,84 @@ class _CustomDrawerState extends State<CustomDrawer> {
   }
 }
 
-///*************bottom sheet element**************///
-
-//bottomSheet 의 토글 버튼
+// Drawer 의 토글버튼
 class CustomToggle extends StatefulWidget {
-  final bool isRight;
-  const CustomToggle(this.isRight, {Key? key}) : super(key: key);
+  final Box settingBox;
+  const CustomToggle(this.settingBox, {Key? key}) : super(key: key);
 
   @override
   State<CustomToggle> createState() => _CustomToggleState();
 }
+
 class _CustomToggleState extends State<CustomToggle> {
+  late List<bool> sundayMonday;
+
+  @override
+  void initState() {
+    sundayMonday = [!widget.settingBox.get('defaultSetting').isSunday, widget.settingBox.get('defaultSetting').isSunday];
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        GestureDetector(
+          onTap: () {
+            SettingClass temp = Path().settingBox.get('defaultSetting');
+            print(temp.isSunday);
+              setState(() {
+                sundayMonday[0] = true;
+                sundayMonday[1] = false;
+                Path().settingBox.put('defaultSetting', temp.sunday(false));
+              });
+            },
+          child: Container(
+            padding: EdgeInsets.all(5),
+            child: Text('월요일'),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(color: Pastel.black, width: 0),
+              color: sundayMonday[0] ? Pastel.purple : Pastel.white,
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            SettingClass temp = Path().settingBox.get('defaultSetting');
+            print(temp.isSunday);
+            setState(() {
+              sundayMonday[0] = false;
+              sundayMonday[1] = true;
+              Path().settingBox.put('defaultSetting', temp.sunday(true));
+            });
+          },
+          child: Container(
+            padding: EdgeInsets.all(5),
+            child: Text('일요일'),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(color: Pastel.black, width: 0),
+              color: sundayMonday[1] ? Pastel.purple : Pastel.white,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+
+///*************bottom sheet element**************///
+
+//bottomSheet 의 온오프 버튼
+class CustomOnOff extends StatefulWidget {
+  final bool isRight;
+  const CustomOnOff(this.isRight, {Key? key}) : super(key: key);
+
+  @override
+  State<CustomOnOff> createState() => _CustomOnOffState();
+}
+class _CustomOnOffState extends State<CustomOnOff> {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(

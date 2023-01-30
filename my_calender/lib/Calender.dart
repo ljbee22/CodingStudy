@@ -15,7 +15,8 @@ final myController = TextEditingController();
 String tmpText = "";
 
 class Calender extends StatefulWidget {
-  const Calender({Key? key}) : super(key: key);
+  final Box settingBox;
+  const Calender({Key? key, required this.settingBox}) : super(key: key);
 
   @override
   State<Calender> createState() => _CalenderState();
@@ -34,8 +35,8 @@ class _CalenderState extends State<Calender> {
     _init();
 
     // setting box 의 최초 초기화 (어플 설치 후 최초 1회만 실행)
-    if(!Hive.box('setting').containsKey("defaultSetting")){
-      Hive.box('setting').put("defaultSetting", SettingClass());
+    if(!Path().settingBox.containsKey("defaultSetting")){
+      Path().settingBox.put("defaultSetting", SettingClass());
       // 알림 권한 설정을 위한 notification
       NotificationController().showNotification(0, "title");
     }
@@ -85,270 +86,270 @@ class _CalenderState extends State<Calender> {
         body: ValueListenableBuilder(
             valueListenable: Hive.box<List>('Box').listenable(),
             builder: (context, box, child) {
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                child: Column(
-                  children: [
-                    const CalenderBanner(),
-                    const DayOfWeek(),
-                    const Divider(height: 0, thickness: 1),
-                    AnimatedCrossFade(
-                      duration: const Duration(milliseconds: 200),
-                      firstChild: MonthColumn(box),
-                      secondChild: WeekColumn(box),
-                      crossFadeState: Provider.of<Cursor>(context).isMonth
-                          ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-                    ),
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    child: Column(
+                      children: [
+                        const CalenderBanner(),
+                        DayOfWeek(settingBox: widget.settingBox,),
+                        const Divider(height: 0, thickness: 1),
+                        AnimatedCrossFade(
+                          duration: const Duration(milliseconds: 200),
+                          firstChild: MonthColumn(box, widget.settingBox),
+                          secondChild: WeekColumn(box, widget.settingBox),
+                          crossFadeState: Provider.of<Cursor>(context).isMonth
+                              ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+                        ),
 
-                    const SizedBox(height: 7),
-                    const TodoBanner(),
-                    Expanded(
-                      child: CustomScrollView(
-                        slivers: [
-                          SliverReorderableList(
-                              itemCount: box.get(scheduleDate) == null ? 0 : box.get(scheduleDate)!.length,
-                              onReorder: (int oldIndex, int newIndex) {
-                                List tmpList = box.get(scheduleDate)!;
-                                if (oldIndex < newIndex) {
-                                  newIndex -= 1;
-                                }
-                                final ScheduleClass item = tmpList.removeAt(oldIndex);
-                                tmpList.insert(newIndex, item);
-                                box.put(scheduleDate, tmpList);
-                              },
-                              itemBuilder: (BuildContext context, int idx){
-                                ScheduleClass oneSchedule = box.get(scheduleDate)![idx];
-                                return ReorderableDelayedDragStartListener(
-                                  index: idx,
-                                  key: Key("$idx"),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 8),
-                                    child: Container(
-                                        height: oneSchedule.btime ? 45 : 35,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(5),
-                                          border: Border.all(color: Pastel.grey, width: 0),
-                                          color: colorList[oneSchedule.colorIdx],
-                                        ),
-                                        child: GestureDetector(
-                                          onHorizontalDragEnd: (DragEndDetails details) {
-                                            // if(details.velocity[0] < 0) {
-                                            //
-                                            // }
-                                            print(details.velocity);
-                                          },
-                                          behavior: HitTestBehavior.translucent,
-                                          onTap: (){
-                                            showModalBottomSheet<void>(
-                                                context: context,
-                                                builder: (BuildContext context){
-                                                  return ScheduleEdit(box, idx, oneSchedule, false);
-                                                }
-                                            );
-                                            FocusManager.instance.primaryFocus?.unfocus();
-                                          },
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.fromLTRB(5, 0, 10, 0),
-                                                child: GestureDetector(
-                                                  onTap: (){
-                                                    oneSchedule.done = !oneSchedule.done;
-                                                    BoxController().editSchedule(box, scheduleDate, oneSchedule, idx);
-                                                  },
-                                                  child: oneSchedule.done
-                                                      ? const ImageIcon(AssetImage("assets/icon/check_checked.png"), size: 20, color: Pastel.black,)
-                                                      : const ImageIcon(AssetImage("assets/icon/check_unchecked.png"), size: 20, color: Pastel.black,)
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                  children: [
-                                                    Container(
-                                                      constraints: BoxConstraints(
-                                                          maxWidth: double.infinity
-                                                      ),
-                                                      height: 20,
-                                                      child: Text(
-                                                        oneSchedule.name,
-                                                        overflow: TextOverflow.ellipsis,
-                                                        maxLines: 1,
-                                                        style: TextStyle(
-                                                          color: Pastel.black,
-                                                          decoration: oneSchedule.done ? TextDecoration.lineThrough : TextDecoration.none,
-                                                          fontStyle: oneSchedule.done ? FontStyle.italic : FontStyle.normal,
-                                                          fontSize: 17,
-                                                          fontFamily: "Myfont",
-                                                        ),
-                                                      ),
+                        const SizedBox(height: 7),
+                        const TodoBanner(),
+                        Expanded(
+                          child: CustomScrollView(
+                            slivers: [
+                              SliverReorderableList(
+                                  itemCount: box.get(scheduleDate) == null ? 0 : box.get(scheduleDate)!.length,
+                                  onReorder: (int oldIndex, int newIndex) {
+                                    List tmpList = box.get(scheduleDate)!;
+                                    if (oldIndex < newIndex) {
+                                      newIndex -= 1;
+                                    }
+                                    final ScheduleClass item = tmpList.removeAt(oldIndex);
+                                    tmpList.insert(newIndex, item);
+                                    box.put(scheduleDate, tmpList);
+                                  },
+                                  itemBuilder: (BuildContext context, int idx){
+                                    ScheduleClass oneSchedule = box.get(scheduleDate)![idx];
+                                    return ReorderableDelayedDragStartListener(
+                                      index: idx,
+                                      key: Key("$idx"),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 8),
+                                        child: Container(
+                                            height: oneSchedule.btime ? 45 : 35,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(5),
+                                              border: Border.all(color: Pastel.grey, width: 0),
+                                              color: colorList[oneSchedule.colorIdx],
+                                            ),
+                                            child: GestureDetector(
+                                              onHorizontalDragEnd: (DragEndDetails details) {
+                                                // if(details.velocity[0] < 0) {
+                                                //
+                                                // }
+                                                print(details.velocity);
+                                              },
+                                              behavior: HitTestBehavior.translucent,
+                                              onTap: (){
+                                                showModalBottomSheet<void>(
+                                                    context: context,
+                                                    builder: (BuildContext context){
+                                                      return ScheduleEdit(box, idx, oneSchedule, false);
+                                                    }
+                                                );
+                                                FocusManager.instance.primaryFocus?.unfocus();
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.fromLTRB(5, 0, 10, 0),
+                                                    child: GestureDetector(
+                                                      onTap: (){
+                                                        oneSchedule.done = !oneSchedule.done;
+                                                        BoxController().editSchedule(box, scheduleDate, oneSchedule, idx);
+                                                      },
+                                                      child: oneSchedule.done
+                                                          ? const ImageIcon(AssetImage("assets/icon/check_checked.png"), size: 20, color: Pastel.black,)
+                                                          : const ImageIcon(AssetImage("assets/icon/check_unchecked.png"), size: 20, color: Pastel.black,)
                                                     ),
-                                                    if(oneSchedule.btime)
-                                                      Container(
-                                                        constraints: BoxConstraints(
-                                                            maxWidth: double.infinity
-                                                        ),
-                                                        height: 15,
-                                                        child: Text(
-                                                          oneSchedule.timeString(),                                                          overflow: TextOverflow.ellipsis,
-                                                          maxLines: 1,
-                                                          style: TextStyle(
-                                                            color: Pastel.blacksoft,
-                                                            fontSize: 12,
-                                                            fontFamily: "Myfont",
+                                                  ),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                      children: [
+                                                        Container(
+                                                          constraints: BoxConstraints(
+                                                              maxWidth: double.infinity
+                                                          ),
+                                                          height: 20,
+                                                          child: Text(
+                                                            oneSchedule.name,
+                                                            overflow: TextOverflow.ellipsis,
+                                                            maxLines: 1,
+                                                            style: TextStyle(
+                                                              color: Pastel.black,
+                                                              decoration: oneSchedule.done ? TextDecoration.lineThrough : TextDecoration.none,
+                                                              fontStyle: oneSchedule.done ? FontStyle.italic : FontStyle.normal,
+                                                              fontSize: 17,
+                                                              fontFamily: "Myfont",
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                  ],
-                                                ),
-                                              ),
-                                              if(oneSchedule.alarm && oneSchedule.date.isAfter(DateTime.now()))
-                                                const Padding(
-                                                  padding: EdgeInsets.only(right: 5),
-                                                  child: ImageIcon(AssetImage("assets/icon/alarm_clock.png"), size: 20, color: Pastel.black,),
-                                                ),
+                                                        if(oneSchedule.btime)
+                                                          Container(
+                                                            constraints: BoxConstraints(
+                                                                maxWidth: double.infinity
+                                                            ),
+                                                            height: 15,
+                                                            child: Text(
+                                                              oneSchedule.timeString(),                                                          overflow: TextOverflow.ellipsis,
+                                                              maxLines: 1,
+                                                              style: TextStyle(
+                                                                color: Pastel.blacksoft,
+                                                                fontSize: 12,
+                                                                fontFamily: "Myfont",
+                                                              ),
+                                                            ),
+                                                          ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  if(oneSchedule.alarm && oneSchedule.date.isAfter(DateTime.now()))
+                                                    const Padding(
+                                                      padding: EdgeInsets.only(right: 5),
+                                                      child: ImageIcon(AssetImage("assets/icon/alarm_clock.png"), size: 20, color: Pastel.black,),
+                                                    ),
 
-                                              const Padding(
-                                                padding: EdgeInsets.only(right: 5),
-                                                child: Icon(Icons.edit, size: 20, color: Pastel.black,),
+                                                  const Padding(
+                                                    padding: EdgeInsets.only(right: 5),
+                                                    child: ImageIcon(AssetImage("assets/icon/edit.png"), size: 20, color: Pastel.black,),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
+                                            )
+                                        ),
+                                      ),
+                                    );
+                                  }
+                              ),
+                              SliverToBoxAdapter(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 8),
+                                  child: Container(
+                                    height: 35,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(color: Pastel.grey, width: 0),
+                                      color: Pastel.white,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        const Padding(
+                                          padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
+                                          child: ImageIcon(AssetImage("assets/icon/check_notwork.png"), size: 20, color: Pastel.grey,),
+                                        ),
+                                        Expanded(
+                                          child: Provider.of<Cursor>(context).isMonth
+                                          ? GestureDetector(
+                                            onTap: () {
+                                              showModalBottomSheet<void>(
+                                                  context: context,
+                                                  builder: (BuildContext context){
+                                                    if(!box.containsKey(scheduleDate)) {
+                                                      // 일정이 없는 날에 새 일정 추가
+                                                      return ScheduleEdit(box, 0, ScheduleClass(name: "", date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
+                                                    }
+                                                    //일정이 있는 날에 새 일정 추가
+                                                    return ScheduleEdit(box, box.get(scheduleDate)!.length, ScheduleClass(name: "", date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
+                                                  }
+                                              );
+                                              FocusManager.instance.primaryFocus?.unfocus();
+                                            },
+                                            child: const Text("새 일정",
+                                              style: TextStyle(
+                                                color: Pastel.grey,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w300
+                                              ),
+                                            ),
+                                          )
+                                          : TextFormField(
+                                            textAlignVertical: TextAlignVertical.center,
+                                            style: const TextStyle(fontSize: 15),
+                                            controller: myController,
+                                            focusNode: myFocusNode,
+                                            cursorColor: Pastel.grey,
+                                            decoration: const InputDecoration.collapsed(
+                                                hintText: "새 일정",
+                                                border: InputBorder.none
+                                            ),
+                                            onFieldSubmitted: (text) {
+                                              //filtering
+                                              text = text.trim();
+                                              if(text.isEmpty) {
+                                                FocusManager.instance.primaryFocus?.unfocus();
+                                                myController.clear();
+                                                return;
+                                              }
+
+                                              BoxController().newSchedule(
+                                                  box, scheduleDate,
+                                                  ScheduleClass(name: text, date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)
+                                                  ));
+
+                                              myFocusNode.requestFocus();
+                                              myController.clear();
+                                              tmpText = "";
+                                            },
+
+                                            onChanged: (text){tmpText = text;},
                                           ),
-                                        )
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(right: 5),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              showModalBottomSheet<void>(
+                                                  context: context,
+                                                  builder: (BuildContext context){
+                                                    if(!box.containsKey(scheduleDate)) {
+                                                      // 일정이 없는 날에 새 일정 추가
+                                                      return ScheduleEdit(box, 0, ScheduleClass(name: tmpText, date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
+                                                    }
+                                                    //일정이 있는 날에 새 일정 추가
+                                                    return ScheduleEdit(box, box.get(scheduleDate)!.length, ScheduleClass(name: tmpText, date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
+                                                  }
+                                              );
+                                              FocusManager.instance.primaryFocus?.unfocus();
+                                            },
+                                            child: const ImageIcon(AssetImage("assets/icon/edit.png"), size: 20, color: Pastel.grey,),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                );
-                              }
+                                ),
+                              ),
+                            ],
                           ),
-                          SliverToBoxAdapter(
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 8),
-                              child: Container(
-                                height: 35,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  border: Border.all(color: Pastel.grey, width: 0),
-                                  color: Pastel.white,
-                                ),
-                                child: Row(
-                                  children: [
-                                    const Padding(
-                                      padding: EdgeInsets.fromLTRB(5, 0, 10, 0),
-                                      child: ImageIcon(AssetImage("assets/icon/check_notwork.png"), size: 20, color: Pastel.grey,),
-                                    ),
-                                    Expanded(
-                                      child: Provider.of<Cursor>(context).isMonth
-                                      ? GestureDetector(
-                                        onTap: () {
-                                          showModalBottomSheet<void>(
-                                              context: context,
-                                              builder: (BuildContext context){
-                                                if(!box.containsKey(scheduleDate)) {
-                                                  // 일정이 없는 날에 새 일정 추가
-                                                  return ScheduleEdit(box, 0, ScheduleClass(name: "", date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
-                                                }
-                                                //일정이 있는 날에 새 일정 추가
-                                                return ScheduleEdit(box, box.get(scheduleDate)!.length, ScheduleClass(name: "", date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
-                                              }
-                                          );
-                                          FocusManager.instance.primaryFocus?.unfocus();
-                                        },
-                                        child: const Text("새 일정",
-                                          style: TextStyle(
-                                            color: Pastel.grey,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w300
-                                          ),
-                                        ),
-                                      )
-                                      : TextFormField(
-                                        textAlignVertical: TextAlignVertical.center,
-                                        style: const TextStyle(fontSize: 15),
-                                        controller: myController,
-                                        focusNode: myFocusNode,
-                                        cursorColor: Pastel.grey,
-                                        decoration: const InputDecoration.collapsed(
-                                            hintText: "새 일정",
-                                            border: InputBorder.none
-                                        ),
-                                        onFieldSubmitted: (text) {
-                                          //filtering
-                                          text = text.trim();
-                                          if(text.isEmpty) {
-                                            FocusManager.instance.primaryFocus?.unfocus();
-                                            myController.clear();
-                                            return;
-                                          }
-
-                                          BoxController().newSchedule(
-                                              box, scheduleDate,
-                                              ScheduleClass(name: text, date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)
-                                              ));
-
-                                          myFocusNode.requestFocus();
-                                          myController.clear();
-                                          tmpText = "";
-                                        },
-
-                                        onChanged: (text){tmpText = text;},
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 5),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          showModalBottomSheet<void>(
-                                              context: context,
-                                              builder: (BuildContext context){
-                                                if(!box.containsKey(scheduleDate)) {
-                                                  // 일정이 없는 날에 새 일정 추가
-                                                  return ScheduleEdit(box, 0, ScheduleClass(name: tmpText, date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
-                                                }
-                                                //일정이 있는 날에 새 일정 추가
-                                                return ScheduleEdit(box, box.get(scheduleDate)!.length, ScheduleClass(name: tmpText, date: DateTime(dateTime.year, dateTime.month, dateTime.day, 9)), true);
-                                              }
-                                          );
-                                          FocusManager.instance.primaryFocus?.unfocus();
-                                        },
-                                        child: const Icon(Icons.edit, size: 20, color: Pastel.grey,),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                        ),
+                        if(!Provider.of<Cursor>(context).isMonth)
+                        GestureDetector(
+                          onTap: (){
+                            print("object");
+                            setState(() {flowerIconTapped = true;});
+                            Future.delayed(const Duration(milliseconds: 500)).then((value){
+                              flowerIconTapped = false;
+                              setState(() {});
+                            });
+                          },
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: flowerIconTapped ? AssetImage('assets/background/flower_demo.gif') : AssetImage('assets/background/flower_demo_stop.png') ,
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                    if(!Provider.of<Cursor>(context).isMonth)
-                    GestureDetector(
-                      onTap: (){
-                        print("object");
-                        setState(() {flowerIconTapped = true;});
-                        Future.delayed(const Duration(milliseconds: 500)).then((value){
-                          flowerIconTapped = false;
-                          setState(() {});
-                        });
-                      },
-                      child: Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: flowerIconTapped ? AssetImage('assets/background/flower_demo.gif') : AssetImage('assets/background/flower_demo_stop.png') ,
-                          ),
                         ),
-                      ),
+                        const SizedBox(height: 10)
+                      ],
                     ),
-                    const SizedBox(height: 10)
-                  ],
-                ),
-              );
+                  );
             }
-        ),
+        )
       ),
     );
   }

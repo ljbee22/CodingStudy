@@ -298,7 +298,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                             const Text("시간"),
                             const Spacer(),
                             GestureDetector(
-                                child: CustomToggle(isTimeToggleOn),
+                                child: CustomOnOff(isTimeToggleOn),
                               onTap: () {
                                   setState(() {
                                     isTimeToggleOn = !isTimeToggleOn;
@@ -347,7 +347,7 @@ class _ScheduleEditState extends State<ScheduleEdit> {
                                       ),
                                     const Spacer(),
                                     GestureDetector(
-                                      child: CustomToggle(isAlarmToggleOn),
+                                      child: CustomOnOff(isAlarmToggleOn),
                                       onTap: () {
                                         setState(() {
                                           isAlarmToggleOn = !isAlarmToggleOn;
