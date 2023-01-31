@@ -12,10 +12,13 @@ class Cursor with ChangeNotifier{
   });
 
   /*특정 요일을 대입 -> 그 요일이 속한 달의 첫번째 요일을 숫자로 리턴*/
-  int dayOfWeek(){
+  int dayOfWeek(SettingClass setting){
     final firstDay = DateTime(selected.year, selected.month, 1);
-    var firstDayVal = firstDay.weekday;
-    return ((selected.day+firstDayVal-2) ~/ 7) + 1;
+    var firstDayVal = firstDay.weekday % 7 ;
+    if(!setting.isSunday){
+      return ((selected.day+firstDayVal-2) ~/ 7) + 1;
+    }
+    return ((selected.day+firstDayVal-1) ~/ 7) + 1;
   }
 
   List<DateTime> dayList(SettingClass setting) {

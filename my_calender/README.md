@@ -329,6 +329,13 @@ MY Calender Project
 2. Calender.dart 에 Value Listener 를 하나 더 추가하여 문제 해결
 3. 기존 Custom Toggle 을 Custom OnOff 로 이름을 변경하고 Custom Toggle 을 추가
 
+## 1.31
+내일 쉬고 2월 2일(목) 계획
+1. 일요일이 앞에 왔을 때 문제** <- 생각보다 복잡
+2. 이모티콘 삽입 기능 (settingBox 에서 이모티콘 불러오기)
+3. 성취도의 시각화
+4. setting 추가 및 drawer 아이콘
+
 ---
 # 추후 수정해야할 요소들
 

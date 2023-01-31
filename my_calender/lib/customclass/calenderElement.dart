@@ -56,7 +56,8 @@ class DayOfWeek extends StatelessWidget {
 
 // isMonth 에 따라 N년 N월 N주차 를 표시해주는 widget
 class CalenderBanner extends StatelessWidget {
-  const CalenderBanner({Key? key}) : super(key: key);
+  final Box settingBox;
+  const CalenderBanner({Key? key, required this.settingBox}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +88,7 @@ class CalenderBanner extends StatelessWidget {
               FontWeight.w300
           )
               : MyText("${Provider.of<Cursor>(context).selected.year}년 ${Provider.of<Cursor>(context).selected.month}월 "
-              "${Provider.of<Cursor>(context).dayOfWeek()}주차", 17, Pastel.black, FontWeight.w300),
+              "${Provider.of<Cursor>(context).dayOfWeek(settingBox.get('defaultSetting'))}주차", 17, Pastel.black, FontWeight.w300),
           IconButton(onPressed: () {
             Provider.of<Cursor>(context, listen: false).isMonth
                 ? Provider.of<Cursor>(context, listen: false).plusMonth(true)
@@ -227,18 +228,18 @@ class _OneDayState extends State<OneDay> {
 //주간 화면에서 일자 띄워주는 widget
 class WeekColumn extends StatelessWidget {
   final Box box;
-  final Box settingbox;
-  const WeekColumn(this.box, this.settingbox, {Key? key}) : super(key: key);
+  final Box settingBox;
+  const WeekColumn(this.box, this.settingBox, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    List tmpList = Provider.of<Cursor>(context).dayList(settingbox.get('defaultSetting'));
+    List tmpList = Provider.of<Cursor>(context).dayList(settingBox.get('defaultSetting'));
     return Column(
       children: [
         Row(
           children: [
-            for(int i = (Provider.of<Cursor>(context).dayOfWeek()-1) * 7 ;
-            i < Provider.of<Cursor>(context).dayOfWeek() * 7; i++)
+            for(int i = (Provider.of<Cursor>(context).dayOfWeek(settingBox.get('defaultSetting'))-1) * 7 ;
+            i < Provider.of<Cursor>(context).dayOfWeek(settingBox.get('defaultSetting')) * 7; i++)
               OneDay(tmpList[i], box),
           ],
         ),

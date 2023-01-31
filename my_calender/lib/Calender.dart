@@ -90,8 +90,8 @@ class _CalenderState extends State<Calender> {
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                     child: Column(
                       children: [
-                        const CalenderBanner(),
-                        DayOfWeek(settingBox: widget.settingBox,),
+                        CalenderBanner(settingBox: widget.settingBox),
+                        DayOfWeek(settingBox: widget.settingBox),
                         const Divider(height: 0, thickness: 1),
                         AnimatedCrossFade(
                           duration: const Duration(milliseconds: 200),
