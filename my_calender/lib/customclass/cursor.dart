@@ -27,7 +27,7 @@ class Cursor with ChangeNotifier{
     int i = 0;
     late int j;
     if(setting.isSunday){
-      j = 1-firstDay.weekday; // 일요일 시작인 경우 -> 한칸씩 뒤로 미뤄줘야해서 월 시작 대비 +1씩
+      j = 1-(firstDay.weekday % 7); // 일요일 시작인 경우 -> 한칸씩 뒤로 미뤄줘야해서 월 시작 대비 +1씩
     }
     else{
       j = 2-firstDay.weekday; // 월요일 시작인 경우

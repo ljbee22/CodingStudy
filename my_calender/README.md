@@ -336,6 +336,10 @@ MY Calender Project
 3. 성취도의 시각화
 4. setting 추가 및 drawer 아이콘
 
+## 2.2
+1. 일요일 문제 해결
+
+
 ---
 # 추후 수정해야할 요소들
 

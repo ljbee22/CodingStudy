@@ -324,27 +324,6 @@ class _CalenderState extends State<Calender> {
                             ],
                           ),
                         ),
-                        if(!Provider.of<Cursor>(context).isMonth)
-                        GestureDetector(
-                          onTap: (){
-                            print("object");
-                            setState(() {flowerIconTapped = true;});
-                            Future.delayed(const Duration(milliseconds: 500)).then((value){
-                              flowerIconTapped = false;
-                              setState(() {});
-                            });
-                          },
-                          child: Container(
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: flowerIconTapped ? AssetImage('assets/background/flower_demo.gif') : AssetImage('assets/background/flower_demo_stop.png') ,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10)
                       ],
                     ),
                   );
