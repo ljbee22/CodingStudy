@@ -169,8 +169,8 @@ class _OneDayState extends State<OneDay> {
                   color: Pastel.white,
                 )
                     : null,
-                padding: const EdgeInsets.fromLTRB(0, 4, 0, 5),
-                height: 60,
+                padding: const EdgeInsets.fromLTRB(0, 4, 0, 0),
+                height: 70,
                 child:
                 (widget.oneDay.month != Provider.of<Cursor>(context).selected.month) &&
                     (Provider.of<Cursor>(context, listen: false).isMonth)
@@ -210,10 +210,10 @@ class _OneDayState extends State<OneDay> {
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: Container(
-                          width: 30,
-                          height: 30,
+                          width: 45,
+                          height: 45,
                           // color: Pastel.red,
-                          child: Image.asset('assets/icon/sprout.png'),
+                          child: Image.asset('assets/emoticon/homework.png'),
                         ),
                       )
                   ],
@@ -572,3 +572,17 @@ class Pastel {
 ///*************** font list *****************///
 
 List fontList = ["Myfont"];
+
+///*************** Emoticon List ******************////
+
+class Emoticon {
+  static const String rain = 'assets/emoticon/rain.png';
+  static const String homework = 'assets/emoticon/homework.png';
+  static const String sick = 'assets/emoticon/sick.png';
+  static const String basketball = 'assets/emoticon/basketball.png';
+
+
+  List<String> emoticonList() {
+    return [rain, homework, sick, basketball, basketball, basketball, basketball, basketball, basketball, basketball, basketball, basketball, basketball];
+  }
+}

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:my_calender/bottomSheet.dart';
@@ -100,8 +102,63 @@ class _CalenderState extends State<Calender> {
                           crossFadeState: Provider.of<Cursor>(context).isMonth
                               ? CrossFadeState.showFirst : CrossFadeState.showSecond,
                         ),
-
-                        const SizedBox(height: 7),
+                        ///////////////// 이모티콘 시작
+                        const SizedBox(height: 7,),
+                        Container(
+                          alignment: Alignment.center,
+                          child: Text('오늘의 이모티콘'),
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(width: 20,),
+                            GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                  barrierColor: Colors.transparent,
+                                  context: context,
+                                  barrierDismissible: true,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      elevation: 1,
+                                      backgroundColor: Pastel.white,
+                                      insetPadding: EdgeInsets.fromLTRB(30,60,30,100),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        side: BorderSide(color: Pastel.grey)
+                                      ),
+                                      content: SingleChildScrollView(
+                                        child: Container(
+                                          height: 140,
+                                          child: Column(
+                                            children: [
+                                              for(int i = 0; i < (Emoticon().emoticonList().length ~/ 4) + 1; i++)
+                                              Row(
+                                                children: [
+                                                  for(int j = i * 4; j < min(i*4+4, Emoticon().emoticonList().length); j++)
+                                                  Container(
+                                                    height: 70,
+                                                    padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                                    child: Image.asset(Emoticon().emoticonList()[j]),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                );
+                              },
+                              child: Container(
+                                height: 80,
+                                child: Image.asset('assets/emoticon/homework.png'),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Divider(color: Pastel.grey,),
+                        ///////////////// 이모티콘 끝
                         const TodoBanner(),
                         Expanded(
                           child: CustomScrollView(
