@@ -1,3 +1,5 @@
+import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:my_calender/customclass/cursor.dart';
@@ -138,8 +140,9 @@ class TodoBanner extends StatelessWidget {
 class OneDay extends StatefulWidget {
   final DateTime oneDay; //자기 자신
   final Box box;
+  final Box settingBox;
   final bool isSchedule = false; //일정 존재여부 관련 변수
-  const OneDay(this.oneDay, this.box, {Key? key}) : super(key: key);
+  const OneDay(this.oneDay, this.box, this.settingBox, {Key? key}) : super(key: key);
 
   @override
   State<OneDay> createState() => _OneDayState();
@@ -212,8 +215,7 @@ class _OneDayState extends State<OneDay> {
                         child: Container(
                           width: 45,
                           height: 45,
-                          // color: Pastel.red,
-                          child: Image.asset('assets/emoticon/homework.png'),
+                          child: Image.asset(widget.settingBox.get(DateFormat('yyyy.MM.dd').format(widget.oneDay)) ?? Emoticon.transparent),
                         ),
                       )
                   ],
@@ -240,7 +242,7 @@ class WeekColumn extends StatelessWidget {
           children: [
             for(int i = (Provider.of<Cursor>(context).dayOfWeek(settingBox.get('defaultSetting'))-1) * 7 ;
             i < Provider.of<Cursor>(context).dayOfWeek(settingBox.get('defaultSetting')) * 7; i++)
-              OneDay(tmpList[i], box),
+              OneDay(tmpList[i], box, settingBox),
           ],
         ),
         const Divider(height: 1, thickness: 1),
@@ -264,28 +266,28 @@ class MonthColumn extends StatelessWidget {
         Row(
           children: [
             for (int i = 0; i < 7; i++)
-              OneDay(tmpList[i], box),
+              OneDay(tmpList[i], box, settingBox),
           ],
         ),
         const Divider(height: 0),
         Row(
           children: [
             for (int i = 7; i < 14; i++)
-              OneDay(tmpList[i], box),
+              OneDay(tmpList[i], box, settingBox),
           ],
         ),
         const Divider(height: 0),
         Row(
           children: [
             for (int i = 14; i < 21; i++)
-              OneDay(tmpList[i], box),
+              OneDay(tmpList[i], box, settingBox),
           ],
         ),
         const Divider(height: 0),
         Row(
           children: [
             for (int i = 21; i < 28; i++)
-              OneDay(tmpList[i], box),
+              OneDay(tmpList[i], box, settingBox),
           ],
         ),
         const Divider(height: 0),
@@ -295,7 +297,7 @@ class MonthColumn extends StatelessWidget {
               Row(
                 children: [
                   for (int i = 28; i < 35; i++)
-                    OneDay(tmpList[i], box),
+                    OneDay(tmpList[i], box, settingBox),
                 ],
               ),
               const Divider(height: 0),
@@ -307,7 +309,7 @@ class MonthColumn extends StatelessWidget {
               Row(
                 children: [
                   for (int i = 35; i < 42; i++)
-                    OneDay(tmpList[i], box),
+                    OneDay(tmpList[i], box, settingBox),
                 ],
               ),
               const Divider(height: 0),
@@ -317,6 +319,90 @@ class MonthColumn extends StatelessWidget {
     );
   }
 }
+
+///************* Emoticon Add element *****************///
+
+class DailyEmoticon extends StatelessWidget {
+  final Box settingBox;
+  const DailyEmoticon({required this.settingBox, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    String scheduleDate = Provider.of<Cursor>(context).returnAsString();
+    return Column(
+      children: [
+        const SizedBox(height: 7),
+        Container(
+          alignment: Alignment.center,
+          child: const Text('오늘의 이모티콘'),
+        ),
+        Row(
+          children: [
+            const SizedBox(width: 20), // 좌측 padding
+            GestureDetector(
+              onTap: () {
+                showDialog(
+                    barrierColor: Colors.transparent,
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        elevation: 1,
+                        contentPadding: const EdgeInsets.fromLTRB(10,10,10,10),
+                        backgroundColor: Pastel.white,
+                        insetPadding: const EdgeInsets.fromLTRB(30,60,30,100),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: const BorderSide(color: Pastel.grey)
+                        ),
+                        content: SizedBox(
+                          height: 130,
+                          child: CupertinoScrollbar(
+                            thickness: 3.0,
+                            child: SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              child: Column(
+                                children: [
+                                  for(int i = 0; i < (Emoticon().emoticonList().length ~/ 4) + 1; i++)
+                                    Row(
+                                      children: [
+                                        for(int j = i * 4; j < min(i*4+4, Emoticon().emoticonList().length); j++)
+                                          GestureDetector(
+                                            onTap: (){
+                                              settingBox.put(scheduleDate, Emoticon().emoticonList()[j]);
+                                              Navigator.pop(context);
+                                            },
+                                            child: Container(
+                                              height: 70,
+                                              padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                              child: Image.asset(Emoticon().emoticonList()[j]),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                );
+              },
+              child: SizedBox(
+                height: 80,
+                child: Image.asset(settingBox.get(scheduleDate) ?? Emoticon.plus),
+              ),
+            ),
+          ],
+        ),
+        const Divider(color: Pastel.grey),
+      ],
+    );
+  }
+}
+
+
 
 ///************* appbar element **************///
 
@@ -576,13 +662,17 @@ List fontList = ["Myfont"];
 ///*************** Emoticon List ******************////
 
 class Emoticon {
+  static const String transparent = 'assets/emoticon/transparent.png';
+  static const String plus = 'assets/emoticon/plus.png';
   static const String rain = 'assets/emoticon/rain.png';
   static const String homework = 'assets/emoticon/homework.png';
   static const String sick = 'assets/emoticon/sick.png';
   static const String basketball = 'assets/emoticon/basketball.png';
+  static const String per100 = 'assets/emoticon/100.png';
+
 
 
   List<String> emoticonList() {
-    return [rain, homework, sick, basketball, basketball, basketball, basketball, basketball, basketball, basketball, basketball, basketball, basketball];
+    return [rain, homework, sick, basketball, per100, basketball, basketball, basketball, basketball, basketball, basketball, basketball, basketball];
   }
 }

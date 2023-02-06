@@ -53,7 +53,6 @@ class ScheduleClass{
     this.btime = btime;
     this.alarm = alarm;
     this.colorIdx = colorIdx;
-    //TODO done 에 관한 것도 넣기
   }
 
   String timeString() {
@@ -80,4 +79,31 @@ class SettingClass{
     this.isSunday = isSunday;
     return SettingClass(isSunday: this.isSunday, fontIdx: fontIdx, themeIdx : fontIdx);
   }
+}
+
+@HiveType(typeId: 3)
+class DailyController{
+  @HiveField(0)
+  int doneCount;
+  @HiveField(1)
+  String emoticon;
+  @HiveField(2)
+  String dailyComment;
+
+  DailyController({
+    this.doneCount = 0,
+    this.emoticon = 'assets/emoticon/plus.png',
+    this.dailyComment = '',
+});
+
+  DailyController plusCount(bool A){
+    if(A){
+      doneCount++;
+    }
+    else{
+      doneCount--;
+    }
+    return DailyController(doneCount: doneCount, emoticon: emoticon, dailyComment: dailyComment);
+  }
+
 }
