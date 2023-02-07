@@ -101,7 +101,7 @@ class _CalenderState extends State<Calender> {
                               ? CrossFadeState.showFirst : CrossFadeState.showSecond,
                         ),
 
-                        if(!Provider.of<Cursor>(context).isMonth)
+                        if(!Provider.of<Cursor>(context).isMonth && widget.settingBox.get("defaultSetting").isEmoticon)
                           DailyEmoticon(settingBox: widget.settingBox),
                         const TodoBanner(),
                         Expanded(

@@ -403,7 +403,6 @@ class DailyEmoticon extends StatelessWidget {
 }
 
 
-
 ///************* appbar element **************///
 
 //주간, 월간 화면에 모두 표시되는 최상위 appbar
@@ -473,8 +472,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          SizedBox(
-            height: 100,
+          const SizedBox(
+            height: 80,
             child: DrawerHeader(
               decoration: BoxDecoration(
                 color: Pastel.yellow,
@@ -483,40 +482,77 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
           ),
           Container(
-            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+            padding: const EdgeInsets.fromLTRB(10, 5, 20, 5),
             height: 40,
             child: Row(
               children: [
-                SizedBox(width: 15,),
+                const SizedBox(width: 15,),
                 const Text("시작 요일 설정"),
                 const Spacer(),
-                CustomToggle(Path().settingBox),
+                CustomToggle(
+                    whenSelect: Path().settingBox.get("defaultSetting").sunday,
+                    boxBoolValue: Path().settingBox.get("defaultSetting").isSunday,
+                    toggleA: "월요일",
+                    toggleB: "일요일"
+                )
               ],
             ),
           ),
           const Divider(height: 1, thickness: 1),
           Container(
-            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+            padding: const EdgeInsets.fromLTRB(10, 5, 20, 5),
             height: 40,
             child: Row(
               children: [
-                SizedBox(width: 15,),
+                const SizedBox(width: 15,),
                 const Text("컬러 테마"),
                 const Spacer(),
-                CustomToggle(Path().settingBox),
+                CustomToggle(
+                    whenSelect: Path().settingBox.get("defaultSetting").sunday,
+                    boxBoolValue: Path().settingBox.get("defaultSetting").isSunday,
+                    toggleA: " type A",
+                    toggleB: "type B"
+                )
               ],
             ),
           ),
           const Divider(height: 1, thickness: 1),
           Container(
-            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+            padding: const EdgeInsets.fromLTRB(10, 5, 20, 5),
             height: 40,
             child: Row(
               children: [
-                SizedBox(width: 15,),
+                const SizedBox(width: 15,),
                 const Text("폰트 변경"),
                 const Spacer(),
-                CustomToggle(Path().settingBox),
+                DropdownButton(
+                  items: fontList.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+                  onChanged: (value){
+                    SettingClass temp = Path().settingBox.get('defaultSetting');
+                    setState(() {
+                      Path().settingBox.put('defaultSetting', temp.fontChange(fontList.indexOf(value)));
+                    });
+                  },
+                  value: fontList[Path().settingBox.get("defaultSetting").fontIdx ?? 0],
+                )
+              ],
+            ),
+          ),
+          const Divider(height: 1, thickness: 1),
+          Container(
+            padding: const EdgeInsets.fromLTRB(10, 5, 20, 5),
+            height: 40,
+            child: Row(
+              children: [
+                const SizedBox(width: 15,),
+                const Text("오늘의 이모티콘"),
+                const Spacer(),
+                CustomToggle(
+                    whenSelect: Path().settingBox.get("defaultSetting").emoticonOn, //function
+                    boxBoolValue: Path().settingBox.get("defaultSetting").isEmoticon,
+                    toggleA: "On",
+                    toggleB: "Off"
+                )
               ],
             ),
           ),
@@ -529,19 +565,27 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
 // Drawer 의 토글버튼
 class CustomToggle extends StatefulWidget {
-  final Box settingBox;
-  const CustomToggle(this.settingBox, {Key? key}) : super(key: key);
+  final Function whenSelect;
+  final bool boxBoolValue;
+  final String toggleA;
+  final String toggleB;
+  const CustomToggle({
+    required this.whenSelect,
+    required this.boxBoolValue,
+    required this.toggleA,
+    required this.toggleB,
+    Key? key}) : super(key: key);
 
   @override
   State<CustomToggle> createState() => _CustomToggleState();
 }
 
 class _CustomToggleState extends State<CustomToggle> {
-  late List<bool> sundayMonday;
+  late List<bool> boolList;
 
   @override
   void initState() {
-    sundayMonday = [!widget.settingBox.get('defaultSetting').isSunday, widget.settingBox.get('defaultSetting').isSunday];
+    boolList = [!widget.boxBoolValue, widget.boxBoolValue];
     super.initState();
   }
   @override
@@ -550,48 +594,45 @@ class _CustomToggleState extends State<CustomToggle> {
       children: [
         GestureDetector(
           onTap: () {
-            SettingClass temp = Path().settingBox.get('defaultSetting');
-            print(temp.isSunday);
-              setState(() {
-                sundayMonday[0] = true;
-                sundayMonday[1] = false;
-                Path().settingBox.put('defaultSetting', temp.sunday(false));
-              });
-            },
+            setState(() {
+              boolList[0] = !boolList[0];
+              boolList[1] = !boolList[1];
+              Path().settingBox.put('defaultSetting', widget.whenSelect(false));
+            });
+          },
           child: Container(
-            padding: EdgeInsets.all(5),
-            child: Text('월요일'),
+            padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
               border: Border.all(color: Pastel.black, width: 0),
-              color: sundayMonday[0] ? Pastel.purple : Pastel.white,
+              color: boolList[0] ? Pastel.purple : Pastel.white,
             ),
+            child: Text(widget.toggleA),
           ),
         ),
         GestureDetector(
           onTap: () {
-            SettingClass temp = Path().settingBox.get('defaultSetting');
-            print(temp.isSunday);
             setState(() {
-              sundayMonday[0] = false;
-              sundayMonday[1] = true;
-              Path().settingBox.put('defaultSetting', temp.sunday(true));
+              boolList[0] = !boolList[0];
+              boolList[1] = !boolList[1];
+              Path().settingBox.put('defaultSetting', widget.whenSelect(true));
             });
           },
           child: Container(
-            padding: EdgeInsets.all(5),
-            child: Text('일요일'),
+            padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
               border: Border.all(color: Pastel.black, width: 0),
-              color: sundayMonday[1] ? Pastel.purple : Pastel.white,
+              color: boolList[1] ? Pastel.purple : Pastel.white,
             ),
+            child: Text(widget.toggleB),
           ),
         ),
       ],
     );
   }
 }
+
 
 
 ///*************bottom sheet element**************///
@@ -657,7 +698,7 @@ class Pastel {
 
 ///*************** font list *****************///
 
-List fontList = ["Myfont"];
+List fontList = ["Myfont1", "Myfont2"];
 
 ///*************** Emoticon List ******************////
 

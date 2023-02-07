@@ -86,9 +86,12 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Myfont
+    - family: Myfont1
       fonts:
         - asset: assets/font/MaruBuri-Light.otf
+    - family: Myfont2
+      fonts:
+        - asset: assets/font/GangwonEdu-Light.otf
 #    - family:
 #        - asset: lib/assets/font/GangwonEdu-Light.otf
   #       - asset: fonts/Schyler-Regular.ttf

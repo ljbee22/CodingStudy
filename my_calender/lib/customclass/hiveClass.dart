@@ -68,16 +68,27 @@ class SettingClass{
   int themeIdx; // 컬러테마 인덱스
   @HiveField(2)
   int fontIdx;
+  @HiveField(3)
+  bool isEmoticon;
 
   SettingClass({
     this.isSunday = false, // default = 월요일 시작
     this.themeIdx = 0, // default = 기본 컬러 테마(=0)
-    this.fontIdx = 0,
+    this.fontIdx = 0, // default = 기본 폰트(=0)
+    this.isEmoticon = true,
   });
 
-  SettingClass sunday(bool isSunday) {
-    this.isSunday = isSunday;
-    return SettingClass(isSunday: this.isSunday, fontIdx: fontIdx, themeIdx : fontIdx);
+  SettingClass sunday(bool isSundayA) {
+    return SettingClass(isSunday: isSundayA, fontIdx: fontIdx, themeIdx : themeIdx, isEmoticon: isEmoticon);
+  }
+
+  SettingClass fontChange(int newFontIdx){
+    return SettingClass(isSunday: isSunday, fontIdx: newFontIdx, themeIdx: themeIdx, isEmoticon: isEmoticon);
+  }
+  //TODO 매번 요소 하나하나를 바꿀때마다 그를 위한 함수를 만들어야함... 한번에 다 바꿀 수 있는 함수는 없을까?
+
+  SettingClass emoticonOn(bool isEmoticonA){
+    return SettingClass(isSunday: isSunday, fontIdx: fontIdx, themeIdx: themeIdx, isEmoticon: isEmoticonA);
   }
 }
 

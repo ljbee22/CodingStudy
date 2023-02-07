@@ -72,19 +72,22 @@ class SettingClassAdapter extends TypeAdapter<SettingClass> {
       isSunday: fields[0] as bool,
       themeIdx: fields[1] as int,
       fontIdx: fields[2] as int,
+      isEmoticon: fields[3] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, SettingClass obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.isSunday)
       ..writeByte(1)
       ..write(obj.themeIdx)
       ..writeByte(2)
-      ..write(obj.fontIdx);
+      ..write(obj.fontIdx)
+      ..writeByte(3)
+      ..write(obj.isEmoticon);
   }
 
   @override
