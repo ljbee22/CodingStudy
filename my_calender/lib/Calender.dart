@@ -180,7 +180,7 @@ class _CalenderState extends State<Calender> {
                                                               decoration: oneSchedule.done ? TextDecoration.lineThrough : TextDecoration.none,
                                                               fontStyle: oneSchedule.done ? FontStyle.italic : FontStyle.normal,
                                                               fontSize: 17,
-                                                              fontFamily: "Myfont",
+                                                              // fontFamily: "Myfont1",
                                                             ),
                                                           ),
                                                         ),
@@ -196,7 +196,7 @@ class _CalenderState extends State<Calender> {
                                                               style: TextStyle(
                                                                 color: Pastel.blacksoft,
                                                                 fontSize: 12,
-                                                                fontFamily: "Myfont",
+                                                                // fontFamily: "Myfont1",
                                                               ),
                                                             ),
                                                           ),

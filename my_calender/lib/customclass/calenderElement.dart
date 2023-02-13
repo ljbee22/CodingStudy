@@ -394,6 +394,10 @@ class DailyEmoticon extends StatelessWidget {
                 child: Image.asset(settingBox.get(scheduleDate) ?? Emoticon.plus),
               ),
             ),
+            SizedBox(width: 50,),
+            Container(
+              child: MyText('오늘의 문장', 15, Pastel.black, FontWeight.w500),
+            )
           ],
         ),
         const Divider(color: Pastel.grey),
@@ -550,8 +554,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 CustomToggle(
                     whenSelect: Path().settingBox.get("defaultSetting").emoticonOn, //function
                     boxBoolValue: Path().settingBox.get("defaultSetting").isEmoticon,
-                    toggleA: "On",
-                    toggleB: "Off"
+                    toggleA: "Off",
+                    toggleB: "On"
                 )
               ],
             ),
