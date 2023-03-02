@@ -332,13 +332,13 @@ class DailyEmoticon extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 7),
-        Container(
-          alignment: Alignment.center,
-          child: const Text('오늘의 이모티콘'),
-        ),
+        // Container(
+        //   alignment: Alignment.center,
+        //   child: const Text('오늘의 이모티콘'),
+        // ),
         Row(
           children: [
-            const SizedBox(width: 20), // 좌측 padding
+            const SizedBox(width: 30), // 좌측 padding
             GestureDetector(
               onTap: () {
                 showDialog(
@@ -369,7 +369,12 @@ class DailyEmoticon extends StatelessWidget {
                                         for(int j = i * 4; j < min(i*4+4, Emoticon().emoticonList().length); j++)
                                           GestureDetector(
                                             onTap: (){
-                                              settingBox.put(scheduleDate, Emoticon().emoticonList()[j]);
+                                              if(Emoticon().emoticonList()[j] == Emoticon.blank){
+                                                settingBox.delete(scheduleDate);
+                                              }
+                                              else{
+                                                settingBox.put(scheduleDate, Emoticon().emoticonList()[j]);
+                                              }
                                               Navigator.pop(context);
                                             },
                                             child: Container(
@@ -394,10 +399,37 @@ class DailyEmoticon extends StatelessWidget {
                 child: Image.asset(settingBox.get(scheduleDate) ?? Emoticon.plus),
               ),
             ),
-            SizedBox(width: 50,),
+            const SizedBox(width: 30),
             Container(
-              child: MyText('오늘의 문장', 15, Pastel.black, FontWeight.w500),
-            )
+              width: 170,
+              height: 70,
+              decoration: const BoxDecoration(
+                border: Border(
+                  left: BorderSide(color: Pastel.grey, width: 0.5),
+                )
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 5, 0),
+                child: TextFormField(
+                  maxLines: 2,
+                  maxLength: 30,
+                  initialValue: settingBox.get('$scheduleDate-1'),
+                  style: const TextStyle(fontSize: 15),
+                  textAlignVertical: TextAlignVertical.center,
+                  cursorColor: Pastel.grey,
+                  decoration: const InputDecoration(
+                    hintText: "오늘의 하루",
+                    border: InputBorder.none,
+                    counterText: '',
+                    suffix: Text("hello"),
+                  ),
+                  onChanged: (text) {
+                    settingBox.put('$scheduleDate-1', text);
+                  },
+                ),
+              ),
+            ),
+
           ],
         ),
         const Divider(color: Pastel.grey),
@@ -424,7 +456,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSize{
         onPressed: () {
         scaffoldKey.currentState?.openDrawer();
         },
-        icon: ImageIcon(AssetImage("assets/icon/drawer.png"), color: Pastel.blacksoft, size: MyForm().appBarIconSize),
+        icon: Image.asset('assets/icon/settings.png'), //ImageIcon(AssetImage("assets/icon/drawer.png"), color: Pastel.blacksoft, size: MyForm().appBarIconSize),
       ),
       title: Stack(
         children: [
@@ -434,14 +466,14 @@ class CustomAppbar extends StatelessWidget implements PreferredSize{
                 onPressed: () {
                   Provider.of<Cursor>(context, listen: false).changeIsMonth();
                 },
-                icon: ImageIcon(AssetImage("assets/icon/move.png"), color: Pastel.blacksoft, size: MyForm().appBarIconSize)
+                icon: Image.asset('assets/icon/move.png'), //ImageIcon(AssetImage("assets/icon/move.png"), color: Pastel.blacksoft, size: MyForm().appBarIconSize)
             ),
           ),
           Align(
             alignment: Alignment.centerRight,
             child: IconButton(
               alignment: Alignment.centerRight,
-              icon: ImageIcon(AssetImage("assets/icon/Home.png"), color: Pastel.blacksoft, size: MyForm().appBarIconSize),
+              icon: Image.asset('assets/icon/home2.png'), //ImageIcon(AssetImage("assets/icon/Home.png"), color: Pastel.blacksoft, size: MyForm().appBarIconSize),
               onPressed: () {
                 Provider.of<Cursor>(context, listen: false).changeCursor(DateTime.now());
               },
@@ -549,7 +581,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             child: Row(
               children: [
                 const SizedBox(width: 15,),
-                const Text("오늘의 이모티콘"),
+                const Text("이모티콘 보기"),
                 const Spacer(),
                 CustomToggle(
                     whenSelect: Path().settingBox.get("defaultSetting").emoticonOn, //function
@@ -707,6 +739,7 @@ List fontList = ["Myfont1", "Myfont2"];
 ///*************** Emoticon List ******************////
 
 class Emoticon {
+  static const String blank = 'assets/emoticon/blank.png';
   static const String transparent = 'assets/emoticon/transparent.png';
   static const String plus = 'assets/emoticon/plus.png';
   static const String rain = 'assets/emoticon/rain.png';
@@ -718,6 +751,6 @@ class Emoticon {
 
 
   List<String> emoticonList() {
-    return [rain, homework, sick, basketball, per100, basketball, basketball, basketball, basketball, basketball, basketball, basketball, basketball];
+    return [blank, rain, homework, sick, basketball, per100, basketball, basketball, basketball, basketball, basketball, basketball, basketball, basketball];
   }
 }
