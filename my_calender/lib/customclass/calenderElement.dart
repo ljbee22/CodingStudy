@@ -746,11 +746,13 @@ class Emoticon {
   static const String homework = 'assets/emoticon/homework.png';
   static const String sick = 'assets/emoticon/sick.png';
   static const String basketball = 'assets/emoticon/basketball.png';
+  static const String trip = 'assets/emoticon/trip.png';
+  static const String sun = 'assets/emoticon/sun.png';
   static const String per100 = 'assets/emoticon/100.png';
 
 
 
   List<String> emoticonList() {
-    return [blank, rain, homework, sick, basketball, per100, basketball, basketball, basketball, basketball, basketball, basketball, basketball, basketball];
+    return [blank, sun, rain, homework, sick, basketball, trip];
   }
 }
