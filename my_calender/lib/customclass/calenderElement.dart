@@ -16,7 +16,7 @@ class Path {
 ///****************** default sizes ********************///
 
 class MyForm {
-  final List<String> weekList = ['일', '월', '화', '수', '목', '금', '토', '일'];
+  final List<String> weekList = [' 일', ' 월', ' 화', ' 수', ' 목', ' 금', ' 토', ' 일'];
   final double appBarIconSize = 30;
   final double calenderTextSize = 15;
 }
@@ -37,19 +37,19 @@ class DayOfWeek extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           for(int i = tmp; i < MyForm().weekList.length - 1 + tmp; i++)
-          Expanded(
-              child:Padding(
-              padding: const EdgeInsets.only(left: 5),
-              child: Text(
-                MyForm().weekList[i],
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                    fontSize: MyForm().calenderTextSize,
-                    color: i == 0 || i == 7 ? Pastel.redaccent : Pastel.black,
-                    fontWeight: FontWeight.w100
-                ),
-              ),
-          )),
+            Expanded(
+                child:Padding(
+                  padding: const EdgeInsets.only(left: 5),
+                  child: Text(
+                    MyForm().weekList[i],
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        fontSize: MyForm().calenderTextSize,
+                        color: i == 0 || i == 7 ? Pastel.redaccent : Pastel.black,
+                        fontWeight: FontWeight.w100
+                    ),
+                  ),
+                )),
         ],
       ),
     ); //요일 표시 -> 항상 고정
@@ -118,9 +118,9 @@ class MyText extends StatelessWidget {
       t,
       textAlign: TextAlign.center,
       style: TextStyle(
-          fontSize: fSize,
-          color: color,
-          fontWeight: fontWeight,
+        fontSize: fSize,
+        color: color,
+        fontWeight: fontWeight,
       ),
     );
   }
@@ -179,45 +179,46 @@ class _OneDayState extends State<OneDay> {
                     (Provider.of<Cursor>(context, listen: false).isMonth)
                     ? null
                     : Stack(
-                        children: [
-                          Positioned(
-                            top: 1,
-                            height: 20,
-                            width: 20,
-                            left: 3,
-                            child: MyText(
-                                widget.oneDay.day.toString(),
-                                15,
-                                widget.oneDay.weekday == 7
-                                    ? Pastel.redaccent
-                                    : Pastel.black,
-                                FontWeight.w300
-                            ),
+                  children: [
+                    Positioned(
+                      top: 1,
+                      height: 20,
+                      width: 25,
+                      left: 3,
+                      child: MyText(
+                          widget.oneDay.day.toString(),
+                          14,
+                          widget.oneDay.weekday == 7
+                              ? Pastel.redaccent
+                              : Pastel.black,
+                          FontWeight.w300
+                      ),
                     ),
-                          if (widget.box.containsKey(DateFormat('yyyy.MM.dd').format(widget.oneDay)))
-                          Positioned(
-                            top: 5,
-                            left: 28,
-                            child: Container(
-                              height: 13,
-                              width: 13,
-                              decoration: const BoxDecoration(
-                                color: Pastel.red,
-                                borderRadius: BorderRadius.all(Radius.circular(3)),
-                              ),
-                              child: MyText(
-                                  widget.box.get(DateFormat('yyyy.MM.dd').format(widget.oneDay)).length.toString(),
-                                  10, Pastel.black, FontWeight.w500),
-                            ),
-                        ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
+                    if (widget.box.containsKey(DateFormat('yyyy.MM.dd').format(widget.oneDay)))
+                      Positioned(
+                        top: 3,
+                        left: 29,
                         child: Container(
-                          width: 45,
-                          height: 45,
-                          child: Image.asset(widget.settingBox.get(DateFormat('yyyy.MM.dd').format(widget.oneDay)) ?? Emoticon.transparent),
+                          height: 13,
+                          width: 13,
+                          alignment: Alignment.center,
+                          decoration: const BoxDecoration(
+                            color: Pastel.red,
+                            borderRadius: BorderRadius.all(Radius.circular(3)),
+                          ),
+                          child: MyText(
+                              widget.box.get(DateFormat('yyyy.MM.dd').format(widget.oneDay)).length.toString(),
+                              10, Pastel.black, FontWeight.w500),
                         ),
-                      )
+                      ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        width: 45,
+                        height: 45,
+                        child: Image.asset(widget.settingBox.get(DateFormat('yyyy.MM.dd').format(widget.oneDay)) ?? Emoticon.transparent),
+                      ),
+                    )
                   ],
                 )
             ),
@@ -263,12 +264,12 @@ class MonthColumn extends StatelessWidget {
     return Column(
       children: [
         if(tmpList[6].month == Provider.of<Cursor>(context).selected.month)
-        Row(
-          children: [
-            for (int i = 0; i < 7; i++)
-              OneDay(tmpList[i], box, settingBox),
-          ],
-        ),
+          Row(
+            children: [
+              for (int i = 0; i < 7; i++)
+                OneDay(tmpList[i], box, settingBox),
+            ],
+          ),
         const Divider(height: 0),
         Row(
           children: [
@@ -332,13 +333,9 @@ class DailyEmoticon extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 7),
-        // Container(
-        //   alignment: Alignment.center,
-        //   child: const Text('오늘의 이모티콘'),
-        // ),
         Row(
           children: [
-            const SizedBox(width: 30), // 좌측 padding
+            const SizedBox(width: 20), // 좌측 padding
             GestureDetector(
               onTap: () {
                 showDialog(
@@ -399,34 +396,63 @@ class DailyEmoticon extends StatelessWidget {
                 child: Image.asset(settingBox.get(scheduleDate) ?? Emoticon.plus),
               ),
             ),
-            const SizedBox(width: 30),
+            const SizedBox(width: 25),
             Container(
-              width: 170,
+              width: 220,
               height: 70,
               decoration: const BoxDecoration(
-                border: Border(
-                  left: BorderSide(color: Pastel.grey, width: 0.5),
-                )
+                  border: Border(
+                    left: BorderSide(color: Pastel.grey, width: 0.5),
+                  )
               ),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 5, 0),
-                child: TextFormField(
-                  maxLines: 2,
-                  maxLength: 30,
-                  initialValue: settingBox.get('$scheduleDate-1'),
-                  style: const TextStyle(fontSize: 15),
-                  textAlignVertical: TextAlignVertical.center,
-                  cursorColor: Pastel.grey,
-                  decoration: const InputDecoration(
-                    hintText: "오늘의 하루",
-                    border: InputBorder.none,
-                    counterText: '',
-                    suffix: Text("hello"),
-                  ),
-                  onChanged: (text) {
-                    settingBox.put('$scheduleDate-1', text);
+                padding: const EdgeInsets.fromLTRB(25, 0, 5, 0),
+                child: TextButton(
+                  onPressed: () {
+                    showDialog(
+                        barrierColor: Colors.transparent,
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            elevation: 1,
+                            contentPadding: const EdgeInsets.fromLTRB(10,10,10,10),
+                            backgroundColor: Pastel.yellowsoft,
+                            insetPadding: const EdgeInsets.fromLTRB(40,260,40,90),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                side: const BorderSide(color: Pastel.grey)
+                            ),
+                            content: SizedBox(
+                              height: 70,
+                              width: 200,
+                              child: TextFormField(
+                                autofocus: true,
+                                maxLines: 3,
+                                maxLength: 30,
+                                initialValue: settingBox.get('$scheduleDate-1') ?? '',
+                                style: const TextStyle(fontSize: 15),
+                                textAlignVertical: TextAlignVertical.center,
+                                cursorColor: Pastel.grey,
+                                decoration: const InputDecoration(
+                                  hintText: "오늘의 하루",
+                                  border: InputBorder.none,
+                                ),
+                                onChanged: (text) {
+                                  settingBox.put('$scheduleDate-1', text);
+                                },
+                              ),
+                            ),
+                          );
+                        }
+                    );
                   },
+                  child: Text(
+                    settingBox.get('$scheduleDate-1')==null || settingBox.get('$scheduleDate-1')==""
+                        ? '"오늘의 하루"': settingBox.get('$scheduleDate-1'),
+                    style: const TextStyle(color: Pastel.blacksoft),),
                 ),
+
               ),
             ),
 
@@ -454,7 +480,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSize{
       leading: IconButton(
         padding: const EdgeInsets.only(left: 15),
         onPressed: () {
-        scaffoldKey.currentState?.openDrawer();
+          scaffoldKey.currentState?.openDrawer();
         },
         icon: Image.asset('assets/icon/settings.png'), //ImageIcon(AssetImage("assets/icon/drawer.png"), color: Pastel.blacksoft, size: MyForm().appBarIconSize),
       ),
@@ -463,10 +489,10 @@ class CustomAppbar extends StatelessWidget implements PreferredSize{
           Positioned(
             right: 40,
             child: IconButton(
-                onPressed: () {
-                  Provider.of<Cursor>(context, listen: false).changeIsMonth();
-                },
-                icon: Image.asset('assets/icon/move.png'), //ImageIcon(AssetImage("assets/icon/move.png"), color: Pastel.blacksoft, size: MyForm().appBarIconSize)
+              onPressed: () {
+                Provider.of<Cursor>(context, listen: false).changeIsMonth();
+              },
+              icon: Image.asset('assets/icon/move.png'), //ImageIcon(AssetImage("assets/icon/move.png"), color: Pastel.blacksoft, size: MyForm().appBarIconSize)
             ),
           ),
           Align(
@@ -509,12 +535,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
         padding: EdgeInsets.zero,
         children: [
           const SizedBox(
-            height: 80,
+            height: 120,
             child: DrawerHeader(
-              decoration: BoxDecoration(
-                color: Pastel.yellow,
-              ),
-                child: Text('설정')
+                decoration: BoxDecoration(
+                  color: Pastel.yellow,
+                ),
+                child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: MyText('설정', 17, Pastel.black, FontWeight.w300)
+                )
             ),
           ),
           Container(
@@ -530,24 +559,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     boxBoolValue: Path().settingBox.get("defaultSetting").isSunday,
                     toggleA: "월요일",
                     toggleB: "일요일"
-                )
-              ],
-            ),
-          ),
-          const Divider(height: 1, thickness: 1),
-          Container(
-            padding: const EdgeInsets.fromLTRB(10, 5, 20, 5),
-            height: 40,
-            child: Row(
-              children: [
-                const SizedBox(width: 15,),
-                const Text("컬러 테마"),
-                const Spacer(),
-                CustomToggle(
-                    whenSelect: Path().settingBox.get("defaultSetting").sunday,
-                    boxBoolValue: Path().settingBox.get("defaultSetting").isSunday,
-                    toggleA: " type A",
-                    toggleB: "type B"
                 )
               ],
             ),
@@ -641,7 +652,7 @@ class _CustomToggleState extends State<CustomToggle> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
               border: Border.all(color: Pastel.black, width: 0),
-              color: boolList[0] ? Pastel.purple : Pastel.white,
+              color: boolList[0] ? Pastel.bluegreen : Pastel.white,
             ),
             child: Text(widget.toggleA),
           ),
@@ -659,7 +670,7 @@ class _CustomToggleState extends State<CustomToggle> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
               border: Border.all(color: Pastel.black, width: 0),
-              color: boolList[1] ? Pastel.purple : Pastel.white,
+              color: boolList[1] ? Pastel.bluegreen : Pastel.white,
             ),
             child: Text(widget.toggleB),
           ),
@@ -734,7 +745,7 @@ class Pastel {
 
 ///*************** font list *****************///
 
-List fontList = ["Myfont1", "Myfont2"];
+List fontList = ["MaruBuri", "GangwonEdu"];
 
 ///*************** Emoticon List ******************////
 

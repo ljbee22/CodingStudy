@@ -170,7 +170,7 @@ class _CalenderState extends State<Calender> {
                                                           constraints: BoxConstraints(
                                                               maxWidth: double.infinity
                                                           ),
-                                                          height: 20,
+                                                          height: 23,
                                                           child: Text(
                                                             oneSchedule.name,
                                                             overflow: TextOverflow.ellipsis,
@@ -189,7 +189,7 @@ class _CalenderState extends State<Calender> {
                                                             constraints: BoxConstraints(
                                                                 maxWidth: double.infinity
                                                             ),
-                                                            height: 15,
+                                                            height: 17,
                                                             child: Text(
                                                               oneSchedule.timeString(),                                                          overflow: TextOverflow.ellipsis,
                                                               maxLines: 1,
