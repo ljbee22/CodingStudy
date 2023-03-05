@@ -604,6 +604,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
           ),
           const Divider(height: 1, thickness: 1),
+          Container(
+            padding: const EdgeInsets.fromLTRB(10, 5, 20, 5),
+            height: 40,
+            child: Row(
+              children: const [
+                SizedBox(width: 15),
+                Text("개발자 이메일"),
+                Spacer(),
+                Text("htjb00@gmail.com"),
+              ],
+            ),
+          ),
+          const Divider(height: 1, thickness: 1),
         ],
       ),
     );
